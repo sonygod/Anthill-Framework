@@ -3,7 +3,7 @@ package ru.antkarlov.anthill
 import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.utils.ByteArray;
-import flash.utils.getQualifiedClassName;
+
 import flash.utils.setTimeout;
 
 import msignal.Signal1;
@@ -149,7 +149,7 @@ import msignal.Signal2;
 		{
 			if (aKey == null)
 			{
-				aKey = getQualifiedClassName(aSpriteClass);
+				aKey = Type.getClassName(aSpriteClass);
 			}
 			
 			var data:Object = { kind:DATA_SPRITE,
@@ -168,7 +168,7 @@ import msignal.Signal2;
 		{
 			if (aKey == null)
 			{
-				aKey = getQualifiedClassName(aClipClass);
+				aKey = Type.getClassName(aClipClass);
 			}
 			
 			var data:Object = { kind:DATA_CLIP,
@@ -211,7 +211,7 @@ import msignal.Signal2;
 		{
 			if (aKey == null)
 			{
-				aKey = getQualifiedClassName(aGraphicClass);
+				aKey = Type.getClassName(aGraphicClass);
 			}
 			
 			var data:Object = { kind:DATA_GRAPHIC,
@@ -235,7 +235,7 @@ import msignal.Signal2;
 		{
 			if (aKey == null)
 			{
-				aKey = getQualifiedClassName(aAtlasGraphicClass);
+				aKey = Type.getClassName(aAtlasGraphicClass);
 			}
 			
 			var data:Object = { kind:DATA_ATLAS,

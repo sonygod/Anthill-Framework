@@ -5,7 +5,7 @@ import flash.display.MovieClip;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
-import flash.utils.getDefinitionByName;
+
 /**
 	 * Базовый прелодаер для вашего приложения. 
 	 * 
@@ -109,7 +109,7 @@ import flash.utils.getDefinitionByName;
 		 */
 		protected function initialize():void
 		{
-			var mainClass:Class = Class(getDefinitionByName(entryClass));
+			var mainClass = Type.resolveClass(entryClass);
 			if (mainClass)
 			{
 				var app:Object = new mainClass();

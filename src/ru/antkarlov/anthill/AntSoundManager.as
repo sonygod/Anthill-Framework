@@ -2,7 +2,7 @@ package ru.antkarlov.anthill
 {
 import flash.media.Sound;
 import flash.net.URLRequest;
-import flash.utils.getQualifiedClassName;
+
 /**
 	 * Звуковой менеджер используется для взаимодействия со звуковыми сущностями.
 	 * 
@@ -181,7 +181,7 @@ import flash.utils.getQualifiedClassName;
 		{
 			if (aName == null)
 			{
-				aName = getQualifiedClassName(aSoundClass);
+				aName = Type.getClassName(aSoundClass);
 			}
 			
 			_classes.set(aName, aSoundClass);
