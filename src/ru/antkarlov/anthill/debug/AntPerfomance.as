@@ -1,19 +1,13 @@
 package ru.antkarlov.anthill.debug
 {
-	import flash.text.AntiAliasType;
-	import flash.text.GridFitType;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	import flash.display.*;
-	import flash.events.*;
-	import flash.system.System;
-	import flash.ui.*;
-	import flash.utils.getTimer;
-	
-	import ru.antkarlov.anthill.*;
-	import ru.antkarlov.anthill.utils.AntRating;
-	
-	/**
+import flash.display.*;
+import flash.system.System;
+import flash.text.TextField;
+import flash.text.TextFormat;
+import flash.utils.getTimer;
+
+import ru.antkarlov.anthill.utils.AntRating;
+/**
 	 * Отладочный класс собирающий и демонстрирующий статистику производительности игры.
 	 * <p>За основу взят <a href="http://lostinactionscript.com/2008/10/06/as3-swf-profiler/">SWFProfiler</a></p>
 	 * 

@@ -1,12 +1,9 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.BitmapData;
-	
-	import ru.antkarlov.anthill.events.*;
-	import ru.antkarlov.anthill.debug.AntDrawer;
-	import ru.antkarlov.anthill.utils.AntColor;
-	
-	/**
+import ru.antkarlov.anthill.debug.AntDrawer;
+import ru.antkarlov.anthill.events.*;
+import ru.antkarlov.anthill.utils.AntColor;
+/**
 	 * Базовый класс для визуальных объектов которые можно вкладывать друг в друга.
 	 * 
 	 * @langversion ActionScript 3

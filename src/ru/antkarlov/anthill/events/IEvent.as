@@ -1,8 +1,7 @@
 package ru.antkarlov.anthill.events
 {
-	import ru.antkarlov.anthill.signals.AntDeluxeSignal;
-	
-	public interface IEvent
+import msignal.EventSignal;
+public interface IEvent
 	{
 		/**
 		 * Указатель на объект который произвел событие.
@@ -19,8 +18,8 @@ package ru.antkarlov.anthill.events
 		/**
 		 * Сигнал который произвел событие.
 		 */
-		function get signal():AntDeluxeSignal;
-		function set signal(value:AntDeluxeSignal):void;
+		function get signal():EventSignal;
+		function set signal(value:EventSignal):void;
 		
 		/**
 		 * Определяет является ли событие всплывающим.

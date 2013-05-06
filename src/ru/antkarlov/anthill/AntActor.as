@@ -1,14 +1,13 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.BitmapData;
-	import flash.geom.ColorTransform;
-	import flash.geom.Rectangle;
-	import flash.geom.Point;
-	import flash.geom.Matrix;
-	
-	import ru.antkarlov.anthill.signals.AntSignal;
-	
-	/**
+import flash.display.BitmapData;
+import flash.geom.ColorTransform;
+import flash.geom.Matrix;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+
+import msignal.Signal1;
+/**
 	 * Данный класс занимается воспроизведением и отображением растеризированных анимаций.
 	 * От этого класса следует наследовать все визуальные игровые объекты.
 	 * 
@@ -70,7 +69,7 @@ package ru.antkarlov.anthill
 		 * Событие срабатывающее по окончанию проигрывания анимации.
 		 * Добавляемый метод должен иметь аргумент типа <code>function onComplete(actor:AntActor):void {}</code>
 		 */
-		public var eventComplete:AntSignal;
+		public var eventComplete:Signal1;
 		
 		//---------------------------------------
 		// PROTECTED VARIABLES
@@ -171,7 +170,7 @@ package ru.antkarlov.anthill
 			reverse = false;
 			repeat = true;
 			animationSpeed = 1;
-			eventComplete = new AntSignal(AntActor);
+			eventComplete =new Signal1(AntActor) //new AntSignal(AntActor);
 			
 			_alpha = 1;
 			_color = 0x00FFFFFF;
@@ -545,6 +544,7 @@ package ru.antkarlov.anthill
 		{
 			if (!repeat) stop();
 			eventComplete.dispatch(this);
+
 		}
 		
 		//---------------------------------------

@@ -1,12 +1,9 @@
 package ru.antkarlov.anthill
 {
-	import flash.events.MouseEvent;
-	import flash.display.Bitmap;
-	import flash.display.Sprite;
-	
-	import ru.antkarlov.anthill.signals.AntSignal;
-	
-	/**
+import flash.events.MouseEvent;
+
+import msignal.Signal0;
+/**
 	 * Класс обработчик событий мыши.
 	 * 
 	 * @langversion ActionScript 3
@@ -60,12 +57,12 @@ package ru.antkarlov.anthill
 		/**
 		 * Событие выполняющиеся при нажатии кнопки мыши.
 		 */
-		public var eventDown:AntSignal;
+		public var eventDown:Signal0;
 		
 		/**
 		 * Событие выполняющиеся при отпускании кнопки мыши.
 		 */
-		public var eventUp:AntSignal;
+		public var eventUp:Signal0;
 		
 		//---------------------------------------
 		// PROTECTED VARIABLES
@@ -126,8 +123,8 @@ package ru.antkarlov.anthill
 			screenY = 0;
 			cursor = null;
 			defCursorAnim = null;
-			eventDown = new AntSignal();
-			eventUp = new AntSignal();
+			eventDown = new Signal0();
+			eventUp = new Signal0();
 		}
 
 		//---------------------------------------

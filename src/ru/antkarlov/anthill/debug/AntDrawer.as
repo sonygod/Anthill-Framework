@@ -1,9 +1,9 @@
 package ru.antkarlov.anthill.debug
 {
-	import flash.display.BitmapData;
-	import ru.antkarlov.anthill.*;
-	
-	/**
+import flash.display.BitmapData;
+
+import ru.antkarlov.anthill.*;
+/**
 	 * Отладочный невизуальный класс выполняющий отладочную отрисовку сущностей.
 	 * 
 	 * @langversion ActionScript 3

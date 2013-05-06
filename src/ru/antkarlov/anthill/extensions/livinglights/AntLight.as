@@ -1,16 +1,15 @@
 package ru.antkarlov.anthill.extensions.livinglights
 {
-	import flash.display.Sprite;
-	import flash.display.GradientType;
-	import flash.display.BitmapData;
-	import flash.filters.BlurFilter;
-	import flash.geom.Matrix;
-	import flash.geom.Rectangle;
-	import flash.geom.Point;
-	
-	import ru.antkarlov.anthill.*;
-	
-	/**
+import flash.display.BitmapData;
+import flash.display.GradientType;
+import flash.display.Sprite;
+import flash.filters.BlurFilter;
+import flash.geom.Matrix;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+
+import ru.antkarlov.anthill.*;
+/**
 	 * Данный класс реализует простой источник света. Чтобы созданный источник света
 	 * корректно обрабатывался и рендерился, его следует добавлять только в световое окружение
 	 * AntLightEnvironment.

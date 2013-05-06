@@ -1,13 +1,12 @@
 package ru.antkarlov.anthill.debug
 {
-	import flash.display.Sprite;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.display.BitmapData;
-	import flash.display.Bitmap;
-	import flash.events.MouseEvent;
-	
-	/**
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.display.Sprite;
+import flash.events.MouseEvent;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+/**
 	 * Простая кнопка использующаяся только в отладочных визуальных классах.
 	 * 
 	 * @langversion ActionScript 3

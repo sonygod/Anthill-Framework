@@ -1,8 +1,7 @@
 package ru.antkarlov.anthill.plugins
 {
-	import ru.antkarlov.anthill.AntCamera;
-	
-	public interface IPlugin
+import ru.antkarlov.anthill.AntCamera;
+public interface IPlugin
 	{
 		/**
 		 * Вызывается автоматически каждый кадр когда плагин добавлен в стркутуру Anthill 

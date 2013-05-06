@@ -1,9 +1,8 @@
 package ru.antkarlov.anthill
 {
-	import flash.events.KeyboardEvent;
-	import flash.utils.*;
-	
-	/**
+import flash.events.KeyboardEvent;
+import flash.utils.*;
+/**
 	 * Класс обработчик событий клавиатуры.
 	 * 
 	 * @langversion ActionScript 3

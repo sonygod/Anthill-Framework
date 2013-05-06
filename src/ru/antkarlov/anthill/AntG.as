@@ -1,14 +1,13 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.Stage;
-	import flash.ui.Mouse;
-	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
-	
-	import ru.antkarlov.anthill.plugins.IPlugin;
-	import ru.antkarlov.anthill.debug.*;
-	
-	/**
+import flash.display.Stage;
+import flash.net.URLRequest;
+import flash.net.navigateToURL;
+import flash.ui.Mouse;
+
+import ru.antkarlov.anthill.debug.*;
+import ru.antkarlov.anthill.plugins.IPlugin;
+/**
 	 * Глобальное хранилище с указателями на часто используемые утилитные классы и их методы.
 	 * 
 	 * @langversion ActionScript 3
@@ -600,7 +599,7 @@ package ru.antkarlov.anthill
 					_anthill._useSystemCursor = value;
 					if (!debugger.visible)
 					{
-						(value) ? flash.ui.Mouse.show() : flash.ui.Mouse.hide();
+						(value) ? Mouse.show() : Mouse.hide();
 					}
 				}
 			}

@@ -1,14 +1,13 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.BitmapData;
-	import flash.geom.ColorTransform;
-	import flash.geom.Rectangle;
-	import flash.geom.Point;
-	import flash.geom.Matrix;
-	
-	import ru.antkarlov.anthill.signals.AntSignal;
-	
-	/**
+import flash.display.BitmapData;
+import flash.geom.ColorTransform;
+import flash.geom.Matrix;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+
+import msignal.Signal1;
+/**
 	 * Кнопка обыкновенная.
 	 * 
 	 * <p>Для визуального представления кнопки используются заранее растеризированные анимации 
@@ -71,31 +70,31 @@ package ru.antkarlov.anthill
 		 * Событие выполняющееся когда кнопка нажата. 
 		 * В качестве атрибута в метод подписчика передается указатель на кнопку.
 		 */
-		public var eventDown:AntSignal;
+		public var eventDown:Signal1;
 		
 		/**
 		 * Событие выполняющееся когда на кнопку наведен курсор мыши. 
 		 * В качестве атрибута в метод подписчика передается указатель на кнопку.
 		 */
-		public var eventOver:AntSignal;
+		public var eventOver:Signal1;
 		
 		/**
 		 * Событие выполняющееся когда курсор мыши вышел за пределы кнопки. 
 		 * В качестве атрибута в метод подписчика передается указатель на кнопку.
 		 */
-		public var eventOut:AntSignal;
+		public var eventOut:Signal1;
 		
 		/**
 		 * Событие выполняющееся когда кнопка отпущена. 
 		 * В качестве атрибута в метод подписчика передается указатель на кнопку.
 		 */
-		public var eventUp:AntSignal;
+		public var eventUp:Signal1;
 		
 		/**
 		 * Событие выполняющееся когда был произведен клик по кнопке (нажатие и отпускание мыши в пределах кнопки). 
 		 * В качестве атрибута в метод подписчика передается указатель на кнопку.
 		 */
-		public var eventClick:AntSignal;
+		public var eventClick:Signal1;
 		
 		/**
 		 * Указатель на текстовую метку кнопки.
@@ -266,11 +265,11 @@ package ru.antkarlov.anthill
 			
 			super();
 			
-			eventDown = new AntSignal(AntButton);
-			eventOver = new AntSignal(AntButton);
-			eventOut = new AntSignal(AntButton);
-			eventUp = new AntSignal(AntButton);
-			eventClick = new AntSignal(AntButton);
+			eventDown = new Signal1(AntButton);
+			eventOver = new Signal1(AntButton);
+			eventOut = new Signal1(AntButton);
+			eventUp = new Signal1(AntButton);
+			eventClick = new Signal1(AntButton);
 			
 			label = null;
 			labelOffset = new AntPoint(0, 1);

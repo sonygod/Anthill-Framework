@@ -1,19 +1,16 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.display.StageScaleMode;
-	import flash.display.StageAlign;
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.events.MouseEvent;
-	import flash.events.KeyboardEvent;
-	import flash.utils.getTimer;
-	import flash.ui.Mouse;
-	
-	import ru.antkarlov.anthill.debug.AntPerfomance;
-	
-	public class Anthill extends Sprite
+import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
+import flash.ui.Mouse;
+import flash.utils.getTimer;
+
+import ru.antkarlov.anthill.debug.AntPerfomance;
+public class Anthill extends Sprite
 	{
 		//Flex v4.x SDK
 		// Обычное подключение шрифта.
@@ -110,7 +107,7 @@ package ru.antkarlov.anthill
 			_useSystemCursor = aUseSystemCursor;
 			if (!_useSystemCursor)
 			{
-				flash.ui.Mouse.hide();
+				Mouse.hide();
 			}
 			
 			_initialState = aInitialState;

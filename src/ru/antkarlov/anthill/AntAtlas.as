@@ -1,11 +1,9 @@
 package ru.antkarlov.anthill
 {
-	import XML;
-	import flash.display.BitmapData;
-	import flash.geom.Rectangle;
-	import flash.geom.Point;
-	
-	/**
+import flash.display.BitmapData;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+/**
 	 * Данный класс позволяет работать с коллекцией маленьких изображений укомплектованных на одной
 	 * большой картинке. Данный способ работы ориентирован в большей степени для быстрой работы
 	 * с аппаратными рендерами, но поскольку пока Anthill не поддерживает аппаратное ускорение — 

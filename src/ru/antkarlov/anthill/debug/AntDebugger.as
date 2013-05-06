@@ -1,18 +1,14 @@
 package ru.antkarlov.anthill.debug
 {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.Sprite;
-	import flash.text.AntiAliasType;
-	import flash.text.GridFitType;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	import flash.events.MouseEvent;
-	import flash.ui.Mouse;
-	
-	import ru.antkarlov.anthill.*;
-	
-	/**
+import flash.display.Sprite;
+import flash.text.AntiAliasType;
+import flash.text.GridFitType;
+import flash.text.TextField;
+import flash.text.TextFormat;
+import flash.ui.Mouse;
+
+import ru.antkarlov.anthill.*;
+/**
 	 * Объеденяет в себе все классы использующиеся для отладки игры.
 	 * 
 	 * @langversion ActionScript 3
@@ -138,7 +134,7 @@ package ru.antkarlov.anthill.debug
 			{
 				if (!AntG.useSystemCursor)
 				{
-					flash.ui.Mouse.show();
+					Mouse.show();
 					
 					if (AntG.mouse.cursor != null)
 					{
@@ -175,7 +171,7 @@ package ru.antkarlov.anthill.debug
 			{
 				if (!AntG.useSystemCursor)
 				{
-					flash.ui.Mouse.hide();
+					Mouse.hide();
 					
 					if (AntG.mouse.cursor != null)
 					{

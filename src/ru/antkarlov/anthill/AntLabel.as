@@ -1,21 +1,18 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.BitmapData;
-	import flash.geom.Rectangle;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.ColorTransform;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	import flash.text.AntiAliasType;
-	import flash.text.GridFitType;
-	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormatAlign;
-	import flash.filters.GlowFilter;
-	
-	import ru.antkarlov.anthill.debug.AntDrawer;
-	
-	/**
+import flash.display.BitmapData;
+import flash.filters.GlowFilter;
+import flash.geom.ColorTransform;
+import flash.geom.Matrix;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+import flash.text.AntiAliasType;
+import flash.text.GridFitType;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
+import flash.text.TextFormatAlign;
+/**
 	 * Обычная текстовая метка используется для отображения текстовой информации.
 	 * 
 	 * @langversion ActionScript 3

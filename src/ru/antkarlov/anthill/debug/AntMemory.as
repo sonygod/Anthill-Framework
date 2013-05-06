@@ -1,14 +1,13 @@
 package ru.antkarlov.anthill.debug
 {
-    import flash.events.Event;
-    import flash.net.LocalConnection;
-    import flash.system.System;
-    import flash.utils.Dictionary;
-    import flash.utils.setTimeout;
+import flash.events.Event;
+import flash.net.LocalConnection;
+import flash.system.System;
+import flash.utils.Dictionary;
+import flash.utils.setTimeout;
 
-	import ru.antkarlov.anthill.AntG;
-
-	/**
+import ru.antkarlov.anthill.AntG;
+/**
 	 * Отладочный не визуальный класс позволяющий отслеживать удаление объектов из памяти 
 	 * сборщиком мусора.
 	 * 

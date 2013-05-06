@@ -1,12 +1,11 @@
 package ru.antkarlov.anthill.extensions.livinglights
 {
-	import flash.display.BitmapData;
-	import flash.geom.Rectangle;
-	import flash.geom.Point;
-	
-	import ru.antkarlov.anthill.*;
-	
-	/**
+import flash.display.BitmapData;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+
+import ru.antkarlov.anthill.*;
+/**
 	 * Данный класс служит окружением для источников света. В качестве окружения выступают
 	 * какие-либо графические объекты для которых рассчитываются падающие тени.
 	 * 

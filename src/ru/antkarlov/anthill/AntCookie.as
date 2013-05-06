@@ -1,9 +1,8 @@
 package ru.antkarlov.anthill
 {
-	import flash.net.SharedObject;
-	import flash.net.SharedObjectFlushStatus;
-	
-	/**
+import flash.net.SharedObject;
+import flash.net.SharedObjectFlushStatus;
+/**
 	 * Обертка для работы с SharedObject для создания локальных игровых сохранений.
 	 * 
 	 * @langversion ActionScript 3

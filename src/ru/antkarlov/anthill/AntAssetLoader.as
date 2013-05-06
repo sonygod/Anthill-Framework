@@ -1,13 +1,16 @@
 package ru.antkarlov.anthill
 {
-	import ru.antkarlov.anthill.signals.AntSignal;
-	
-	import flash.utils.getQualifiedClassName;
-	import flash.utils.ByteArray;
-	import flash.utils.setTimeout;
-	import XML;
-	
-	/**
+import flash.display.MovieClip;
+import flash.display.Sprite;
+import flash.utils.ByteArray;
+import flash.utils.getQualifiedClassName;
+import flash.utils.setTimeout;
+
+import msignal.Signal1;
+import msignal.Signal2;
+;
+
+/**
 	 * Данный класс создан для того чтобы упростить и объеденить загрузку графических ресурсов из разных источников.
 	 * 
 	 * <p>Используя методы данного класса вы можете сформировать список ресурсов которые необходимо загрузить и обработать,
@@ -59,18 +62,18 @@ package ru.antkarlov.anthill
 		/**
 		 * Событие срабатывающее при запуске процесса загрузки активов.
 		 */
-		public var eventStart:AntSignal;
+		public var eventStart:Signal1;
 		
 		/**
 		 * Событие срабатывающее каждый шаг процесса загрузки активов.
 		 * В качестве аргумента передается текущий процент загрузки в диапазоне от 0 до 1.
 		 */
-		public var eventProcess:AntSignal;
+		public var eventProcess:Signal2;
 		
 		/**
 		 * Событие срабатывающее при завершении процесса загрузки активов.
 		 */
-		public var eventComplete:AntSignal;
+		public var eventComplete:Signal1;
 		
 		/**
 		 * Количество обрабатываемых активов за один шаг.
@@ -107,9 +110,9 @@ package ru.antkarlov.anthill
 			_index = 0;
 			_isStarted = false;
 			
-			eventStart = new AntSignal(AntAssetLoader);
-			eventProcess = new AntSignal(AntAssetLoader, Number);
-			eventComplete = new AntSignal(AntAssetLoader);
+			eventStart = new Signal1(AntAssetLoader);
+			eventProcess = new Signal2(AntAssetLoader, Number);
+			eventComplete = new Signal1(AntAssetLoader);
 			countPerStep = 10;
 		}
 		

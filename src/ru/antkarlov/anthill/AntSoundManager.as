@@ -1,10 +1,9 @@
 package ru.antkarlov.anthill
 {
-	import flash.media.Sound;
-	import flash.utils.getQualifiedClassName;
-	import flash.net.URLRequest;
-	
-	/**
+import flash.media.Sound;
+import flash.net.URLRequest;
+import flash.utils.getQualifiedClassName;
+/**
 	 * Звуковой менеджер используется для взаимодействия со звуковыми сущностями.
 	 * 
 	 * @langversion ActionScript 3

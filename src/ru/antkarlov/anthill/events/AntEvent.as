@@ -1,8 +1,7 @@
 package ru.antkarlov.anthill.events
 {
-	import ru.antkarlov.anthill.signals.AntDeluxeSignal;
-	
-	/**
+import msignal.EventSignal;
+/**
 	 * Простая реализация всплывающего события.
 	 * 
 	 * @langversion ActionScript 3
@@ -29,7 +28,7 @@ package ru.antkarlov.anthill.events
 		protected var _bubbles:Boolean;
 		protected var _target:Object;
 		protected var _currentTarget:Object;
-		protected var _signal:AntDeluxeSignal;
+		protected var _signal:EventSignal
 		
 		//---------------------------------------
 		// CONSTRUCTOR
@@ -44,8 +43,8 @@ package ru.antkarlov.anthill.events
 		/**
 		 * @inheritDoc
 		 */
-		public function get signal():AntDeluxeSignal { return _signal; }
-		public function set signal(value:AntDeluxeSignal):void { _signal = value; }
+		public function get signal():EventSignal{ return _signal; }
+		public function set signal(value:EventSignal):void { _signal = value; }
 		
 		/**
 		 * @inheritDoc

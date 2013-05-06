@@ -1,13 +1,12 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
-	import flash.display.StageScaleMode;
-	import flash.display.StageAlign;
-	import flash.events.Event;
-	import flash.utils.getDefinitionByName;
-	
-	/**
+import flash.display.DisplayObject;
+import flash.display.MovieClip;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.utils.getDefinitionByName;
+/**
 	 * Базовый прелодаер для вашего приложения. 
 	 * 
 	 * <p>Чтобы реализовать свой анимированный прелоадер, унаследуйте от этого класса

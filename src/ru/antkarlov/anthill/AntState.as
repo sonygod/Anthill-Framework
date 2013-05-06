@@ -1,8 +1,7 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.Sprite;
-	
-	/**
+import flash.display.Sprite;
+/**
 	 * Базовый класс для игровых состояний. Все игровые состояния будь то игровое меню или
 	 * игровой процесс - следует наследовать от этого класса.
 	 * 

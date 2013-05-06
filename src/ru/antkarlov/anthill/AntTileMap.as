@@ -1,18 +1,17 @@
 package ru.antkarlov.anthill
 {
-	import ru.antkarlov.anthill.*;
-	import ru.antkarlov.anthill.signals.AntSignal;
-	import ru.antkarlov.anthill.debug.AntDrawer;
-	import ru.antkarlov.anthill.utils.AntColor;
-	
-	import flash.geom.Rectangle;
-	import flash.display.BitmapData;
-	import flash.display.MovieClip;
-	import flash.geom.Matrix;
-	import flash.display.Sprite;
-	import flash.utils.setTimeout;
-	
-	/**
+import flash.display.BitmapData;
+import flash.display.MovieClip;
+import flash.geom.Matrix;
+import flash.geom.Rectangle;
+import flash.utils.setTimeout;
+
+import msignal.Signal1;
+import msignal.Signal2;
+
+import ru.antkarlov.anthill.debug.AntDrawer;
+import ru.antkarlov.anthill.utils.AntColor;
+/**
 	 * Используется для создания и работы с тайловыми картами. Присуствует два режима работы с тайловыми картами:
 	 * растеризация графики и разрезание на тайлы из клипа и классические тайловые карты.
 	 * 
@@ -31,19 +30,19 @@ package ru.antkarlov.anthill
 		/**
 		 * Событие выполняющееся при запуске процесса кэширования.
 		 */
-		public var eventStart:AntSignal;
+		public var eventStart:Signal1;
 		
 		/**
 		 * Событие выполняющееся при каждом шаге кэширования.
 		 * <p>Внимание: В качестве атрибута в функцию передается 
 		 * процент выполненной работы: <code>function yourFunc(percent:int):void { trace(percent); }</code></p>
 		 */
-		public var eventProcess:AntSignal;
+		public var eventProcess:Signal2;
 		
 		/**
 		 * Событие выполняющееся при завершении процесса кэширования.
 		 */
-		public var eventComplete:AntSignal;
+		public var eventComplete:Signal1;
 		
 		/**
 		 * Список всех тайлов, используется для доступа к тайлам по индексу.
@@ -222,9 +221,9 @@ package ru.antkarlov.anthill
 		{
 			super();
 			
-			eventStart = new AntSignal(AntTileMap);
-			eventProcess = new AntSignal(AntTileMap, Number);
-			eventComplete = new AntSignal(AntTileMap);
+			eventStart = new Signal1(AntTileMap);
+			eventProcess = new Signal2(AntTileMap, Number);
+			eventComplete = new Signal1(AntTileMap);
 			tiles = [];
 			tileAxisOffset = new AntPoint();
 			numPerStep = 10;

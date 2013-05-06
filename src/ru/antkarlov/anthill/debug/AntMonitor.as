@@ -1,15 +1,10 @@
 package ru.antkarlov.anthill.debug
 {
-	import flash.text.AntiAliasType;
-	import flash.text.GridFitType;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	import flash.display.Sprite;
-	import flash.events.MouseEvent;
-	
-	import ru.antkarlov.anthill.*;
-	
-	/**
+import flash.display.Sprite;
+import flash.text.TextField;
+
+import ru.antkarlov.anthill.*;
+/**
 	 * Отладочный класс позволяющий мониторить какие-либо значения. Используется для слежения за 
 	 * происходящим внутри программы во время разработки.
 	 * 

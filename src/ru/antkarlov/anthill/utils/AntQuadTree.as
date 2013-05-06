@@ -1,9 +1,8 @@
 package ru.antkarlov.anthill.utils
 {
-	import ru.antkarlov.anthill.debug.AntDrawer;
-	import ru.antkarlov.anthill.*;
-	
-	/**
+import ru.antkarlov.anthill.*;
+import ru.antkarlov.anthill.debug.AntDrawer;
+/**
 	 * Древовидный список сущностей для быстрой обработки большого количества объектов.
 	 * 
 	 * @langversion ActionScript 3

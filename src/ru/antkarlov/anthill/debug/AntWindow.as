@@ -1,15 +1,14 @@
 package ru.antkarlov.anthill.debug
 {
-	import flash.display.Sprite;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	import flash.text.AntiAliasType;
-	import flash.text.GridFitType;
-	import flash.events.MouseEvent;
-	
-	import ru.antkarlov.anthill.AntG;
-	
-	/**
+import flash.display.Sprite;
+import flash.events.MouseEvent;
+import flash.text.AntiAliasType;
+import flash.text.GridFitType;
+import flash.text.TextField;
+import flash.text.TextFormat;
+
+import ru.antkarlov.anthill.AntG;
+/**
 	 * Базовый класс для отладчиков располагающихся в отдельных окнах. Данный класс 
 	 * включает в себя все эелементы окон и осуществляет их работу.
 	 * 

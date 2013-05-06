@@ -1,8 +1,7 @@
 package ru.antkarlov.anthill.plugins
 {
-	import ru.antkarlov.anthill.*;
-	
-	/**
+import ru.antkarlov.anthill.*;
+/**
 	 * Данный класс содержит статические методы для реализации сглаживаний.
 	 * Все эти методы используются классом AntTween.
 	 * 

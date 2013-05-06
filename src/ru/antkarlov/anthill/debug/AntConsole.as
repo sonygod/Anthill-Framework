@@ -1,23 +1,18 @@
 package ru.antkarlov.anthill.debug
 {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.Sprite;
-	import flash.text.AntiAliasType;
-	import flash.text.GridFitType;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	import flash.system.Capabilities;
-	import flash.system.System;
-	import flash.utils.*;
-	
-	import ru.antkarlov.anthill.*;
-	import flash.events.MouseEvent;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.text.TextFieldAutoSize;
-	
-	/**
+import flash.display.Sprite;
+import flash.events.KeyboardEvent;
+import flash.system.Capabilities;
+import flash.system.System;
+import flash.text.AntiAliasType;
+import flash.text.GridFitType;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
+import flash.utils.*;
+
+import ru.antkarlov.anthill.*;
+/**
 	 * Отладочная консоль позволяет выводить сообщений и предупреждения о работе игры
 	 * не зависимо от того в какой версии Flash Player запущена игра (Debugger или Release).
 	 * 

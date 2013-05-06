@@ -1,12 +1,10 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.Sprite;
-	import flash.geom.Rectangle;
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.geom.Point;
-
-	/**
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.display.Sprite;
+import flash.geom.Rectangle;
+/**
 	 * Реализует рендеринг всех визуальных сущностей.
 	 * 
 	 * <p>Чтобы реализовать перемещение камеры (скролл уровней), используйте атрибут <code>scroll</code>

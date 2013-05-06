@@ -1,11 +1,10 @@
 package ru.antkarlov.anthill.plugins
 {
-	import ru.antkarlov.anthill.*;
-	import ru.antkarlov.anthill.signals.AntSignal; 
-	import ru.antkarlov.anthill.events.AntEvent; 
-	import ru.antkarlov.anthill.utils.AntList;
-	
-	/**
+import msignal.Signal1;
+
+import ru.antkarlov.anthill.*;
+import ru.antkarlov.anthill.utils.AntList;
+/**
 	 * Менеджер задач используется для выполнения задач (вызова указанных методов) в заданном порядке.
 	 * 
 	 * <p>Позволяет легко и быстро программировать последовательность каких-либо действий. Менеджер 
@@ -64,7 +63,7 @@ package ru.antkarlov.anthill.plugins
 		 * }
 		 * </listing>
 		 */
-		public var eventComplete:AntSignal;
+		public var eventComplete:Signal1;
 		
 		//---------------------------------------
 		// PROTECTED VARIABLES
@@ -124,7 +123,7 @@ package ru.antkarlov.anthill.plugins
 			_cycle = aCycle;
 			_delay = 0;
 			
-			eventComplete = new AntSignal(AntTaskManager);
+			eventComplete = new Signal1(AntTaskManager);
 		}
 		
 		/**

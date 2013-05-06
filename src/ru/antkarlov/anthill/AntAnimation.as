@@ -1,14 +1,12 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.BitmapData;
-	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import flash.geom.Point;
-	import flash.geom.Matrix;
-	import flash.geom.Rectangle;
-	
-	
-	/**
+import flash.display.BitmapData;
+import flash.display.MovieClip;
+import flash.display.Sprite;
+import flash.geom.Matrix;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+/**
 	 * Данный класс используется для растеризации векторных клипов и для последующего их хранения в памяти.
 	 * 
 	 * <p>Воспроизведением и отрисовкой анимаций занимается класс <code>AntActor</code>. Так же в данном классе

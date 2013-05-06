@@ -1,9 +1,9 @@
 package ru.antkarlov.anthill.plugins
 {
-	import ru.antkarlov.anthill.*;
-	import ru.antkarlov.anthill.signals.AntSignal;
-	
-	/**
+import msignal.Signal1;
+
+import ru.antkarlov.anthill.*;
+/**
 	 * Класс реализации плавных трансформации каких-либо значений объектов. Класс использует различные
 	 * методы для реализации разнообразных анимационных стилей.
 	 * 
@@ -76,22 +76,22 @@ package ru.antkarlov.anthill.plugins
 		/**
 		 * Событие срабатывающее при запуске твина.
 		 */
-		public var eventStart:AntSignal;
+		public var eventStart:Signal1;
 		
 		/**
 		 * Событие срабатывающее каждый тик твина.
 		 */
-		public var eventUpdate:AntSignal;
+		public var eventUpdate:Signal1;
 		
 		/**
 		 * Событие срабатывающее каждый повтор твина.
 		 */
-		public var eventRepeat:AntSignal;
+		public var eventRepeat:Signal1;
 		
 		/**
 		 * Событие срабатывающее при завершении выполнения твина.
 		 */
-		public var eventComplete:AntSignal;
+		public var eventComplete:Signal1;
 		
 		/**
 		 * Пользовательские аргументы которые могут быть переданы в событие при запуске твина.
@@ -233,16 +233,16 @@ package ru.antkarlov.anthill.plugins
 				throw new ArgumentError("Transition must be either a string or a function");
 			}
 			
-			(eventStart == null) ? eventStart = new AntSignal() : eventStart.clear();
-			(eventUpdate == null) ? eventUpdate = new AntSignal() : eventUpdate.clear();
-			(eventRepeat == null) ? eventRepeat = new AntSignal() : eventRepeat.clear();
-			(eventComplete == null) ? eventComplete = new AntSignal() : eventComplete.clear();
+			(eventStart == null) ? eventStart = new Signal1() : eventStart.clear();
+			(eventUpdate == null) ? eventUpdate = new Signal1() : eventUpdate.clear();
+			(eventRepeat == null) ? eventRepeat = new Signal1() : eventRepeat.clear();
+			(eventComplete == null) ? eventComplete = new Signal1() : eventComplete.clear();
 			
 			// Отключение типизации для сигналов
-			eventStart.strict = false;
+			/*eventStart.strict = false;
 			eventUpdate.strict = false;
 			eventRepeat.strict = false;
-			eventComplete.strict = false;
+			eventComplete.strict = false;*/
 			
 			(_properties == null) ? _properties = new Vector.<String>() : _properties.length = 0;
 			(_startValues == null) ? _startValues = new Vector.<Number>() : _startValues.length = 0;
@@ -404,7 +404,11 @@ package ru.antkarlov.anthill.plugins
 			if (_currentCycle < 0 && previousTime <= 0 && _currentTime > 0)
 			{
 				_currentCycle++;
+                try{
 				eventStart.dispatch.apply(null, startArgs);
+                }catch(e){
+
+                }
 			}
 			
 			var ratio:Number = _currentTime / _totalTime;
@@ -431,9 +435,11 @@ package ru.antkarlov.anthill.plugins
 				
 				_target[_properties[i]] = currentValue;
 			}
-			
+            try{
 			eventUpdate.dispatch.apply(this, updateArgs);
-			
+            }catch(e){
+
+            }
 			if (previousTime < _totalTime && _currentTime >= _totalTime)
 			{
 				if (repeatCount == 0 || repeatCount > 1)
@@ -444,13 +450,20 @@ package ru.antkarlov.anthill.plugins
 					{
 						repeatCount--;
 					}
-					
+                    try{
 					eventRepeat.dispatch.apply(this, repeatArgs);
+                    }catch(e){
+
+                    }
 				}
 				else
 				{
 					stop();
+                    try{
 					eventComplete.dispatch.apply(this, completeArgs);
+                    }catch(e){
+
+                    }
 					if (autoStartOfNextTween && nextTween != null)
 					{
 						nextTween.start();

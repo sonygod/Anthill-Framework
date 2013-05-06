@@ -1,14 +1,14 @@
 package ru.antkarlov.anthill
 {
-	import flash.media.Sound;
-	import flash.media.SoundTransform;
-	import flash.media.SoundChannel;
-	import flash.events.Event;
-	
-	import ru.antkarlov.anthill.signals.AntSignal;
-	import ru.antkarlov.anthill.utils.AntRating;
-	
-	/**
+import flash.events.Event;
+import flash.media.Sound;
+import flash.media.SoundChannel;
+import flash.media.SoundTransform;
+
+import msignal.Signal1;
+
+import ru.antkarlov.anthill.utils.AntRating;
+/**
 	 * Сущность звука.
 	 * 
 	 * <p>Примечание: Напрямую работать со звуками не рекомендуется. 
@@ -45,7 +45,7 @@ package ru.antkarlov.anthill
 		/**
 		 * @private
 		 */
-		public var eventComplete:AntSignal;
+		public var eventComplete:Signal1;
 		
 		//---------------------------------------
 		// PROTECTED VARIABLES
@@ -149,7 +149,7 @@ package ru.antkarlov.anthill
 			name = aName;
 			parent = null;
 			listeners = null;
-			eventComplete = new AntSignal(AntSound);
+			eventComplete = new Signal1(AntSound);
 			
 			_sound = aSound;
 			_paused = false;

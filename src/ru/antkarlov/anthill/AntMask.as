@@ -1,12 +1,11 @@
 package ru.antkarlov.anthill
 {
-	import flash.display.BitmapData;
-	import flash.geom.Rectangle;
-	import flash.geom.Point;
-	
-	import ru.antkarlov.anthill.signals.AntSignal;
-	
-	/**
+import flash.display.BitmapData;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+
+import msignal.Signal1;
+/**
 	 * Анимированная маска которая может быть применена к любой сущности.
 	 * 
 	 * <p>Работа с маской очень похожа на работу с актером. Для маски подходят точно
@@ -117,7 +116,7 @@ package ru.antkarlov.anthill
 		 * Событие срабатывающее по окончанию проигрывания анимации.
 		 * Добавляемый метод должен иметь аргумент типа <code>function onComplete(actor:AntActor):void {}</code>
 		 */
-		public var eventComplete:AntSignal;
+		public var eventComplete:Signal1;
 		
 		//---------------------------------------
 		// PROTECTED VARIABLES
@@ -166,7 +165,7 @@ package ru.antkarlov.anthill
 			reverse = false;
 			repeat = true;
 			animationSpeed = 1;
-			eventComplete = new AntSignal(AntMask);
+			eventComplete = new Signal1(AntMask);
 			
 			_animations = new AntStorage();
 			_curAnim = null;
