@@ -4,6 +4,9 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.geom.Rectangle;
+
+import ru.antkarlov.anthill.AntCamera;
+import ru.antkarlov.anthill.AntCamera;
 /**
 	 * Реализует рендеринг всех визуальных сущностей.
 	 * 
@@ -176,7 +179,7 @@ import flash.geom.Rectangle;
 		 */
 		public function AntCamera(aX:Number, aY:Number, aWidth:int, aHeight:int, aZoom:int = 1)
 		{
-			//super()
+			super();
 			
 			x = aX;
 			y = aY;
@@ -250,7 +253,7 @@ import flash.geom.Rectangle;
 		 * @param	aTarget	 Цель за которой будет выполнятся слежение.
 		 * @param	aStyle	 Стиль слежения.
 		 */
-		public function follow(aTarget:AntEntity, aStyle:uint = STYLE_FREELY):void
+		public function follow(aTarget:AntEntity, aStyle:uint = AntCamera.STYLE_FREELY):void
 		{
 			target = aTarget;
 			followStyle = aStyle;
@@ -305,17 +308,17 @@ import flash.geom.Rectangle;
 			{
 				switch (followStyle)
 				{
-					case STYLE_FREELY :
-						_newPos.x = (scroll.x - (-target[positionPropertyX] + screenCenter.x - (target.velocity.x * AntG.elapsed) * leadingFactor)) * smoothFactor;
-						_newPos.y = (scroll.y - (-target[positionPropertyY] + screenCenter.y - (target.velocity.y * AntG.elapsed) * leadingFactor)) * smoothFactor;
+					case AntCamera.STYLE_FREELY :
+						_newPos.x = (scroll.x - (-target.globalX + screenCenter.x - (target.velocity.x * AntG.elapsed) * leadingFactor)) * smoothFactor;
+						_newPos.y = (scroll.y - (-target.globalY + screenCenter.y - (target.velocity.y * AntG.elapsed) * leadingFactor)) * smoothFactor;
 					break;
 					
-					case STYLE_HORIZONTAL :
-						_newPos.x = (scroll.x - (-target[positionPropertyX] + screenCenter.x - (target.velocity.x * AntG.elapsed) * leadingFactor)) * smoothFactor;
+					case AntCamera.STYLE_HORIZONTAL :
+						_newPos.x = (scroll.x - (-target.globalX+ screenCenter.x - (target.velocity.x * AntG.elapsed) * leadingFactor)) * smoothFactor;
 					break;
 					
-					case STYLE_VERTICAL :
-						_newPos.y = (scroll.y - (-target[positionPropertyY] + screenCenter.y - (target.velocity.y * AntG.elapsed) * leadingFactor)) * smoothFactor;
+					case AntCamera.STYLE_VERTICAL :
+						_newPos.y = (scroll.y - (-target.globalY + screenCenter.y - (target.velocity.y * AntG.elapsed) * leadingFactor)) * smoothFactor;
 					break;
 				}
 				

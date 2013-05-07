@@ -52,7 +52,7 @@ public class Anthill extends Sprite
 		/**
 		 * Класс игрового состояния которое будет создано при инициализации.
 		 */
-		protected var _initialState:Class;
+		protected var InitialState:Class;
 		
 		/**
 		 * Количество кадров в секунду при инициализации.
@@ -110,7 +110,7 @@ public class Anthill extends Sprite
 				Mouse.hide();
 			}
 			
-			_initialState = aInitialState;
+			InitialState = aInitialState;
 			_frameRate = aFrameRate;
 			_isCreated = false;
 			_isStarted = false;
@@ -149,9 +149,9 @@ public class Anthill extends Sprite
 			_perfomance.start();
 			
 			_isCreated = true;
-			if (_initialState != null)
+			if (InitialState != null)
 			{
-				switchState(new _initialState());
+				switchState(new InitialState());
 				start();
 			}
 		}

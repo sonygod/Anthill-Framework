@@ -92,7 +92,7 @@ import ru.antkarlov.anthill.*;
 		 */
 		public function lineTo(aX:int, aY:int, aColor:uint = 0):void
 		{			
-			drawLine(_lineFrom.x, _lineFrom.y, aX, aY, aColor);
+			drawLine(int(_lineFrom.x), int(_lineFrom.y), aX, aY, aColor);
 			_lineFrom.set(aX, aY);
 		}
 		
@@ -107,7 +107,7 @@ import ru.antkarlov.anthill.*;
 		{
 			if (buffer != null)
 			{
-				buffer.setPixel(aX, aY, aColor);
+				buffer.setPixel(int(aX), int(aY), aColor);
 			}
 		}
 		
@@ -134,7 +134,7 @@ import ru.antkarlov.anthill.*;
 			
 			var shortLen:int = aY2 - aY1;
 			var longLen:int = aX2 - aX1;
-            var yLonger:Boolean;
+            var yLonger:Boolean=false;
 			if ((shortLen ^ (shortLen >> 31)) - (shortLen >> 31) > (longLen ^ (longLen >> 31)) - (longLen >> 31))
 			{
 				shortLen ^= longLen;
@@ -155,14 +155,14 @@ import ru.antkarlov.anthill.*;
 			{
 				for (var i:int = 0; i != longLen; i += inc)
 				{
-					buffer.setPixel(aX1 + i * multDiff, aY1 + i, aColor);
+					buffer.setPixel(int(aX1 + i * multDiff), int(aY1 + i), aColor);
 				}
 			}
 			else
 			{
-				for (i = 0; i != longLen; i += inc)
+				for (var i2 = 0; i2 != longLen; i2 += inc)
 				{
-					buffer.setPixel(aX1 + i, aY1 + i * multDiff, aColor);
+					buffer.setPixel(int(aX1 + i2), int(aY1 + i2 * multDiff), aColor);
 				}
 			}
 		}
@@ -230,10 +230,10 @@ import ru.antkarlov.anthill.*;
 		 */
 		protected function plotCircle(aX:int, aY:int, cX:int, cY:int, aColor:uint):void
 		{
-			buffer.setPixel(cX + aX, cY + aY, aColor);
-			buffer.setPixel(cX + aX, cY - aY, aColor);
-			buffer.setPixel(cX - aX, cY + aY, aColor);
-			buffer.setPixel(cX - aX, cY - aY, aColor);
+			buffer.setPixel(int(cX + aX), int(cY + aY), aColor);
+			buffer.setPixel(int(cX + aX), int(cY - aY), aColor);
+			buffer.setPixel(int(cX - aX), int(cY + aY), aColor);
+			buffer.setPixel(int(cX - aX), int(cY - aY), aColor);
 		}
 		
 		/**

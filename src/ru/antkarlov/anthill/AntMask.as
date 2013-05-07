@@ -4,6 +4,7 @@ import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+
 import msignal.Signal1;
 /**
 	 * Анимированная маска которая может быть применена к любой сущности.
@@ -142,7 +143,7 @@ import msignal.Signal1;
 		 */
 		public function AntMask()
 		{
-			//super()
+			super()
 			
 			x = 0;
 			y = 0;
