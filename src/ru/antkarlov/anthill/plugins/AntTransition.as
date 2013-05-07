@@ -71,7 +71,7 @@ import ru.antkarlov.anthill.*;
 				registerDefaults();
 			}
 			
-			return _transitions.get(aName);
+			return _transitions.get(aName) as Function;
 		}
 		
 		/**

@@ -245,7 +245,7 @@ import msignal.Signal1;
 			
 			if (_animations.containsKey(aName))
 			{
-				_curAnim = _animations.get(aName);
+				_curAnim = _animations.get(aName) as AntAnimation;
 				_curAnimName = aName;
 				currentFrame = 1;
 				totalFrames = _curAnim.totalFrames;

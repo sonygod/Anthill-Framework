@@ -416,7 +416,7 @@ import msignal.Signal1;
 			
 			if (_animations.containsKey(aName))
 			{
-				_curAnim = _animations.get(aName);
+				_curAnim = _animations.get(aName) as AntAnimation;
 				_curAnimName = aName;
 				_prevFrame = -1;
 				resetHelpers();

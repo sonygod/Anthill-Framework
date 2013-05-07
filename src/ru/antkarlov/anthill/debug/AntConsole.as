@@ -455,14 +455,14 @@ import ru.antkarlov.anthill.*;
 						continue;
 					}
 					
-					desc = _descriptions.get(value);
+					desc = _descriptions.get(value) as String;
 					if (desc == null)
 					{
 						desc = "...";
 					}
 					
 					str = "";
-					valueClasses = _arguments.get(value);
+					valueClasses = _arguments.get(value) as Array;
 					if (valueClasses != null)
 					{
 						str = "[" + formatClasses(valueClasses).join("] [") + "] - ";
@@ -631,7 +631,7 @@ import ru.antkarlov.anthill.*;
 			}
 			
 			// Верефикация переданных аргументов с указанной командой.
-			var valueClasses:Array = _arguments.get(command);
+			var valueClasses:Array = _arguments.get(command) as Array;
 			var valueObject:Object;
 			var valueClass:Class;
 			

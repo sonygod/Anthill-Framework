@@ -1,7 +1,8 @@
 package ru.antkarlov.anthill
 {
-import flash.utils.Dictionary;
-/**
+	import flash.utils.Dictionary;
+	
+	/**
 	 * Хранилище позволяет хранить любые данные под понятными для нас 
 	 * текстовыми именами. Пример добавления и извлечения данных:
 	 * <code>var o:SomeObject = new SomeObject();

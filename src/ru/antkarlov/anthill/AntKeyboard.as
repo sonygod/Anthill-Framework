@@ -398,11 +398,8 @@ import flash.utils.*;
 		public function keyDownHandler(event:KeyboardEvent):void
 		{
 			var o:Object = _map[event.keyCode];
-			if (o == null)
-			{
-				return
-			}
-			
+			if (o == null)return;
+
 			o.current = (o.current > 0) ? 1 : 2;
 			this[o.name] = true;
 			

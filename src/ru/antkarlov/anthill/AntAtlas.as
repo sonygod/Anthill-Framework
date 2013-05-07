@@ -138,7 +138,7 @@ import flash.geom.Rectangle;
 		 */
 		public function getBitmap(aName:String):BitmapData
 		{
-			var region:Rectangle = _atlasRegions.get(aName);
+			var region:Rectangle = _atlasRegions.get(aName) as Rectangle;
 			if (region == null)
 			{
 				return null;
@@ -218,7 +218,7 @@ import flash.geom.Rectangle;
 		 */
 		public function getRegion(aName:String):Rectangle
 		{
-			return _atlasRegions.get(aName);
+			return _atlasRegions.get(aName) as Rectangle;
 		}
 				
 		/**

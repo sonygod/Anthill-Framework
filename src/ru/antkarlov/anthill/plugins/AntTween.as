@@ -406,7 +406,7 @@ import ru.antkarlov.anthill.*;
 				_currentCycle++;
                 try{
 				eventStart.dispatch.apply(null, startArgs);
-                }catch(e){
+                }catch(e:*){
 
                 }
 			}
@@ -437,7 +437,7 @@ import ru.antkarlov.anthill.*;
 			}
             try{
 			eventUpdate.dispatch.apply(this, updateArgs);
-            }catch(e){
+            }catch(e:*){
 
             }
 			if (previousTime < _totalTime && _currentTime >= _totalTime)
@@ -452,7 +452,7 @@ import ru.antkarlov.anthill.*;
 					}
                     try{
 					eventRepeat.dispatch.apply(this, repeatArgs);
-                    }catch(e){
+                    }catch(e:*){
 
                     }
 				}
@@ -461,7 +461,7 @@ import ru.antkarlov.anthill.*;
 					stop();
                     try{
 					eventComplete.dispatch.apply(this, completeArgs);
-                    }catch(e){
+                    }catch(e:*){
 
                     }
 					if (autoStartOfNextTween && nextTween != null)

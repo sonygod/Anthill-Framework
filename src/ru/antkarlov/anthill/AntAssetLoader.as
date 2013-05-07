@@ -377,7 +377,7 @@ import msignal.Signal2;
 					break;
 					
 					case DATA_ATLAS_GRAPHIC :
-						atlas = _atlasStorage.get(data.atlasKey);
+						atlas = _atlasStorage.get(data.atlasKey) as AntAtlas;
 						if (atlas != null)
 						{
 							anim = atlas.makeAnimation(data.framePrefix, aKey, data.originX, data.originY);
