@@ -40,7 +40,7 @@ import flash.events.Event;
 		 */
 		public function AntPreloader()
 		{
-			super();
+			//super()
 			
 			stop();
 			stage.scaleMode = StageScaleMode.NO_SCALE;

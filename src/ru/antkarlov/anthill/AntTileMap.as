@@ -219,7 +219,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 		 */
 		public function AntTileMap()
 		{
-			super();
+			super()
 			
 			eventStart = new Signal1(AntTileMap);
 			eventProcess = new Signal2(AntTileMap, Number);

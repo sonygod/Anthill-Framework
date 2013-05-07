@@ -190,7 +190,7 @@ import msignal.Signal1;
 			_flashPointZero = new Point();
 			_matrix = new Matrix();
 			
-			super();
+			super()
 		}
 		
 		/**

@@ -11,7 +11,7 @@ import flash.net.SharedObjectFlushStatus;
 	 * @author Антон Карлов
 	 * @since  23.08.2012
 	 */
-	public class AntCookie extends Object
+	public class AntCookie
 	{
 		//---------------------------------------
 		// PUBLIC VARIABLES
@@ -45,7 +45,7 @@ import flash.net.SharedObjectFlushStatus;
 		 */
 		public function AntCookie()
 		{
-			super();
+			//super()
 			
 			name = null;
 			_share = null;

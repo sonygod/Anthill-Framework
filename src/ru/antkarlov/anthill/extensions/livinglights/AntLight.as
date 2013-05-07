@@ -134,7 +134,7 @@ import ru.antkarlov.anthill.*;
 		 */
 		public function AntLight()
 		{
-			super();
+			super()
 			
 			blend = "overlay";
 			live = true;

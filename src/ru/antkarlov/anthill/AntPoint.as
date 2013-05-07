@@ -9,7 +9,7 @@ package ru.antkarlov.anthill
 	 * @author Anton Karlov
 	 * @since  30.08.2012
 	 */
-	public class AntPoint extends Object
+	public class AntPoint
 	{
 		//---------------------------------------
 		// PUBLIC VARIABLES
@@ -36,7 +36,7 @@ package ru.antkarlov.anthill
 		 */
 		public function AntPoint(aX:Number = 0, aY:Number = 0)
 		{
-			super();
+			//super()
 			
 			x = aX;
 			y = aY;

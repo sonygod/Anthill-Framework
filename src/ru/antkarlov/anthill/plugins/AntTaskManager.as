@@ -114,7 +114,7 @@ import ru.antkarlov.anthill.utils.AntList;
 		 */
 		public function AntTaskManager(aCycle:Boolean = false)
 		{
-			super();
+			//super()
 			
 			_task = null;
 			_isStarted = false;

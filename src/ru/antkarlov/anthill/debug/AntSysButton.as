@@ -112,7 +112,7 @@ import flash.geom.Rectangle;
 		 */
 		public function AntSysButton(aKind:uint = 0)
 		{
-			super();
+			//super()
 			
 			_classes = [ ImgClose, ImgConsole, ImgPerfomance, 
 				ImgMonitor, ImgSoundOn, ImgSoundOff, ImgMusicOn, ImgMusicOff, ImgDebugDrawOn,

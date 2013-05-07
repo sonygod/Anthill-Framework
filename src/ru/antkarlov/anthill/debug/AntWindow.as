@@ -94,7 +94,7 @@ import ru.antkarlov.anthill.AntG;
 		 */
 		public function AntWindow(aParent:Sprite, aX:Number, aY:Number, aWidth:Number, aHeight:Number)
 		{
-			super();
+			//super()
 			
 			x = aX;
 			y = aY;

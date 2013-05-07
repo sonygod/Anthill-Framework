@@ -42,7 +42,7 @@ import flash.display.Sprite;
 		 */
 		public function AntState()
 		{
-			super();
+			//super()
 			
 			defGroup = new AntEntity();
 			add = defGroup.add;

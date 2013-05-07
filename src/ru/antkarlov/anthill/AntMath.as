@@ -9,7 +9,7 @@ package ru.antkarlov.anthill
 	 * @author Антон Карлов
 	 * @since  18.05.2011
 	 */
-	public class AntMath extends Object
+	public class AntMath
 	{
 		/**
 		 * @private

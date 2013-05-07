@@ -61,7 +61,7 @@ import ru.antkarlov.anthill.*;
 		 */
 		public function AntDebugger()
 		{
-			super();
+			//super()
 			
 			console = new AntConsole(this, 10, 24);
 			perfomance = new AntPerfomance(this, 180, 224);

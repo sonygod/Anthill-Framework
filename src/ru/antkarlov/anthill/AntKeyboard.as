@@ -11,7 +11,7 @@ import flash.utils.*;
 	 * @author Антон Карлов
 	 * @since  19.05.2011
 	 */
-	public class AntKeyboard extends Object
+	public class AntKeyboard
 	{
 		//---------------------------------------
 		// PUBLIC VARIABLES
@@ -157,7 +157,7 @@ import flash.utils.*;
 		 */
 		public function AntKeyboard()
 		{
-			super();
+			//super()
 			
 			_keys = {};
 			_map = new Array(256);

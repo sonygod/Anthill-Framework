@@ -9,7 +9,7 @@ package ru.antkarlov.anthill.utils
 	 * @author Антон Карлов
 	 * @since  05.02.2013
 	 */
-	public class AntFormat extends Object
+	public class AntFormat
 	{
 		
 		/**

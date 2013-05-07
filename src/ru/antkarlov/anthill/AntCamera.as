@@ -176,7 +176,7 @@ import flash.geom.Rectangle;
 		 */
 		public function AntCamera(aX:Number, aY:Number, aWidth:int, aHeight:int, aZoom:int = 1)
 		{
-			super();
+			//super()
 			
 			x = aX;
 			y = aY;

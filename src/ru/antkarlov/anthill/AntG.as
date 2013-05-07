@@ -16,7 +16,7 @@ import ru.antkarlov.anthill.plugins.IPlugin;
 	 * @author Антон Карлов
 	 * @since  22.08.2012
 	 */
-	public class AntG extends Object
+	public class AntG
 	{
 		//---------------------------------------
 		// CLASS CONSTANTS

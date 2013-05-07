@@ -28,7 +28,7 @@ import ru.antkarlov.anthill.AntG;
 	 * @author Anton Karlov
 	 * @since  27.12.2011
 	 */
-	public class AntMemory extends Object
+	public class AntMemory
 	{
 		//---------------------------------------
 		// PROTECTED VARIABLES

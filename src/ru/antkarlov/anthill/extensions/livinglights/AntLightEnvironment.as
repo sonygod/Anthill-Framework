@@ -67,7 +67,7 @@ import ru.antkarlov.anthill.*;
 		 */
 		public function AntLightEnvironment()
 		{
-			super();
+			super()
 						
 			transparentColor = 0xffff00ff;
 

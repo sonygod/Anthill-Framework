@@ -12,7 +12,7 @@ import flash.net.URLRequest;
 	 * @author Антон Карлов
 	 * @since  05.09.2012
 	 */
-	public class AntSoundManager extends Object
+	public class AntSoundManager
 	{
 		//---------------------------------------
 		// PUBLIC VARIABLES
@@ -81,7 +81,7 @@ import flash.net.URLRequest;
 		 */
 		public function AntSoundManager()
 		{
-			super();
+			//super()
 			
 			listeners = [];
 			radius = 500;

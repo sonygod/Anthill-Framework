@@ -27,7 +27,7 @@ import flash.geom.Rectangle;
 	 * @author Антон Карлов
 	 * @since  29.01.2013
 	 */
-	public class AntAtlas extends Object
+	public class AntAtlas
 	{
 		//---------------------------------------
 		// CLASS CONSTANTS
@@ -67,7 +67,7 @@ import flash.geom.Rectangle;
 		 */
 		public function AntAtlas(aGraphic:Class, aAtlasXML:XML = null)
 		{
-			super();
+			//super()
 			scale = 1;
 			
 			_atlasBitmapData = (new aGraphic).bitmapData;

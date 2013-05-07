@@ -102,7 +102,7 @@ public class Anthill extends Sprite
 		public function Anthill(aInitialState:Class = null, aFrameRate:uint = 35, 
 			aUseSystemCursor:Boolean = true)
 		{
-			super();
+			//super()
 			
 			_useSystemCursor = aUseSystemCursor;
 			if (!_useSystemCursor)

@@ -292,7 +292,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 		 */
 		public function AntEntity()
 		{
-			super();
+			//super()
 			
 			parent = null;
 			children = null;
@@ -441,8 +441,8 @@ import ru.antkarlov.anthill.utils.AntColor;
 
 			if (parent == null)
 			{
-				globalX = x /*+ axis.x*/;
-				globalY = y /*+ axis.y*/;
+				globalX = x /*+ axis.x*/
+				globalY = y /*+ axis.y*/
 				globalAngle = angle;
 			}
 			
@@ -552,14 +552,14 @@ import ru.antkarlov.anthill.utils.AntColor;
 			
 			if (parent != null)
 			{
-				globalX = parent.globalX + x /*+ axis.x*/;
-				globalY = parent.globalY + y /*+ axis.y*/;
+				globalX = parent.globalX + x /*+ axis.x*/
+				globalY = parent.globalY + y /*+ axis.y*/
 				globalAngle = parent.globalAngle + angle;
 			}
 			else
 			{
-				globalX = x /*+ axis.x*/;
-				globalY = y /*+ axis.y*/;
+				globalX = x /*+ axis.x*/
+				globalY = y /*+ axis.y*/
 				globalAngle = angle;
 			}
 			

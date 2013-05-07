@@ -9,7 +9,7 @@ package ru.antkarlov.anthill.utils
 	 * @author Антон Карлов
 	 * @since  20.08.2012
 	 */
-	public class AntList extends Object
+	public class AntList
 	{
 		//---------------------------------------
 		// PUBLIC VARIABLES
@@ -38,7 +38,7 @@ package ru.antkarlov.anthill.utils
 		 */
 		public function AntList(aData:Object, aNext:AntList = null)
 		{
-			super();
+			//super()
 			data = aData;
 			next = aNext;
 		}

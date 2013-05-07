@@ -44,7 +44,7 @@ import msignal.Signal2;
 	 * @author Антон Карлов
 	 * @since  07.02.2013
 	 */
-	public class AntAssetLoader extends Object
+	public class AntAssetLoader
 	{
 		//---------------------------------------
 		// CLASS CONSTANTS
@@ -102,7 +102,7 @@ import msignal.Signal2;
 		 */
 		public function AntAssetLoader()
 		{
-			super();
+			//super()
 			
 			_contentStorage = new AntStorage();
 			_atlasStorage = new AntStorage();

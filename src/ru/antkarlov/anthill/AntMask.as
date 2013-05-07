@@ -142,7 +142,7 @@ import msignal.Signal1;
 		 */
 		public function AntMask()
 		{
-			super();
+			//super()
 			
 			x = 0;
 			y = 0;

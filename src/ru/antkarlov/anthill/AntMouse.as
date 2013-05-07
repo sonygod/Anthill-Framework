@@ -112,7 +112,7 @@ import msignal.Signal0;
 		 */
 		public function AntMouse()
 		{
-			super();
+			//super()
 			
 			_cursorOffset = new AntPoint();
 			_globalScreenPos = new AntPoint();

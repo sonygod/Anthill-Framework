@@ -144,7 +144,7 @@ import ru.antkarlov.anthill.utils.AntRating;
 		 */
 		public function AntSound(aName:String, aSound:Sound)
 		{
-			super();
+			//super()
 			
 			name = aName;
 			parent = null;

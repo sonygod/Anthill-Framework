@@ -10,7 +10,7 @@ package ru.antkarlov.anthill.utils
 	 * @author Anton Karlov
 	 * @since  23.11.2011
 	 */
-	public class AntRating extends Object
+	public class AntRating
 	{
 
 		//---------------------------------------
@@ -41,7 +41,7 @@ package ru.antkarlov.anthill.utils
 		 */
 		public function AntRating(aSize:uint, aDefault:Number = 0)
 		{
-			super();
+			//super()
 			
 			_size = (aSize <= 0) ? 1 : aSize;
 			_ind = 0;

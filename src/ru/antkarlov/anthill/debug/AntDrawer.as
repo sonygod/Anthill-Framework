@@ -12,7 +12,7 @@ import ru.antkarlov.anthill.*;
 	 * @author Антон Карлов
 	 * @since  11.09.2012
 	 */
-	public class AntDrawer extends Object
+	public class AntDrawer
 	{
 		//---------------------------------------
 		// PUBLIC VARIABLES
@@ -54,7 +54,7 @@ import ru.antkarlov.anthill.*;
 		 */
 		public function AntDrawer()
 		{
-			super();
+			//super()
 			
 			showAxis = true;
 			showBorders = true;
@@ -134,14 +134,14 @@ import ru.antkarlov.anthill.*;
 			
 			var shortLen:int = aY2 - aY1;
 			var longLen:int = aX2 - aX1;
-
+            var yLonger:Boolean;
 			if ((shortLen ^ (shortLen >> 31)) - (shortLen >> 31) > (longLen ^ (longLen >> 31)) - (longLen >> 31))
 			{
 				shortLen ^= longLen;
 				longLen ^= shortLen;
 				shortLen ^= longLen;
 
-				var yLonger:Boolean = true;
+				 yLonger = true;
 			}
 			else
 			{

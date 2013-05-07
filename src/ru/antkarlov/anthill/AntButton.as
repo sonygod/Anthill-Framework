@@ -263,7 +263,7 @@ import msignal.Signal1;
 			_flashPointZero = new Point();
 			_matrix = new Matrix();
 			
-			super();
+			super()
 			
 			eventDown = new Signal1(AntButton);
 			eventOver = new Signal1(AntButton);

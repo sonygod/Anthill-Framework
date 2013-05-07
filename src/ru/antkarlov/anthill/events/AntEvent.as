@@ -35,7 +35,7 @@ import msignal.EventSignal;
 		//---------------------------------------
 		public function AntEvent(aBubbles:Boolean = false, aUserData:Object = null)
 		{
-			super();
+			//super()
 			_bubbles = aBubbles;
 			userData = aUserData;
 		}

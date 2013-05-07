@@ -9,7 +9,7 @@ package ru.antkarlov.anthill
 	 * @author Антон Карлов
 	 * @since  26.08.2012
 	 */
-	public class AntBasic extends Object
+	public class AntBasic
 	{
 		//---------------------------------------
 		// PUBLIC VARIABLES
@@ -97,7 +97,7 @@ package ru.antkarlov.anthill
 		 */
 		public function AntBasic()
 		{
-			super();
+			//super()
 			
 			tag = -1;
 			userData = null;

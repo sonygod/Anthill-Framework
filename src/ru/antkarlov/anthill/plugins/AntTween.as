@@ -188,7 +188,7 @@ import ru.antkarlov.anthill.*;
 		 */
 		public function AntTween(aTarget:Object, aTime:Number, aTransition:Object = "linear")
 		{
-			super();
+			//super()
 			_isStarted = false;
 			autoStartOfNextTween = true;
 			reset(aTarget, aTime, aTransition);

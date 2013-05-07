@@ -23,7 +23,7 @@ import flash.geom.Rectangle;
 	 * @author Антон Карлов
 	 * @since  20.08.2012
 	 */
-	public class AntAnimation extends Object
+	public class AntAnimation
 	{
 		//---------------------------------------
 		// CLASS CONSTANTS
@@ -80,7 +80,7 @@ import flash.geom.Rectangle;
 		 */
 		public function AntAnimation(aName:String = "noname")
 		{
-			super();
+			//super()
 			
 			name = aName;
 			frames = new Vector.<BitmapData>();

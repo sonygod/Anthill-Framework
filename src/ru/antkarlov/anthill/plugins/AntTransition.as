@@ -16,7 +16,7 @@ import ru.antkarlov.anthill.*;
 	 * @author Антон Карлов
 	 * @since  26.01.2013
 	 */
-	public class AntTransition extends Object
+	public class AntTransition
 	{
 		//---------------------------------------
 		// CLASS CONSTANTS
@@ -50,7 +50,7 @@ import ru.antkarlov.anthill.*;
 		 */
 		public function AntTransition()
 		{
-			super();
+			//super()
 			throw new Error();
 		}
 		

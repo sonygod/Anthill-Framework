@@ -131,7 +131,7 @@ import flash.text.TextFormatAlign;
 		 */
 		public function AntLabel(aFontName:String, aFontSize:int = 8, aColor:uint = 0xFFFFFF, aEmbedFont:Boolean = true)
 		{
-			super();
+			super()
 			
 			blend = null;
 			smoothing = true;
