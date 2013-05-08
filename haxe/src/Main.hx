@@ -30,9 +30,9 @@ class Main
 		
 		
 		
-		 new AnthillExamples();
+		 
 		
-		
+		stage.addChild(new AnthillExamples());
 		
 	}
 	

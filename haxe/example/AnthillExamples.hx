@@ -29,6 +29,7 @@ class AnthillExamples extends MovieClip {
 	 */
 	public function new() {
 		super();
+		trace("fuck!");
 		((stage == null)) ? addEventListener(Event.ADDED_TO_STAGE, initialize) : initialize(null);
 	}
 
@@ -44,7 +45,7 @@ class AnthillExamples extends MovieClip {
 
 	public function startNow() : Void {
 		trace("AnthillExamples::initialize()");
-		_examples = [TestMask, TestTween, TestAntActor, TestTaskManager, TestUI,  TestTileMap];
+		_examples = [  TestTileMap];
 		_curTest = 0;
 		var engine : Anthill = new Anthill(_examples[_curTest], 60);
 		addChild(engine);
@@ -60,7 +61,7 @@ class AnthillExamples extends MovieClip {
 			if(_curTest < 0)  {
 				_curTest = _examples.length - 1;
 			}
-			AntG.switchState(_examples[_curTest]);
+			AntG.switchState(cast _examples[_curTest]);
 		}
 
 		else if(AntG.keys.isPressed("RIGHT"))  {
@@ -68,7 +69,7 @@ class AnthillExamples extends MovieClip {
 			if(_curTest >= _examples.length)  {
 				_curTest = 0;
 			}
-			AntG.switchState(_examples[_curTest]);
+			AntG.switchState(cast _examples[_curTest]);
 		}
 	}
 
