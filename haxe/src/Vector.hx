@@ -131,7 +131,7 @@ private typedef VectorData<T> = Array<T>;
 	
 	public function toString():String {
 		
-		return Std.string(this)();
+		return this.toString();
 		
 	}
 	
@@ -190,13 +190,13 @@ private typedef VectorData<T> = Array<T>;
 	
 	@:from static public inline function fromArray<T, U>(a:Array<U>):Vector<T> {
 		
-		#if flash
+        #if flash
 		return cast flash.Vector.ofArray (a);
 		#else
 		return cast a;
 		#end
 		
-	}
+    }
 	
 	
 	#if !flash
@@ -204,7 +204,7 @@ private typedef VectorData<T> = Array<T>;
 		
 		return this;
 		
-	}
+    }
 	#end
 	
 	
@@ -263,29 +263,29 @@ private class VectorIter<T> {
 	
 	
 	private var index:Int;
-	private var vector:flash.Vector<T>;
+    private var vector:flash.Vector<T>;
 	
 	
-	public function new(vector:flash.Vector<T>) {
+    public function new(vector:flash.Vector<T>) {
 		
 		index = 0;
-		this.vector = vector;
+        this.vector = vector;
 		
-	}
+    }
 	
 	
-	public function hasNext() {
+    public function hasNext() {
 		
-		return (index < vector.length - 1);
+        return (index < vector.length - 1);
 		
-	}
+    }
 	
 	
-	public function next() {
+    public function next() {
 		
-		return vector[index++];
+        return vector[index++];
 		
-	}
+    }
 	
 	
 }

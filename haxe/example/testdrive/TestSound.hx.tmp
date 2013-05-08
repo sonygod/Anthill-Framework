@@ -1,0 +1,298 @@
+/**
+ * Демонстрация работы со звуком.
+ * 
+ * @langversion ActionScript 3
+ * @playerversion Flash 9.0.0
+ * 
+ * @author Антон Карлов
+ * @since  07.09.2012
+ */
+package testdrive;
+
+import ru.antkarlov.anthill.*;
+import ru.antkarlov.anthill.utils.AntColor;
+
+class TestSound extends AntState {
+
+	var _listener : AntActor;
+	var _musicSample : AntActor;
+	var _isDragSource : Bool;
+	var _isDragListener : Bool;
+	var _offset : AntPoint;
+	var _mousePos : AntPoint;
+	var _targetPoint : AntPoint;
+	var _isStarted : Bool;
+	/**
+	 * @constructor
+	 */
+	public function new() {
+		_isDragSource = false;
+		_isDragListener = false;
+		_offset = new AntPoint();
+		_mousePos = new AntPoint();
+		_targetPoint = new AntPoint();
+		_isStarted = false;
+		super();
+	}
+
+	/**
+	 * @private
+	 */
+	override public function create() : Void {
+		/*	AntG.debugger.show();
+		AntG.debugger.console.hide();
+		AntG.debugger.monitor.show();
+		AntG.debugger.perfomance.hide();
+		AntG.debugger.monitor.clear();*/
+		// Добавляем классы клипов которые необходимо растеризировать.
+		var loader : AntAssetLoader = new AntAssetLoader();
+		// Устанавливаем количество обрабатываемых клипов за один шаг.
+		loader.countPerStep = 1;
+		/*
+		Внимание: в рамках этого примера, если countPerStep установить равным количеству 
+		добавляемых клипов или больше, то клипы будут обработаны за один шаг. Таким образом
+		метод onCacheComplete будет вызван до того как завершится выполнение текущего метода,
+		и в onCacheComplete мы не сможем обратится к камере поскольку она еще не будет создана.
+		*/
+		var arr : Vector<Class<Dynamic>> = new Vector<Class<Dynamic>>();
+		arr.push(ButtonGray_mc, SoundListener_mc, SoundSource_mc);
+		loader.addClips(arr);
+		// Добавляем обработчик для завершения процесса растеризации.
+		loader.eventComplete.add(onCacheComplete);
+		// Запускаем процесс растеризации клипов.
+		loader.start();
+		super.create();
+	}
+
+	/**
+	 * Обработчик события завершения растеризации.
+	 */
+	function onCacheComplete(aLoader : AntAssetLoader) : Void {
+		aLoader.destroy();
+		// Фон камеры.
+		AntG.getCamera().backgroundColor = 0xFFCCCCCC;
+		/* Если при добавлении звуков из файлов все звуки находятся в одной папке или на сайте,
+		то можно указать путь отдельно чтобы не указывать его каждый раз при добавлении файла. */
+		AntG.sounds.baseURL = "sounds/";
+		// Добавление звука в менеджер звуков из файла.
+		//AntG.sounds.addStream("sample.mp3", "MusicSample_snd");
+		/* Если базовый путь не указан и звуки лежат не в той же папке что и флешка, то еследует
+		кроме имени файла указывать и путь: */
+		// AntG.sounds.addStream("sounds/sample.m3", "MusicSample_snd");
+		/* Добавление звука из ресурсов который может находится в *.fla или *.swc. */
+		AntG.sounds.addEmbedded(Fire_snd, "fire");
+		AntG.sounds.addEmbedded(MusicSample_snd);
+		// Создаем слушателя звуков для которого будет рассчитываться стерео эффект, слушателем
+		// може быть любая сущность.
+		_listener = new AntActor();
+		_listener.addAnimationFromCache("SoundListener_mc");
+		_listener.x = AntG.widthHalf;
+		_listener.y = AntG.heightHalf;
+		_listener.play();
+		add(_listener);
+		/*
+		Примечание: Если звуковой менеджер не имеет ни одного слушателя, то слушателями по 
+		умолчанию являются центры камер. 
+		*/
+		// Добавляем сущность как слушателя звуков в звуковой менджер.
+		AntG.sounds.addListener(_listener);
+		// Создаем визуальный образ для источника звука.
+		_musicSample = new AntActor();
+		_musicSample.addAnimationFromCache("SoundSource_mc");
+		_musicSample.moves = true;
+		_musicSample.x = AntMath.randomRangeInt(0, 640);
+		_musicSample.y = AntMath.randomRangeInt(0, 480);
+		_musicSample.play();
+		add(_musicSample);
+		// Воспроизводим музыку.
+		AntG.sounds.play("MusicSample_snd", _musicSample, true, 999);
+		// Случайная точка куда должен перемещатся наш источник звука.
+		_targetPoint.set(AntMath.randomRangeInt(0, 640), AntMath.randomRangeInt(0, 480));
+		_isStarted = true;
+		var labelInfo : AntLabel = new AntLabel("system");
+		labelInfo.x = 15;
+		labelInfo.y = 15;
+		labelInfo.beginChange();
+		labelInfo.text = "Demonstration of AntSoundManager and AntSound.
+Previous / next demo: LEFT / RIGHT.
+
+" + "You can drag the units and just click anywhere...
+" + "Orange - sound listener, Green - sound source.";
+		labelInfo.highlightText("Manager", AntColor.RED);
+		labelInfo.highlightText("AntSound", AntColor.RED);
+		labelInfo.highlightText("LEFT", AntColor.LIME);
+		labelInfo.highlightText("RIGHT", AntColor.LIME);
+		labelInfo.highlightText("Orange", 0xFF9900);
+		labelInfo.highlightText("Green", 0x8FBA2C);
+		labelInfo.setStroke();
+		labelInfo.endChange();
+		add(labelInfo);
+	}
+
+	/**
+	 * Создает эффект и звук выстрела в указанной точке.
+	 */
+	function makeShot(aX : Int, aY : Int) : Void {
+		// Переиспользуем уже существующий эффект.
+		var actor : AntActor = try cast(defGroup.recycle(AntActor), AntActor) catch(e:Dynamic) null;
+		if(!actor.exists)  {
+			// Если старый эффект, воскрешаем его.
+			actor.revive();
+		}
+
+		else  {
+			// Иначе инициализируем новый эффект
+			actor.addAnimationFromCache("SoundSource_mc");
+			actor.animationSpeed = 0.5;
+			actor.play();
+		}
+
+		// Воспроизводим звук выстрела и записываем указатель на звук в актера.
+		actor.userData = AntG.sounds.play("fire", actor);
+		/*
+		Внимание: Если звук выключен, то метод play() вернет null. 
+		*/
+		// Добавляем обработчик события на завершение проигрывание звука чтобы удалить актера.
+		if(actor.userData != null && Std.is(actor.userData, AntSound))  {
+			(try cast(actor.userData, AntSound) catch(e:Dynamic) null).eventComplete.add(onFireComplete);
+		}
+		AntG.track(actor.userData);
+		// Устанавливаем новое положение актеру.
+		actor.reset(aX, aY, AntMath.angleDeg(aX, aY, _listener.x, _listener.y));
+	}
+
+	/**
+	 * Обработчик завершения проигрывания звука убивающий актера.
+	 */
+	function onFireComplete(aSound : AntSound) : Void {
+		var actor : AntActor;
+		// Перебераем всех актеров.
+		var i : Int = 0;
+		while(i < defGroup.numChildren) {
+			actor = try cast(defGroup.children[i], AntActor) catch(e:Dynamic) null;
+			// Находим актера который содержит указатель на звук который закончил проигрывание.
+			if(actor != null && actor.exists && actor.userData == aSound)  {
+				// Очищаем соыбтия, обнуляем указатель на звук и убиваем актера.
+				(try cast(actor.userData, AntSound) catch(e:Dynamic) null).eventComplete.clear();
+				actor.userData = null;
+				actor.kill();
+				return;
+			}
+			i++;
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	override public function update() : Void {
+		if(_isStarted)  {
+			moveMusicSource();
+			dragAndDrop();
+		}
+		super.update();
+	}
+
+	/**
+	 * Реализация перетаскивания музыкального источника и слушателя.
+	 */
+	function dragAndDrop() : Void {
+		// Получаем координаты мыши в игровом мире.
+		AntG.mouse.getWorldPosition(null, _mousePos);
+		// Если кнопка мыши была нажата, то...
+		if(AntG.mouse.isPressed())  {
+			// Проверяем попадает ли точка клика в музыкальный источник...
+			if(_musicSample.hitTestPoStd.int(_mousePos))  {
+				/* Если попали, отключаем движение, включаем флаг перетаскивания и 
+				запоминаем смещение мышки относительно источника. */
+				_musicSample.moves = false;
+				_isDragSource = true;
+				_offset.set(_musicSample.x - _mousePos.x, _musicSample.y - _mousePos.y);
+			}
+
+			else if(_listener.hitTestPoStd.int(_mousePos))  {
+				/* Если попали, включаем флаг перетаскивания и запоминаем смещение мышки
+				относительно слушателя. */
+				_isDragListener = true;
+				_offset.set(_listener.x - _mousePos.x, _listener.y - _mousePos.y);
+			}
+
+			else  {
+				// Иначе просто создаем эффект выстрела в месте клика.
+				makeShot(_mousePos.x, _mousePos.y);
+			}
+
+		}
+		if(_isDragSource)  {
+			_musicSample.x = _mousePos.x + _offset.x;
+			_musicSample.y = _mousePos.y + _offset.y;
+		}
+		if(_isDragListener)  {
+			_listener.x = _mousePos.x + _offset.x;
+			_listener.y = _mousePos.y + _offset.y;
+		}
+		if(AntG.mouse.isReleased())  {
+			/* Включаем движение источника звука и сбрасываем все флаги перетаскивания. */
+			_musicSample.moves = true;
+			_isDragSource = false;
+			_isDragListener = false;
+		}
+	}
+
+	/**
+	 * Обработка хаотичного движения музыкального источника звука.
+	 */
+	function moveMusicSource() : Void {
+		var ang : Float = AntMath.angleDeg(_musicSample.x, _musicSample.y, _targetPoint.x, _targetPoint.y);
+		var offsetAng : Float = _musicSample.angle - ang;
+		// Нормализируем угол.
+		if(offsetAng > 180)  {
+			offsetAng = -360 + offsetAng;
+		}
+
+		else if(offsetAng < -180)  {
+			offsetAng = 360 + offsetAng;
+		}
+		if(Math.abs(offsetAng) < 5)  {
+			_musicSample.angle -= offsetAng;
+		}
+
+		else if(offsetAng > 0)  {
+			_musicSample.angle -= 150 * AntG.elapsed;
+		}
+
+		else  {
+			_musicSample.angle += 150 * AntG.elapsed;
+		}
+
+		// Устанавливаем векторную скорость движения.
+		var angRad : Float = AntMath.toRadians(_musicSample.angle);
+		_musicSample.velocity.set(250 * Math.cos(angRad), 250 * Math.sin(angRad));
+		// Проверяем достиг ли источник звука своей цели...
+		if(AntMath.distance(_musicSample.x, _musicSample.y, _targetPoint.x, _targetPoint.y) < 5)  {
+			// если достик, то ставим новую случайную цель.
+			_targetPoint.set(AntMath.randomRangeInt(0, 640), AntMath.randomRangeInt(0, 480));
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	override public function postUpdate() : Void {
+		/*AntG.beginWatch();
+		AntG.watchValue("deads", AntG.sounds.numDead());
+		AntG.watchValue("living", AntG.sounds.numLiving());
+		AntG.endWatch();*/
+	}
+
+	/**
+	 * @private
+	 */
+	override public function destroy() : Void {
+		// Убиваем проигрывание всех звуков.
+		AntG.sounds.clear();
+		super.destroy();
+	}
+
+}
+

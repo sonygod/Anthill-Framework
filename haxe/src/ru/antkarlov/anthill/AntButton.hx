@@ -1,22 +1,38 @@
-/**
- * Кнопка обыкновенная.
- * 
- * <p>Для визуального представления кнопки используются заранее растеризированные анимации 
- * как и для AntActor, но с определенными условиями. Анимация кнопки должна состоять 
- * как минимум из двух кадров, каждый из которых должен представлять определенное состояние 
- * кнопки: первый кадр - нормальное состояние, второй кадр - подсвеченное состояние при наведении мыши,
- * третий кадр - нажатое состояние. Если нет необходимости подсвечивать кнопку при наведении мыши,
- * то нажатое состояние должно быть вторым кадром.</p>
- * 
- * @langversion ActionScript 3
- * @playerversion Flash 9.0.0
- * 
- * @author Антон Карлов
- * @since  24.08.2012
+/**
+
+ * Кнопка обыкновенная.
+
+ * 
+
+ * <p>Для визуального представления кнопки используются заранее растеризированные анимации 
+
+ * как и для AntActor, но с определенными условиями. Анимация кнопки должна состоять 
+
+ * как минимум из двух кадров, каждый из которых должен представлять определенное состояние 
+
+ * кнопки: первый кадр - нормальное состояние, второй кадр - подсвеченное состояние при наведении мыши,
+
+ * третий кадр - нажатое состояние. Если нет необходимости подсвечивать кнопку при наведении мыши,
+
+ * то нажатое состояние должно быть вторым кадром.</p>
+
+ * 
+
+ * @langversion ActionScript 3
+
+ * @playerversion Flash 9.0.0
+
+ * 
+
+ * @author Антон Карлов
+
+ * @since  24.08.2012
+
  */
 package ru.antkarlov.anthill;
 
 import flash.display.BitmapData;
+import flash.display.BlendMode;
 import flash.geom.ColorTransform;
 import flash.geom.Matrix;
 import flash.geom.Point;
@@ -37,172 +53,265 @@ class AntButton extends AntEntity {
 	static public var NORMAL : UInt = 1;
 	static public var OVER : UInt = 2;
 	static public var DOWN : UInt = 3;
-	/**
-	 * Определяет имя анимации пользовательского курсора при наведении на кнопку по умолчанию.
-	 * @default	null
+	/**
+
+	 * Определяет имя анимации пользовательского курсора при наведении на кнопку по умолчанию.
+
+	 * @default	null
+
 	 */
 	static public var defOverCursorAnim : String;
-	/**
-	 * Определяет имя анимации пользовательского курсора при нажатии на кнопку по умолчанию.
-	 * @default	null
+	/**
+
+	 * Определяет имя анимации пользовательского курсора при нажатии на кнопку по умолчанию.
+
+	 * @default	null
+
 	 */
 	static public var defDownCursorAnim : String;
 	//---------------------------------------
 	// PUBLIC VARIABLES
 	//---------------------------------------
-	/**
-	 * Режим смешивания цветов.
-	 * @default	null
+	/**
+
+	 * Режим смешивания цветов.
+
+	 * @default	null
+
 	 */
 	public var blend : String;
-	/**
-	 * Сглаживание.
-	 * @default	true
+	/**
+
+	 * Сглаживание.
+
+	 * @default	true
+
 	 */
 	public var smoothing : Bool;
-	/**
-	 * Текущее состояние кнопки.
-	 * @default	NORMAL
+	/**
+
+	 * Текущее состояние кнопки.
+
+	 * @default	NORMAL
+
 	 */
 	public var status : UInt;
-	/**
-	 * Событие выполняющееся когда кнопка нажата. 
-	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+	/**
+
+	 * Событие выполняющееся когда кнопка нажата. 
+
+	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+
 	 */
 	public var eventDown : Signal1<Dynamic>;
-	/**
-	 * Событие выполняющееся когда на кнопку наведен курсор мыши. 
-	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+	/**
+
+	 * Событие выполняющееся когда на кнопку наведен курсор мыши. 
+
+	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+
 	 */
 	public var eventOver : Signal1<Dynamic>;
-	/**
-	 * Событие выполняющееся когда курсор мыши вышел за пределы кнопки. 
-	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+	/**
+
+	 * Событие выполняющееся когда курсор мыши вышел за пределы кнопки. 
+
+	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+
 	 */
 	public var eventOut : Signal1<Dynamic>;
-	/**
-	 * Событие выполняющееся когда кнопка отпущена. 
-	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+	/**
+
+	 * Событие выполняющееся когда кнопка отпущена. 
+
+	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+
 	 */
 	public var eventUp : Signal1<Dynamic>;
-	/**
-	 * Событие выполняющееся когда был произведен клик по кнопке (нажатие и отпускание мыши в пределах кнопки). 
-	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+	/**
+
+	 * Событие выполняющееся когда был произведен клик по кнопке (нажатие и отпускание мыши в пределах кнопки). 
+
+	 * В качестве атрибута в метод подписчика передается указатель на кнопку.
+
 	 */
 	public var eventClick : Signal1<Dynamic>;
-	/**
-	 * Указатель на текстовую метку кнопки.
-	 * @default	null
+	/**
+
+	 * Указатель на текстовую метку кнопки.
+
+	 * @default	null
+
 	 */
 	public var label : AntLabel;
-	/**
-	 * Смещение текстовой метки при нажатии.
-	 * @default	(0,1)
+	/**
+
+	 * Смещение текстовой метки при нажатии.
+
+	 * @default	(0,1)
+
 	 */
 	public var labelOffset : AntPoint;
-	/**
-	 * Определяет имя анимации пользовательского курсора при наведении на кнопку.
-	 * @default	null
+	/**
+
+	 * Определяет имя анимации пользовательского курсора при наведении на кнопку.
+
+	 * @default	null
+
 	 */
 	public var overCursorAnim : String;
-	/**
-	 * Определяет имя анимации пользовательского курсора при нажатии на кнопку.
-	 * @default	null
+	/**
+
+	 * Определяет имя анимации пользовательского курсора при нажатии на кнопку.
+
+	 * @default	null
+
 	 */
 	public var downCursorAnim : String;
 	//---------------------------------------
 	// PROTECTED VARIABLES
 	//---------------------------------------
-	/**
-	 * Определяет наведен ли курсор мышки на кнопку.
-	 * @default	false
+	/**
+
+	 * Определяет наведен ли курсор мышки на кнопку.
+
+	 * @default	false
+
 	 */
 	var _over : Bool;
-	/**
-	 * Определяет нажата ли кнопка.
-	 * @default	false
+	/**
+
+	 * Определяет нажата ли кнопка.
+
+	 * @default	false
+
 	 */
 	var _down : Bool;
-	/**
-	 * Определяет является ли кнопка в данный момент выбранной (зажатой). 
-	 * @default	false
+	/**
+
+	 * Определяет является ли кнопка в данный момент выбранной (зажатой). 
+
+	 * @default	false
+
 	 */
 	var _selected : Bool;
-	/**
-	 * Определяет может ли быть кнопка выбрана (зажата).
-	 * @default	false
+	/**
+
+	 * Определяет может ли быть кнопка выбрана (зажата).
+
+	 * @default	false
+
 	 */
 	var _toggle : Bool;
-	/**
-	 * Текущая прозрачность кнопки.
-	 * @default	1
+	/**
+
+	 * Текущая прозрачность кнопки.
+
+	 * @default	1
+
 	 */
 	var _alpha : Float;
-	/**
-	 * Текущий цвет кнопки.
-	 * @default	0x00FFFFFF
+	/**
+
+	 * Текущий цвет кнопки.
+
+	 * @default	0x00FFFFFF
+
 	 */
 	var _color : UInt;
-	/**
-	 * Цветовая трансформация кнопки. Инициализируется автоматически если кнопке задан цвет отличный от 0x00FFFFFF.
-	 * @default	null
+	/**
+
+	 * Цветовая трансформация кнопки. Инициализируется автоматически если кнопке задан цвет отличный от 0x00FFFFFF.
+
+	 * @default	null
+
 	 */
 	var _colorTransform : ColorTransform;
-	/**
-	 * Хранилище указателей на все добавленные анимации.
-	 * @default	AntStorage
+	/**
+
+	 * Хранилище указателей на все добавленные анимации.
+
+	 * @default	AntStorage
+
 	 */
 	var _animations : AntStorage;
-	/**
-	 * Указатель на текущую анимацию.
-	 * @default	null
+	/**
+
+	 * Указатель на текущую анимацию.
+
+	 * @default	null
+
 	 */
 	var _curAnim : AntAnimation;
-	/**
-	 * Локальное имя текущей анимации.
-	 * @default	null
+	/**
+
+	 * Локальное имя текущей анимации.
+
+	 * @default	null
+
 	 */
 	var _curAnimName : String;
-	/**
-	 * Номер предыдущего кадра.
-	 * @default	-1
+	/**
+
+	 * Номер предыдущего кадра.
+
+	 * @default	-1
+
 	 */
 	var _prevFrame : Int;
-	/**
-	 * Указатель на битмап кадра в текущей анимации.
+	/**
+
+	 * Указатель на битмап кадра в текущей анимации.
+
 	 */
 	var _pixels : BitmapData;
-	/**
-	 * Вспомогательный буфер для рендера анимаций с цветовыми трансформациями.
-	 * Инициализируется автоматически при перекрашивании или прозрачности.
-	 * @default	null
+	/**
+
+	 * Вспомогательный буфер для рендера анимаций с цветовыми трансформациями.
+
+	 * Инициализируется автоматически при перекрашивании или прозрачности.
+
+	 * @default	null
+
 	 */
 	var _buffer : BitmapData;
-	/**
-	 * Помошник для определения пересечения курсора мышки с кнопкой.
+	/**
+
+	 * Помошник для определения пересечения курсора мышки с кнопкой.
+
 	 */
 	var _point : AntPoint;
-	/**
-	 * Внутренний помошник для отрисовки графического контента.
+	/**
+
+	 * Внутренний помошник для отрисовки графического контента.
+
 	 */
 	var _flashRect : Rectangle;
-	/**
-	 * Внутренний помошник для отрисовки графического контента.
+	/**
+
+	 * Внутренний помошник для отрисовки графического контента.
+
 	 */
 	var _flashPoint : Point;
-	/**
-	 * Внутренний помошник для отрисовки графического контента.
+	/**
+
+	 * Внутренний помошник для отрисовки графического контента.
+
 	 */
 	var _flashPointZero : Point;
-	/**
-	 * Внутренний помошник для отрисовки графического контента.
+	/**
+
+	 * Внутренний помошник для отрисовки графического контента.
+
 	 */
 	var _matrix : Matrix;
 	//---------------------------------------
 	// CONSTRUCTOR
 	//---------------------------------------
-	/**
-	 * @constructor
+	/**
+
+	 * @constructor
+
 	 */
 	public function new() {
 		blend = null;
@@ -238,14 +347,22 @@ class AntButton extends AntEntity {
 		downCursorAnim = defDownCursorAnim;
 	}
 
-	/**
-	 * Альтернативный конструктор кнопки для быстрого создания кнопки с текстом и без.
-	 * 
-	 * @param	aAnimName	 Имя анимации для кнопки в хранилище анимаций.
-	 * @param	aText	 Текст на кнопке.
-	 * @param	aLabel	 Текстовая метка для кнопки.
-	 * @param	aIsScrolled	 Определяет привязана кнопка в игровому миру или к камере.
-	 * @return		Возвращает указатель на новую кнопку.
+	/**
+
+	 * Альтернативный конструктор кнопки для быстрого создания кнопки с текстом и без.
+
+	 * 
+
+	 * @param	aAnimName	 Имя анимации для кнопки в хранилище анимаций.
+
+	 * @param	aText	 Текст на кнопке.
+
+	 * @param	aLabel	 Текстовая метка для кнопки.
+
+	 * @param	aIsScrolled	 Определяет привязана кнопка в игровому миру или к камере.
+
+	 * @return		Возвращает указатель на новую кнопку.
+
 	 */
 	static public function makeButton(aAnimName : String, aText : String = null, aLabel : AntLabel = null, aIsScrolled : Bool = false) : AntButton {
 		if(aLabel != null && aText != null)  {
@@ -266,8 +383,10 @@ class AntButton extends AntEntity {
 		return btn;
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override public function destroy() : Void {
 		eventDown.destroy();
@@ -293,16 +412,20 @@ class AntButton extends AntEntity {
 		super.destroy();
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override public function update() : Void {
 		updateButton();
 		super.update();
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override public function draw(aCamera : AntCamera) : Void {
 		updateBounds();
@@ -310,13 +433,20 @@ class AntButton extends AntEntity {
 		super.draw(aCamera);
 	}
 
-	/**
-	 * Добавляет новую анимацию. Если локальное имя анимации не указано, то добавленная анимация будет доступна
-	 * по глобальному имени.
-	 * 
-	 * @param	aAnim	 Анимация которую необходимо добавить.
-	 * @param	aName	 Локальное имя анимации по которому можно будет произвести переключение на эту анимацию.
-	 * @param	aSwitch	 Переключение на добавленную анимацию.
+	/**
+
+	 * Добавляет новую анимацию. Если локальное имя анимации не указано, то добавленная анимация будет доступна
+
+	 * по глобальному имени.
+
+	 * 
+
+	 * @param	aAnim	 Анимация которую необходимо добавить.
+
+	 * @param	aName	 Локальное имя анимации по которому можно будет произвести переключение на эту анимацию.
+
+	 * @param	aSwitch	 Переключение на добавленную анимацию.
+
 	 */
 	public function addAnimation(aAnim : AntAnimation, aName : String = null, aSwitch : Bool = true) : Void {
 		if(aName == null)  {
@@ -328,29 +458,40 @@ class AntButton extends AntEntity {
 		}
 	}
 
-	/**
-	 * Добавляет новую анимацию из кэша анимаций. Если локальное имя анимации не указано, то добавленная анимация 
-	 * будет доступна по глобальному имени.
-	 * 
-	 * @param	aKey	 Имя анимации в кэше которую необходимо добавить.
-	 * @param	aName	 Локальное имя анимации по которому можно будет произвести переключение на эту анимацию.
-	 * @param	aSwitch	 Переключение на добавленную анимацию.
+	/**
+
+	 * Добавляет новую анимацию из кэша анимаций. Если локальное имя анимации не указано, то добавленная анимация 
+
+	 * будет доступна по глобальному имени.
+
+	 * 
+
+	 * @param	aKey	 Имя анимации в кэше которую необходимо добавить.
+
+	 * @param	aName	 Локальное имя анимации по которому можно будет произвести переключение на эту анимацию.
+
+	 * @param	aSwitch	 Переключение на добавленную анимацию.
+
 	 */
 	public function addAnimationFromCache(aKey : String, aName : String = null, aSwitch : Bool = true) : Void {
 		addAnimation(AntAnimation.fromCache(aKey), aName, aSwitch);
 	}
 
-	/**
-	 * Переключение анимации.
-	 * 
-	 * @param	aName	 Локальное имя анимации на которую следует переключится.
+	/**
+
+	 * Переключение анимации.
+
+	 * 
+
+	 * @param	aName	 Локальное имя анимации на которую следует переключится.
+
 	 */
 	public function switchAnimation(aName : String) : Void {
 		if(_curAnimName == aName)  {
 			return;
 		}
 		if(_animations.containsKey(aName))  {
-			_curAnim = try cast(_animations.get(aName), AntAnimation) catch(e:Dynamic) null;
+			_curAnim = cast _animations.get(aName);//try cast(_animations.get(aName), AntAnimation) catch(e:Dynamic) null;
 			_curAnimName = aName;
 			_prevFrame = -1;
 			resetHelpers();
@@ -366,8 +507,10 @@ class AntButton extends AntEntity {
 	//---------------------------------------
 	// PROTECTED METHODS
 	//---------------------------------------
-	/**
-	 * Обновляет положение текстовой метки.
+	/**
+
+	 * Обновляет положение текстовой метки.
+
 	 */
 	function updateLabel() : Void {
 		if(label != null)  {
@@ -380,8 +523,10 @@ class AntButton extends AntEntity {
 		}
 	}
 
-	/**
-	 * Обработка логики кнопки.
+	/**
+
+	 * Обработка логики кнопки.
+
 	 */
 	function updateButton() : Void {
 		if(cameras == null)  {
@@ -394,7 +539,7 @@ class AntButton extends AntEntity {
 			cam = try cast(cameras[i], AntCamera) catch(e:Dynamic) null;
 			if(cam != null)  {
 				((isScrolled)) ? AntG.mouse.getWorldPosition(cam, _point) : AntG.mouse.getScreenPosition(cam, _point);
-				if(hitTestPoStd.int(_point))  {
+				if (hitTestPoint(_point)){
 					onMouseOver();
 					if(AntG.mouse.isPressed())  {
 						onMouseDown();
@@ -421,8 +566,10 @@ class AntButton extends AntEntity {
 		updateVisualStatus();
 	}
 
-	/**
-	 * Обработчик наведения мышки на кнопку.
+	/**
+
+	 * Обработчик наведения мышки на кнопку.
+
 	 */
 	function onMouseOver() : Void {
 		var o : Bool = _over;
@@ -435,8 +582,10 @@ class AntButton extends AntEntity {
 		}
 	}
 
-	/**
-	 * Обработчик выхода мышки за пределы кнопки.
+	/**
+
+	 * Обработчик выхода мышки за пределы кнопки.
+
 	 */
 	function onMouseOut() : Void {
 		var o : Bool = _over;
@@ -449,8 +598,10 @@ class AntButton extends AntEntity {
 		}
 	}
 
-	/**
-	 * Обработчик нажатия кнопки мыши.
+	/**
+
+	 * Обработчик нажатия кнопки мыши.
+
 	 */
 	function onMouseDown() : Void {
 		var o : Bool = _down;
@@ -461,8 +612,10 @@ class AntButton extends AntEntity {
 		}
 	}
 
-	/**
-	 * Обработчик отпускания кнопки мыши.
+	/**
+
+	 * Обработчик отпускания кнопки мыши.
+
 	 */
 	function onMouseUp() : Void {
 		eventUp.dispatch(this);
@@ -482,8 +635,10 @@ class AntButton extends AntEntity {
 
 	}
 
-	/**
-	 * Обновляет визуальное представление кнопки в зависимости от текущего состояния.
+	/**
+
+	 * Обновляет визуальное представление кнопки в зависимости от текущего состояния.
+
 	 */
 	function updateVisualStatus() : Void {
 		if((_over && _down) || (!_over && _down) || _selected)  {
@@ -502,10 +657,14 @@ class AntButton extends AntEntity {
 		updateLabel();
 	}
 
-	/**
-	 * Отрисовка кнопки в буффер указанной камеры.
-	 * 
-	 * @param	aCamera	 Камера в буффер которой необходимо отрисовать актера.
+	/**
+
+	 * Отрисовка кнопки в буффер указанной камеры.
+
+	 * 
+
+	 * @param	aCamera	 Камера в буффер которой необходимо отрисовать актера.
+
 	 */
 	function drawButton(aCamera : AntCamera) : Void {
 		AntBasic.NUM_OF_VISIBLE++;
@@ -537,13 +696,15 @@ class AntButton extends AntEntity {
 				_matrix.rotate(Math.PI * 2 * (globalAngle / 360));
 			}
 			_matrix.translate(_flashPoint.x - origin.x, _flashPoint.y - origin.y);
-			aCamera.buffer.draw(((_buffer != null)) ? _buffer : _pixels, _matrix, null, blend, null, smoothing);
+			aCamera.buffer.draw(((_buffer != null)) ? _buffer : _pixels, _matrix, null, Type.createEnum(BlendMode,blend), null, smoothing);
 		}
 
 	}
 
-	/**
-	 * Сброс локальных помошников.
+	/**
+
+	 * Сброс локальных помошников.
+
 	 */
 	function resetHelpers() : Void {
 		_flashRect.x = _flashRect.y = 0;
@@ -559,8 +720,10 @@ class AntButton extends AntEntity {
 		updateBounds();
 	}
 
-	/**
-	 * Перерасчет текущего кадра.
+	/**
+
+	 * Перерасчет текущего кадра.
+
 	 */
 	function calcFrame(aFrame : Int = 0) : Void {
 		origin.set(_curAnim.offsetX[aFrame], _curAnim.offsetY[aFrame]);
@@ -579,10 +742,14 @@ class AntButton extends AntEntity {
 		}
 	}
 
-	/**
-	 * Переводит состояние кнопки на указанный кадр.
-	 * 
-	 * @param	aFrame	 Кадр на который необходимо перевести состояние кнопки.
+	/**
+
+	 * Переводит состояние кнопки на указанный кадр.
+
+	 * 
+
+	 * @param	aFrame	 Кадр на который необходимо перевести состояние кнопки.
+
 	 */
 	function goto(aFrame : Int) : Void {
 		if(_curAnim == null)  {
@@ -601,8 +768,10 @@ class AntButton extends AntEntity {
 	//---------------------------------------
 	// GETTER / SETTERS
 	//---------------------------------------
-	/**
-	 * Определяет текст для текстовой метки у кнопки.
+	/**
+
+	 * Определяет текст для текстовой метки у кнопки.
+
 	 */
 	function get_text() : String {
 		return ((label != null)) ? label.text : "";
@@ -616,8 +785,10 @@ class AntButton extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Определяет состояние выбранности кнопки. Работает только если для кнопки установлен режим чекбокса <code>toggle = true;</code>
+	/**
+
+	 * Определяет состояние выбранности кнопки. Работает только если для кнопки установлен режим чекбокса <code>toggle = true;</code>
+
 	 */
 	function get_selected() : Bool {
 		return _selected;
@@ -632,8 +803,10 @@ class AntButton extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Определяет режим чекбокса для кнопки.
+	/**
+
+	 * Определяет режим чекбокса для кнопки.
+
 	 */
 	function get_toggle() : Bool {
 		return _toggle;
@@ -644,15 +817,19 @@ class AntButton extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Возвращает имя текущей анимации кнопки.
+	/**
+
+	 * Возвращает имя текущей анимации кнопки.
+
 	 */
 	function get_currentAnimation() : String {
 		return _curAnimName;
 	}
 
-	/**
-	 * Определяет текущую прозрачность.
+	/**
+
+	 * Определяет текущую прозрачность.
+
 	 */
 	function get_alpha() : Float {
 		return _alpha;
@@ -682,8 +859,10 @@ class AntButton extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Определяет текущий цвет.
+	/**
+
+	 * Определяет текущий цвет.
+
 	 */
 	function get_color() : UInt {
 		return _color;

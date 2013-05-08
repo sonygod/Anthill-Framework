@@ -1,38 +1,73 @@
-/**
- * Менеджер задач используется для выполнения задач (вызова указанных методов) в заданном порядке.
- * 
- * <p>Позволяет легко и быстро программировать последовательность каких-либо действий. Менеджер 
- * задач запускается автоматически при наличии одной и более задачь завершает свою работу если
- * все задачи были выполнены или удалены.</p>
- * 
- * <p>Пример использования:</p>
- * 
- * <listing>
- * var tm:AntTaskManager = new AntTaskManager();
- * tm.addTask(onMove);
- * tm.addInstantTask(onSwitchAnim);
- * 
- * ..Этот метод будет выполнятся менеджером до тех пор пока не вернет true.
- * function onMove():Boolean
- * {
- *   x += 1;
- *   return (x > 100);
- * }
- * 
- * ..Этот метод будет выполнен один раз не зависимо от того что вернет.
- * function onSwitchAnim():void
- * {
- *   ..какой-нибудь код
- * }
- * </listing>
- * 
- * <p>Позаимствовано у <a href="http://xitri.com/2010/10/27/ai-creation-tool-casual-connect-kiev-2010.html">Xitri.com</a></p>
- * 
- * @langversion ActionScript 3
- * @playerversion Flash 9.0.0
- * 
- * @author Антон Карлов
- * @since  22.08.2012
+/**
+
+ * Менеджер задач используется для выполнения задач (вызова указанных методов) в заданном порядке.
+
+ * 
+
+ * <p>Позволяет легко и быстро программировать последовательность каких-либо действий. Менеджер 
+
+ * задач запускается автоматически при наличии одной и более задачь завершает свою работу если
+
+ * все задачи были выполнены или удалены.</p>
+
+ * 
+
+ * <p>Пример использования:</p>
+
+ * 
+
+ * <listing>
+
+ * var tm:AntTaskManager = new AntTaskManager();
+
+ * tm.addTask(onMove);
+
+ * tm.addInstantTask(onSwitchAnim);
+
+ * 
+
+ * ..Этот метод будет выполнятся менеджером до тех пор пока не вернет true.
+
+ * function onMove():Boolean
+
+ * {
+
+ *   x += 1;
+
+ *   return (x > 100);
+
+ * }
+
+ * 
+
+ * ..Этот метод будет выполнен один раз не зависимо от того что вернет.
+
+ * function onSwitchAnim():void
+
+ * {
+
+ *   ..какой-нибудь код
+
+ * }
+
+ * </listing>
+
+ * 
+
+ * <p>Позаимствовано у <a href="http://xitri.com/2010/10/27/ai-creation-tool-casual-connect-kiev-2010.html">Xitri.com</a></p>
+
+ * 
+
+ * @langversion ActionScript 3
+
+ * @playerversion Flash 9.0.0
+
+ * 
+
+ * @author Антон Карлов
+
+ * @since  22.08.2012
+
  */
 package ru.antkarlov.anthill.plugins;
 
@@ -48,62 +83,98 @@ class AntTaskManager implements IPlugin {
 	//---------------------------------------
 	// PUBLIC VARIABLES
 	//---------------------------------------
-	/**
-	 * Событие которое генерируется при завершении всех задач в менеджере задач.
-	 * 
-	 * <p>В качестве аргумента при вызове подписавшихся методов передается указатель 
-	 * на экземпляр класса <code>AntTaskManager</code>.</p>
-	 * 
-	 * <p>Пример использования:</p>
-	 * 
-	 * <listing>
-	 * taskManager.eventComplete.add(onComplete);
-	 * 
-	 * function onComplete(aTaskManager:AntTaskManager):void
-	 * {
-	 *   trace("All tasks completed!");
-	 * }
-	 * </listing>
+	/**
+
+	 * Событие которое генерируется при завершении всех задач в менеджере задач.
+
+	 * 
+
+	 * <p>В качестве аргумента при вызове подписавшихся методов передается указатель 
+
+	 * на экземпляр класса <code>AntTaskManager</code>.</p>
+
+	 * 
+
+	 * <p>Пример использования:</p>
+
+	 * 
+
+	 * <listing>
+
+	 * taskManager.eventComplete.add(onComplete);
+
+	 * 
+
+	 * function onComplete(aTaskManager:AntTaskManager):void
+
+	 * {
+
+	 *   trace("All tasks completed!");
+
+	 * }
+
+	 * </listing>
+
 	 */
 	public var eventComplete : Signal1<Dynamic>;
 	//---------------------------------------
 	// PROTECTED VARIABLES
 	//---------------------------------------
-	/**
-	 * Список всех активных задач.
-	 * @default	null
+	/**
+
+	 * Список всех активных задач.
+
+	 * @default	null
+
 	 */
 	var _task : AntList;
-	/**
-	 * Определяет запущенна ли работа менеджера.
-	 * @default	false
+	/**
+
+	 * Определяет запущенна ли работа менеджера.
+
+	 * @default	false
+
 	 */
 	var _isStarted : Bool;
-	/**
-	 * Определеяет поставленно ли выполнение задач на паузу.
-	 * @default	false
+	/**
+
+	 * Определеяет поставленно ли выполнение задач на паузу.
+
+	 * @default	false
+
 	 */
 	var _isPaused : Bool;
-	/**
-	 * Помошник для определения завершения текущей задачи.
-	 * @default	false
+	/**
+
+	 * Помошник для определения завершения текущей задачи.
+
+	 * @default	false
+
 	 */
 	var _result : Bool;
-	/**
-	 * Определяет выполняются ли задачи в цикле.
-	 * @default	false
+	/**
+
+	 * Определяет выполняются ли задачи в цикле.
+
+	 * @default	false
+
 	 */
 	var _cycle : Bool;
-	/**
-	 * Используется для рассчета текущей паузы между задачами.
-	 * @default	0
+	/**
+
+	 * Используется для рассчета текущей паузы между задачами.
+
+	 * @default	0
+
 	 */
 	var _delay : Float;
 	//---------------------------------------
 	// CONSTRUCTOR
 	//---------------------------------------
-	/**
-	 * @constructor
+	/**
+
+	 * @constructor
+
 	 */
 	public function new(aCycle : Bool = false) {
 		//super()
@@ -116,9 +187,12 @@ class AntTaskManager implements IPlugin {
 		eventComplete = new Signal1(AntTaskManager);
 	}
 
-	/**
-	 * Освобождает ресурсы занимаемые мендежером задач.
-	 * Следует вызывать перед удалением.
+	/**
+
+	 * Освобождает ресурсы занимаемые мендежером задач.
+
+	 * Следует вызывать перед удалением.
+
 	 */
 	public function destroy() : Void {
 		clear();
@@ -129,18 +203,26 @@ class AntTaskManager implements IPlugin {
 	//---------------------------------------
 	// PUBLIC METHODS
 	//---------------------------------------
-	/**
-	 * Добавляет задачу в конец очереди, указанный метод будет выполнятся до тех пор пока не вернет <code>true</code>.
-	 * Только после того как метод вернет <code>true</code>, задача будет считаться выполненный и менеджер
-	 * перейдет к следующей задачи.
-	 * 
-	 * @param	aFunc	 Метод-задача который будет выполнятся в порядке очереди.
-	 * @param	aArgs	 Массив аргументов которые могут быть переданны методу задачи.
-	 * @param	aIgnoreCycle	 Если true то задача будет удалена из менеджера сразу после выполнения.
+	/**
+
+	 * Добавляет задачу в конец очереди, указанный метод будет выполнятся до тех пор пока не вернет <code>true</code>.
+
+	 * Только после того как метод вернет <code>true</code>, задача будет считаться выполненный и менеджер
+
+	 * перейдет к следующей задачи.
+
+	 * 
+
+	 * @param	aFunc	 Метод-задача который будет выполнятся в порядке очереди.
+
+	 * @param	aArgs	 Массив аргументов которые могут быть переданны методу задачи.
+
+	 * @param	aIgnoreCycle	 Если true то задача будет удалена из менеджера сразу после выполнения.
+
 	 */
 	public function addTask(aFunc : Dynamic, aArgs : Array<Dynamic> = null, aIgnoreCycle : Bool = false) : Void {
 		push({
-			func : aFunc
+			func : aFunc,
 			args : aArgs,
 			ignoreCycle : aIgnoreCycle,
 			instant : false,
@@ -149,17 +231,24 @@ class AntTaskManager implements IPlugin {
 		start();
 	}
 
-	/**
-	 * Добавляет задачу в конец очереди, указанный метод будет выполнен только один раз, после чего будет осуществлен
-	 * переход к следующей задачи не зависимо от того, что вернет метод-задача и вернет ли вообще.
-	 * 
-	 * @param	aFunc	 Метод-задача который будет выполнятся в порядке очереди.
-	 * @param	aArgs	 Массив аргументов которые могут быть переданны методу задачи.
-	 * @param	aIgnoreCycle	 Если true то задача будет удалена из менеджера сразу после выполнения.
+	/**
+
+	 * Добавляет задачу в конец очереди, указанный метод будет выполнен только один раз, после чего будет осуществлен
+
+	 * переход к следующей задачи не зависимо от того, что вернет метод-задача и вернет ли вообще.
+
+	 * 
+
+	 * @param	aFunc	 Метод-задача который будет выполнятся в порядке очереди.
+
+	 * @param	aArgs	 Массив аргументов которые могут быть переданны методу задачи.
+
+	 * @param	aIgnoreCycle	 Если true то задача будет удалена из менеджера сразу после выполнения.
+
 	 */
 	public function addInstantTask(aFunc : Dynamic, aArgs : Array<Dynamic> = null, aIgnoreCycle : Bool = false) : Void {
 		push({
-			func : aFunc
+			func : aFunc,
 			args : aArgs,
 			ignoreCycle : aIgnoreCycle,
 			instant : true,
@@ -168,18 +257,26 @@ class AntTaskManager implements IPlugin {
 		start();
 	}
 
-	/**
-	 * Добавляет задачу в начало очереди, указанный метод будет выполнятся до тех пор пока не вернет <code>true</code>.
-	 * Только после того как метод вернет <code>true</code>, задача будет считаться выполненной и менеджер
-	 * перейдет к следующей задачи.
-	 * 
-	 * @param	aFunc	 Метод-задача который будет выполнятся в порядке очереди.
-	 * @param	aArgs	 Массив аргументов которые могут быть переданны методу задачи.
-	 * @param	aIgnoreCycle	 Если true то задача будет удалена из менеджера сразу после выполнения.
+	/**
+
+	 * Добавляет задачу в начало очереди, указанный метод будет выполнятся до тех пор пока не вернет <code>true</code>.
+
+	 * Только после того как метод вернет <code>true</code>, задача будет считаться выполненной и менеджер
+
+	 * перейдет к следующей задачи.
+
+	 * 
+
+	 * @param	aFunc	 Метод-задача который будет выполнятся в порядке очереди.
+
+	 * @param	aArgs	 Массив аргументов которые могут быть переданны методу задачи.
+
+	 * @param	aIgnoreCycle	 Если true то задача будет удалена из менеджера сразу после выполнения.
+
 	 */
 	public function addUrgentTask(aFunc : Dynamic, aArgs : Array<Dynamic> = null, aIgnoreCycle : Bool = false) : Void {
 		unshift({
-			func : aFunc
+			func : aFunc,
 			args : aArgs,
 			ignoreCycle : aIgnoreCycle,
 			instant : false,
@@ -188,17 +285,24 @@ class AntTaskManager implements IPlugin {
 		start();
 	}
 
-	/**
-	 * Добавляет задачу в начало очереди, указанный метод будет выполнен только один раз, после чего будет осуществлен
-	 * переход к следующей задачи не зависимо от того, что вернет метод задача и вернет ли вообще.
-	 * 
-	 * @param	aFunc	 Метод-задача который будет выполнятся в порядке очереди.
-	 * @param	aArgs	 Массив аргументов которые могут быть переданны методу задачи.
-	 * @param	aIgnoreCycle	 Если true то задача будет удалена из менеджера сразу после выполнения.
+	/**
+
+	 * Добавляет задачу в начало очереди, указанный метод будет выполнен только один раз, после чего будет осуществлен
+
+	 * переход к следующей задачи не зависимо от того, что вернет метод задача и вернет ли вообще.
+
+	 * 
+
+	 * @param	aFunc	 Метод-задача который будет выполнятся в порядке очереди.
+
+	 * @param	aArgs	 Массив аргументов которые могут быть переданны методу задачи.
+
+	 * @param	aIgnoreCycle	 Если true то задача будет удалена из менеджера сразу после выполнения.
+
 	 */
 	public function addUrgentInstantTask(aFunc : Dynamic, aArgs : Array<Dynamic> = null, aIgnoreCycle : Bool = false) : Void {
 		unshift({
-			func : aFunc
+			func : aFunc,
 			args : aArgs,
 			ignoreCycle : aIgnoreCycle,
 			instant : true,
@@ -207,18 +311,25 @@ class AntTaskManager implements IPlugin {
 		start();
 	}
 
-	/**
-	 * Добавляет паузу между задачами.
-	 * 
-	 * @param	aDelay	 Время паузы.
-	 * @param	aIgnoreCycle	 Если true то пауза будет выполнена только один раз за цикл.
+	/**
+
+	 * Добавляет паузу между задачами.
+
+	 * 
+
+	 * @param	aDelay	 Время паузы.
+
+	 * @param	aIgnoreCycle	 Если true то пауза будет выполнена только один раз за цикл.
+
 	 */
 	public function addPause(aDelay : Float, aIgnoreCycle : Bool = false) : Void {
 		addTask(taskPause, [aDelay], aIgnoreCycle);
 	}
 
-	/**
-	 * Удаляет все задачи из менеджера и останавливает его работу.
+	/**
+
+	 * Удаляет все задачи из менеджера и останавливает его работу.
+
 	 */
 	public function clear() : Void {
 		stop();
@@ -229,10 +340,14 @@ class AntTaskManager implements IPlugin {
 		_delay = 0;
 	}
 
-	/**
-	 * Переход к следующей задаче.
-	 * 
-	 * @param	aIgnoreCycle	 Флаг определяющий следует ли оставить предыдущую задачу в диспетчере.
+	/**
+
+	 * Переход к следующей задаче.
+
+	 * 
+
+	 * @param	aIgnoreCycle	 Флаг определяющий следует ли оставить предыдущую задачу в диспетчере.
+
 	 */
 	public function nextTask(aIgnoreCycle : Bool = false) : Void {
 		if(_cycle && !aIgnoreCycle)  {
@@ -249,12 +364,14 @@ class AntTaskManager implements IPlugin {
 	// IPlugin Implementation
 	//---------------------------------------
 	//import ru.antkarlov.anthill.plugins.IPlugin;
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	public function update() : Void {
 		if(_task != null && _isStarted)  {
-			_result = (try cast(_task.data.func, Function) catch(e:Dynamic) null).apply(this, _task.data.args);
+			_result = Reflect.isFunction(_task.data.func);//(try cast(_task.data.func, Function) catch(e:Dynamic) null).apply(this, _task.data.args);
 			if(_isStarted && (_task.data.instant || _result))  {
 				nextTask(_task.data.ignoreCycle);
 			}
@@ -267,8 +384,10 @@ class AntTaskManager implements IPlugin {
 
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	public function draw(aCamera : AntCamera) : Void {
 		//
@@ -277,8 +396,10 @@ class AntTaskManager implements IPlugin {
 	//---------------------------------------
 	// PROTECTED METHODS
 	//---------------------------------------
-	/**
-	 * Запускает работу менеджера задача.
+	/**
+
+	 * Запускает работу менеджера задача.
+
 	 */
 	function start() : Void {
 		if(!_isStarted)  {
@@ -288,8 +409,10 @@ class AntTaskManager implements IPlugin {
 		}
 	}
 
-	/**
-	 * Останавливает работу менеджера задач.
+	/**
+
+	 * Останавливает работу менеджера задач.
+
 	 */
 	function stop() : Void {
 		if(_isStarted)  {
@@ -298,11 +421,16 @@ class AntTaskManager implements IPlugin {
 		}
 	}
 
-	/**
-	 * Метод-задача для реализации паузы между задачами.
-	 * 
-	 * @param	aDelay	 Задержка.
-	 * @return		Возвращает true когда задача выполнена.
+	/**
+
+	 * Метод-задача для реализации паузы между задачами.
+
+	 * 
+
+	 * @param	aDelay	 Задержка.
+
+	 * @return		Возвращает true когда задача выполнена.
+
 	 */
 	function taskPause(aDelay : Float) : Bool {
 		_delay += AntG.elapsed;
@@ -313,11 +441,16 @@ class AntTaskManager implements IPlugin {
 		return false;
 	}
 
-	/**
-	 * Добавляет указанный объект в конец списка.
-	 * 
-	 * @param	aObj	 Объект который необходимо добавить.
-	 * @return		Возвращает указатель на добавленный объект.
+	/**
+
+	 * Добавляет указанный объект в конец списка.
+
+	 * 
+
+	 * @param	aObj	 Объект который необходимо добавить.
+
+	 * @return		Возвращает указатель на добавленный объект.
+
 	 */
 	function push(aObj : Dynamic) : Dynamic {
 		if(aObj == null)  {
@@ -337,11 +470,16 @@ class AntTaskManager implements IPlugin {
 		return aObj;
 	}
 
-	/**
-	 * Добавляет указанный объект в начало списка.
-	 * 
-	 * @param	aObj	 Объект который необходимо добавить.
-	 * @return		Возвращает указатель на добавленный объект.
+	/**
+
+	 * Добавляет указанный объект в начало списка.
+
+	 * 
+
+	 * @param	aObj	 Объект который необходимо добавить.
+
+	 * @return		Возвращает указатель на добавленный объект.
+
 	 */
 	function unshift(aObj : Dynamic) : Dynamic {
 		if(_task == null)  {
@@ -353,10 +491,14 @@ class AntTaskManager implements IPlugin {
 		return aObj;
 	}
 
-	/**
-	 * Удаляет первый объект из списка.
-	 * 
-	 * @return		Возвращает указатель на удаленный объект.
+	/**
+
+	 * Удаляет первый объект из списка.
+
+	 * 
+
+	 * @return		Возвращает указатель на удаленный объект.
+
 	 */
 	function shift() : Dynamic {
 		if(_task != null)  {
@@ -373,8 +515,10 @@ class AntTaskManager implements IPlugin {
 	//---------------------------------------
 	// GETTER / SETTERS
 	//---------------------------------------
-	/**
-	 * Определяет режим паузы для менеджера задач.
+	/**
+
+	 * Определяет режим паузы для менеджера задач.
+
 	 */
 	function set_pause(value : Bool) : Bool {
 		if(value && !_isPaused)  {
@@ -394,22 +538,28 @@ class AntTaskManager implements IPlugin {
 		return value;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	function get_pause() : Bool {
 		return _isPaused;
 	}
 
-	/**
-	 * Определяет запущен ли менеджер задач.
+	/**
+
+	 * Определяет запущен ли менеджер задач.
+
 	 */
 	function get_isStarted() : Bool {
 		return _isStarted;
 	}
 
-	/**
-	 * Определяет количество задач.
+	/**
+
+	 * Определяет количество задач.
+
 	 */
 	function get_numTasks() : Int {
 		if(_task != null)  {

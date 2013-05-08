@@ -1,15 +1,25 @@
-/**
- * Обычная текстовая метка используется для отображения текстовой информации.
- * 
- * @langversion ActionScript 3
- * @playerversion Flash 9.0.0
- * 
- * @author Антон Карлов
- * @since  23.08.2012
+/**
+
+ * Обычная текстовая метка используется для отображения текстовой информации.
+
+ * 
+
+ * @langversion ActionScript 3
+
+ * @playerversion Flash 9.0.0
+
+ * 
+
+ * @author Антон Карлов
+
+ * @since  23.08.2012
+
  */
 package ru.antkarlov.anthill;
 
 import flash.display.BitmapData;
+import flash.display.BlendMode;
+import flash.filters.BitmapFilter;
 import flash.filters.GlowFilter;
 import flash.geom.ColorTransform;
 import flash.geom.Matrix;
@@ -44,82 +54,122 @@ class AntLabel extends AntEntity {
 	//---------------------------------------
 	// PUBLIC VARIABLES
 	//---------------------------------------
-	/**
-	 * Режим смешивания цветов.
-	 * @default	null
+	/**
+
+	 * Режим смешивания цветов.
+
+	 * @default	null
+
 	 */
 	public var blend : String;
-	/**
-	 * Сглаживание.
-	 * @default	true
+	/**
+
+	 * Сглаживание.
+
+	 * @default	true
+
 	 */
 	public var smoothing : Bool;
 	//---------------------------------------
 	// PROTECTED VARIABLES
 	//---------------------------------------
-	/**
-	 * Стандартное текстовое поле которое используется для растеризации текста.
+	/**
+
+	 * Стандартное текстовое поле которое используется для растеризации текста.
+
 	 */
 	var _textField : TextField;
-	/**
-	 * Стандартное текстовое форматирование которое используется для применения
-	 * к тексту какого-либо оформления.
+	/**
+
+	 * Стандартное текстовое форматирование которое используется для применения
+
+	 * к тексту какого-либо оформления.
+
 	 */
 	var _textFormat : TextFormat;
-	/**
-	 * Текущее выравнивание текста.
-	 * @default	ALIGN_LEFT
+	/**
+
+	 * Текущее выравнивание текста.
+
+	 * @default	ALIGN_LEFT
+
 	 */
 	var _align : String;
-	/**
-	 * Определяет авто обновление размера текстовой метки в зависимости от объема текста.
-	 * @default	true
+	/**
+
+	 * Определяет авто обновление размера текстовой метки в зависимости от объема текста.
+
+	 * @default	true
+
 	 */
 	var _autoSize : Bool;
-	/**
-	 * Внутренний буфер в который производится растеризация текста.
+	/**
+
+	 * Внутренний буфер в который производится растеризация текста.
+
 	 */
 	var _buffer : BitmapData;
-	/**
-	 * Цветовая трансформация. Инициализируется автоматически если задан цвет отличный от 0x00FFFFFF.
-	 * @default	null
+	/**
+
+	 * Цветовая трансформация. Инициализируется автоматически если задан цвет отличный от 0x00FFFFFF.
+
+	 * @default	null
+
 	 */
 	var _colorTransform : ColorTransform;
-	/**
-	 * Текущий цвет.
-	 * @default	0x00FFFFFF
+	/**
+
+	 * Текущий цвет.
+
+	 * @default	0x00FFFFFF
+
 	 */
 	var _color : UInt;
-	/**
-	 * Текущая прозрачность.
-	 * @default	1
+	/**
+
+	 * Текущая прозрачность.
+
+	 * @default	1
+
 	 */
 	var _alpha : Float;
-	/**
-	 * Внутренний помошник для отрисовки графического контента.
+	/**
+
+	 * Внутренний помошник для отрисовки графического контента.
+
 	 */
 	var _flashPoint : Point;
-	/**
-	 * Внутренний помошник для отрисовки графического контента.
+	/**
+
+	 * Внутренний помошник для отрисовки графического контента.
+
 	 */
 	var _flashPointZero : Point;
-	/**
-	 * Внутренний помошник для отрисовки графического контента.
+	/**
+
+	 * Внутренний помошник для отрисовки графического контента.
+
 	 */
 	var _flashRect : Rectangle;
-	/**
-	 * Внутренний помошник для отрисовки графического контента.
+	/**
+
+	 * Внутренний помошник для отрисовки графического контента.
+
 	 */
 	var _matrix : Matrix;
-	/**
-	 * Флаг определяющий возможно ли пересчитать растровый кадр при изменений данных.
+	/**
+
+	 * Флаг определяющий возможно ли пересчитать растровый кадр при изменений данных.
+
 	 */
 	var _canRedraw : Bool;
 	//---------------------------------------
 	// CONSTRUCTOR
 	//---------------------------------------
-	/**
-	 * @constructor
+	/**
+
+	 * @constructor
+
 	 */
 	public function new(aFontName : String, aFontSize : Int = 8, aColor : UInt = 0xFFFFFF, aEmbedFont : Bool = true) {
 		super();
@@ -147,8 +197,10 @@ class AntLabel extends AntEntity {
 		_alpha = 1;
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override public function destroy() : Void {
 		_textField = null;
@@ -164,15 +216,24 @@ class AntLabel extends AntEntity {
 	//---------------------------------------
 	// PUBLIC METHODS
 	//---------------------------------------
-	/**
-	 * Задает цвет текста для всего текстового поля или для указанного диапазона символов.
-	 * <p>Примичание: Цвет указанный через <code>setColor()</code> применяется непосредственно к стандартному
-	 * текстовому полю и не имеет отношения к значению <color>color</color>. То есть если вы укажете цвет
-	 * через <code>setColor()</code>, а потом зададите другой цвет через <code>color</code> - то цвета будут смешаны.</p>
-	 * 
-	 * @param	aColor	 Цвет в который необходимо перекрасить текст.
-	 * @param	aStartIndex	 Начальный индекс символа скоторого начинать красить.
-	 * @param	aEndIndex	 Конечный индекс символа до которого красить.
+	/**
+
+	 * Задает цвет текста для всего текстового поля или для указанного диапазона символов.
+
+	 * <p>Примичание: Цвет указанный через <code>setColor()</code> применяется непосредственно к стандартному
+
+	 * текстовому полю и не имеет отношения к значению <color>color</color>. То есть если вы укажете цвет
+
+	 * через <code>setColor()</code>, а потом зададите другой цвет через <code>color</code> - то цвета будут смешаны.</p>
+
+	 * 
+
+	 * @param	aColor	 Цвет в который необходимо перекрасить текст.
+
+	 * @param	aStartIndex	 Начальный индекс символа скоторого начинать красить.
+
+	 * @param	aEndIndex	 Конечный индекс символа до которого красить.
+
 	 */
 	public function setColor(aColor : UInt, aStartIndex : Int = -1, aEndIndex : Int = -1) : Void {
 		_textFormat.color = aColor;
@@ -180,11 +241,16 @@ class AntLabel extends AntEntity {
 		calcFrame();
 	}
 
-	/**
-	 * Подсвечивает указанный текст указанным цветом.
-	 * 
-	 * @param	aText	 Текст который необходимо подсветить.
-	 * @param	aColor	 Цвет которым необходимо подсветить.
+	/**
+
+	 * Подсвечивает указанный текст указанным цветом.
+
+	 * 
+
+	 * @param	aText	 Текст который необходимо подсветить.
+
+	 * @param	aColor	 Цвет которым необходимо подсветить.
+
 	 */
 	public function highlightText(aText : String, aColor : UInt) : Void {
 		var str : String = _textField.text;
@@ -195,18 +261,24 @@ class AntLabel extends AntEntity {
 			offset += endIndex;
 			endIndex = startIndex + aText.length;
 			setColor(aColor, startIndex + offset, endIndex + offset);
-			str = str.slice(endIndex, str.length);
+			str = str.substring(endIndex, str.length);
 			startIndex = str.indexOf(aText);
 		}
 
 	}
 
-	/**
-	 * Устанавливает размер текстового поля в ручную.
-	 * Если autoSize = true то размеры будут автоматически изменены при обновлении текста.
-	 * 
-	 * @param	aWidth	 Размер текстового поля по ширине.
-	 * @param	aHeight	 Размер текстового поля по высоте.
+	/**
+
+	 * Устанавливает размер текстового поля в ручную.
+
+	 * Если autoSize = true то размеры будут автоматически изменены при обновлении текста.
+
+	 * 
+
+	 * @param	aWidth	 Размер текстового поля по ширине.
+
+	 * @param	aHeight	 Размер текстового поля по высоте.
+
 	 */
 	public function setSize(aWidth : Int, aHeight : Int) : Void {
 		width = _textField.width = aWidth;
@@ -214,71 +286,111 @@ class AntLabel extends AntEntity {
 		resetHelpers();
 	}
 
-	/**
-	 * Применяет массив указанных фильтров к текстовому полю и перерасчитывает растр.
-	 * 
-	 * @param	aFilteresArray	 Массив фильтров которые необходимо применить к тексту.
+	/**
+
+	 * Применяет массив указанных фильтров к текстовому полю и перерасчитывает растр.
+
+	 * 
+
+	 * @param	aFilteresArray	 Массив фильтров которые необходимо применить к тексту.
+
 	 */
-	public function applyFilters(aFiltersArray : Array<Dynamic>) : Void {
+	public function applyFilters(aFiltersArray : Array<BitmapFilter>) : Void {
 		_textField.filters = aFiltersArray;
 		calcFrame();
 	}
 
-	/**
-	 * Устанавливает однопиксельную обводку для текстового поля.
-	 * 
-	 * @param	aColor	 Цвет обводки.
+	/**
+
+	 * Устанавливает однопиксельную обводку для текстового поля.
+
+	 * 
+
+	 * @param	aColor	 Цвет обводки.
+
 	 */
 	public function setStroke(aColor : UInt = 0xFF000000) : Void {
 		applyFilters([new GlowFilter(aColor, 1, 2, 2, 5)]);
 	}
 
-	/**
-	 * Запрещает обновление текста до тех пор пока не будет вызван <code>endChange()</code>.
-	 * Следует вызывать перед тем как необходимо применить сразу много сложных операций к тексту.
-	 * <p>Пример использования:</p>
-	 * 
-	 * <code>
-	 * label.beginChange();
-	 * label.setSize(200, 50);
-	 * label.text = "some big text here";
-	 * label.setColor(0x00FF00, 0, 4);
-	 * label.endChange();
-	 * </code>
+	/**
+
+	 * Запрещает обновление текста до тех пор пока не будет вызван <code>endChange()</code>.
+
+	 * Следует вызывать перед тем как необходимо применить сразу много сложных операций к тексту.
+
+	 * <p>Пример использования:</p>
+
+	 * 
+
+	 * <code>
+
+	 * label.beginChange();
+
+	 * label.setSize(200, 50);
+
+	 * label.text = "some big text here";
+
+	 * label.setColor(0x00FF00, 0, 4);
+
+	 * label.endChange();
+
+	 * </code>
+
 	 */
 	public function beginChange() : Void {
 		_canRedraw = false;
 	}
 
-	/**
-	 * Разрешает обновление текста. Обязательно вызывать после того как был вызван метод <code>beginChange()</code>.
+	/**
+
+	 * Разрешает обновление текста. Обязательно вызывать после того как был вызван метод <code>beginChange()</code>.
+
 	 */
 	public function endChange() : Void {
 		_canRedraw = true;
 		resetHelpers();
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override public function draw(aCamera : AntCamera) : Void {
 		updateBounds();
-		/*if (cameras == null)
-		{
-		cameras = AntG.cameras;
-		}
-		
-		var cam:AntCamera;
-		var i:int = 0;
-		var n:int = cameras.length;
-		while (i < n)
-		{
-		cam = cameras[i] as AntCamera;
-		if (cam != null)
-		{
-		drawText(cam);
-		}
-		i++;
+		/*if (cameras == null)
+
+		{
+
+		cameras = AntG.cameras;
+
+		}
+
+		
+
+		var cam:AntCamera;
+
+		var i:int = 0;
+
+		var n:int = cameras.length;
+
+		while (i < n)
+
+		{
+
+		cam = cameras[i] as AntCamera;
+
+		if (cam != null)
+
+		{
+
+		drawText(cam);
+
+		}
+
+		i++;
+
 		}*/
 		drawText(aCamera);
 		super.draw(aCamera);
@@ -287,8 +399,10 @@ class AntLabel extends AntEntity {
 	//---------------------------------------
 	// PROTECTED METHODS
 	//---------------------------------------
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	override function calcBounds() : Void {
 		vertices[0].set(globalX - origin.x * scaleX, globalY - origin.y * scaleY);
@@ -305,8 +419,10 @@ class AntLabel extends AntEntity {
 		saveOldPosition();
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override function rotateBounds() : Void {
 		vertices[0].set(globalX - origin.x * scaleX, globalY - origin.y * scaleY);
@@ -345,10 +461,14 @@ class AntLabel extends AntEntity {
 		saveOldPosition();
 	}
 
-	/**
-	 * Отрисовка текста в буффер указанной камеры.
-	 * 
-	 * @param	aCamera	 Камера в буффер которой необходимо отрисовать текст.
+	/**
+
+	 * Отрисовка текста в буффер указанной камеры.
+
+	 * 
+
+	 * @param	aCamera	 Камера в буффер которой необходимо отрисовать текст.
+
 	 */
 	function drawText(aCamera : AntCamera) : Void {
 		AntBasic.NUM_OF_VISIBLE++;
@@ -377,13 +497,15 @@ class AntLabel extends AntEntity {
 				_matrix.rotate(Math.PI * 2 * (globalAngle / 360));
 			}
 			_matrix.translate(_flashPoint.x + origin.x, _flashPoint.y + origin.y);
-			aCamera.buffer.draw(_buffer, _matrix, null, blend, null, smoothing);
+			aCamera.buffer.draw(_buffer, _matrix, null, Type.createEnum(BlendMode,blend), null, smoothing);
 		}
 
 	}
 
-	/**
-	 * Растеризация векторного TextField в битмап.
+	/**
+
+	 * Растеризация векторного TextField в битмап.
+
 	 */
 	function calcFrame() : Void {
 		if(_buffer == null || !_canRedraw)  {
@@ -398,8 +520,10 @@ class AntLabel extends AntEntity {
 		}
 	}
 
-	/**
-	 * Сброс помошников и обновление битмапа.
+	/**
+
+	 * Сброс помошников и обновление битмапа.
+
 	 */
 	function resetHelpers() : Void {
 		if(width == 0 || height == 0 || !_canRedraw)  {
@@ -412,7 +536,7 @@ class AntLabel extends AntEntity {
 			if(_buffer != null)  {
 				_buffer.dispose();
 			}
-			_buffer = new BitmapData(width, height, true, 0x00FFFFFF);
+			_buffer = new BitmapData(Std.int(width), Std.int(height), true, 0x00FFFFFF);
 		}
 		calcFrame();
 		updateBounds();
@@ -421,8 +545,10 @@ class AntLabel extends AntEntity {
 	//---------------------------------------
 	// GETTER / SETTERS
 	//---------------------------------------
-	/**
-	 * Определяет толщину начертания текста.
+	/**
+
+	 * Определяет толщину начертания текста.
+
 	 */
 	function get_bold() : Bool {
 		return _textFormat.bold;
@@ -437,8 +563,10 @@ class AntLabel extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Определяет текст для текстовой метки.
+	/**
+
+	 * Определяет текст для текстовой метки.
+
 	 */
 	function get_text() : String {
 		return _textField.text;
@@ -454,9 +582,12 @@ class AntLabel extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Определяет изменяется ли текстовое поле автоматически исходя из количества текста.
-	 * Выравнивание текста не работает при авто изменении размера поля.
+	/**
+
+	 * Определяет изменяется ли текстовое поле автоматически исходя из количества текста.
+
+	 * Выравнивание текста не работает при авто изменении размера поля.
+
 	 */
 	function get_autoSize() : Bool {
 		return _autoSize;
@@ -472,8 +603,10 @@ class AntLabel extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Определяет возможен ли перенос строк.
+	/**
+
+	 * Определяет возможен ли перенос строк.
+
 	 */
 	function get_wordWrap() : Bool {
 		return _textField.wordWrap;
@@ -488,8 +621,10 @@ class AntLabel extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Определяет выравнивание текста.
+	/**
+
+	 * Определяет выравнивание текста.
+
 	 */
 	function get_align() : String {
 		return _align;
@@ -512,8 +647,10 @@ class AntLabel extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Определяет текущую прозрачность кэшированного битмапа текстовой метки.
+	/**
+
+	 * Определяет текущую прозрачность кэшированного битмапа текстовой метки.
+
 	 */
 	function get_alpha() : Float {
 		return _alpha;
@@ -536,8 +673,10 @@ class AntLabel extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Определяет текущий цвет кэшированного битмапа текстовой метки.
+	/**
+
+	 * Определяет текущий цвет кэшированного битмапа текстовой метки.
+
 	 */
 	function get_color() : UInt {
 		return _color;
@@ -560,15 +699,19 @@ class AntLabel extends AntEntity {
 		return value;
 	}
 
-	/**
-	 * Возвращает количество символов в тексте.
+	/**
+
+	 * Возвращает количество символов в тексте.
+
 	 */
 	function get_numChars() : Int {
 		return _textField.length;
 	}
 
-	/**
-	 * Возвращает количество строк в тексте.
+	/**
+
+	 * Возвращает количество строк в тексте.
+
 	 */
 	function get_numLines() : Int {
 		return _textField.numLines;

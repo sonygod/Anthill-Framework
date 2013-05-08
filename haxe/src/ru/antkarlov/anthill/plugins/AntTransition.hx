@@ -1,17 +1,31 @@
-/**
- * Данный класс содержит статические методы для реализации сглаживаний.
- * Все эти методы используются классом AntTween.
- * 
- * <p>Вы можете определить свои методы для реализации сглаживаний используя метод
- * <code>registerTransition()</code>. Метод для реализации должен следовать одному простому правилу:
- * в качестве атрибута должен передаваться текущий прогресс в промежутке от 0 до 1.</p>
- * 
- * <pre>function myTransition(aRatio:Number):Number</pre>
- * 
- * <p>Идея и реализация подсмотрена у <a href="http://gamua.com/starling/">Starling Framework</a>.</p>
- * 
- * @author Антон Карлов
- * @since  26.01.2013
+/**
+
+ * Данный класс содержит статические методы для реализации сглаживаний.
+
+ * Все эти методы используются классом AntTween.
+
+ * 
+
+ * <p>Вы можете определить свои методы для реализации сглаживаний используя метод
+
+ * <code>registerTransition()</code>. Метод для реализации должен следовать одному простому правилу:
+
+ * в качестве атрибута должен передаваться текущий прогресс в промежутке от 0 до 1.</p>
+
+ * 
+
+ * <pre>function myTransition(aRatio:Number):Number</pre>
+
+ * 
+
+ * <p>Идея и реализация подсмотрена у <a href="http://gamua.com/starling/">Starling Framework</a>.</p>
+
+ * 
+
+ * @author Антон Карлов
+
+ * @since  26.01.2013
+
  */
 package ru.antkarlov.anthill.plugins;
 
@@ -43,8 +57,10 @@ class AntTransition {
 	//---------------------------------------
 	// CONSTRUCTOR
 	//---------------------------------------
-	/**
-	 * @constructor
+	/**
+
+	 * @constructor
+
 	 */
 	public function new() {
 		//super()
@@ -54,25 +70,36 @@ class AntTransition {
 	//---------------------------------------
 	// PUBLIC METHODS
 	//---------------------------------------
-	/**
-	 * Извлекает зарегистрированный метод под указанным именем.
-	 * 
-	 * @param	aName	 Имя под которым зарегистрирован необходимый метод.
-	 * @return		Возвращает указатель на метод.
+	/**
+
+	 * Извлекает зарегистрированный метод под указанным именем.
+
+	 * 
+
+	 * @param	aName	 Имя под которым зарегистрирован необходимый метод.
+
+	 * @return		Возвращает указатель на метод.
+
 	 */
 	static public function getTransition(aName : String) : Dynamic {
 		if(_transitions == null)  {
 			registerDefaults();
 		}
-		return try cast(_transitions.get(aName), Function) catch(e:Dynamic) null;
+		return _transitions.get(aName);//try cast(_transitions.get(aName), Function) catch(e:Dynamic) null;
 	}
 
-	/**
-	 * Регистрирует указанный метод под указанным именем для последующего его использования в
-	 * классе AntTween для реализации рассчетов.
-	 * 
-	 * @param	aName	 Имя метода.
-	 * @param	aFunc	 Указатель на регистрируемый метод.
+	/**
+
+	 * Регистрирует указанный метод под указанным именем для последующего его использования в
+
+	 * классе AntTween для реализации рассчетов.
+
+	 * 
+
+	 * @param	aName	 Имя метода.
+
+	 * @param	aFunc	 Указатель на регистрируемый метод.
+
 	 */
 	static public function register(aName : String, aFunc : Dynamic) : Void {
 		if(_transitions == null)  {
@@ -81,8 +108,10 @@ class AntTransition {
 		_transitions.set(aName, aFunc);
 	}
 
-	/**
-	 * Регистрирует стандартные методы для реализации рассчетов.
+	/**
+
+	 * Регистрирует стандартные методы для реализации рассчетов.
+
 	 */
 	static function registerDefaults() : Void {
 		_transitions = new AntStorage();
@@ -108,52 +137,66 @@ class AntTransition {
 	//---------------------------------------
 	// PROTECTED METHODS
 	//---------------------------------------
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function linear(aRatio : Float) : Float {
 		return aRatio;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeIn(aRatio : Float) : Float {
 		return aRatio * aRatio * aRatio;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeOut(aRatio : Float) : Float {
 		var invRatio : Float = aRatio - 1.0;
 		return invRatio * invRatio * invRatio + 1;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeInOut(aRatio : Float) : Float {
 		return easeCombined(easeIn, easeOut, aRatio);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeOutIn(aRatio : Float) : Float {
 		return easeCombined(easeOut, easeIn, aRatio);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeInBack(aRatio : Float) : Float {
 		var s : Float = 1.70158;
 		return Math.pow(aRatio, 2) * ((s + 1.0) * aRatio - s);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeOutBack(aRatio : Float) : Float {
 		var invRatio : Float = aRatio - 1.0;
@@ -161,22 +204,28 @@ class AntTransition {
 		return Math.pow(invRatio, 2) * ((s + 1.0) * aRatio + s) + 1.0;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeInOutBack(aRatio : Float) : Float {
 		return easeCombined(easeInBack, easeOutBack, aRatio);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeOutInBack(aRatio : Float) : Float {
 		return easeCombined(easeOutBack, easeInBack, aRatio);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeInElastic(aRatio : Float) : Float {
 		if(aRatio == 0 || aRatio == 1)  {
@@ -192,8 +241,10 @@ class AntTransition {
 
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeOutElastic(aRatio : Float) : Float {
 		if(aRatio == 0 || aRatio == 1)  {
@@ -208,29 +259,37 @@ class AntTransition {
 
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeInOutElastic(aRatio : Float) : Float {
 		return easeCombined(easeInElastic, easeOutElastic, aRatio);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeOutInElastic(aRatio : Float) : Float {
 		return easeCombined(easeOutElastic, easeInElastic, aRatio);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeInBounce(aRatio : Float) : Float {
 		return 1.0 - easeOutBounce(1.0 - aRatio);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeOutBounce(aRatio : Float) : Float {
 		var s : Float = 7.5625;
@@ -264,22 +323,28 @@ class AntTransition {
 		return l;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeInOutBounce(aRatio : Float) : Float {
 		return easeCombined(easeInBounce, easeOutBounce, aRatio);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeOutInBounce(aRatio : Float) : Float {
 		return easeCombined(easeOutBounce, easeInBounce, aRatio);
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	static function easeCombined(aStartFunc : Dynamic, aEndFunc : Dynamic, aRatio : Float) : Float {
 		if(aRatio < 0.5)  {

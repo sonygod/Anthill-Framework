@@ -27,17 +27,16 @@ class Main
 		var stage = Lib.current.stage;
 		stage.scaleMode = StageScaleMode.NO_SCALE;
 		stage.align = StageAlign.TOP_LEFT;
-		// entry point
+		
+		
+		
+		 new AnthillExamples();
 		
 		
 		
 	}
 	
-	 @:protected  function  say(a:Class<Dynamic>):Void{
-			
-		 Type.createInstance(a,[]);
-		
-		}
+	
 	
 }
 

@@ -17,6 +17,8 @@
   <classpaths>
     <class path="src" />
     <class path="lib" />
+    <class path="assets" />
+    <class path="example" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -24,7 +26,7 @@
     <option flashStrict="False" />
     <option mainClass="Main" />
     <option enabledebug="True" />
-    <option additional="" />
+    <option additional="-D no-pattern-matching" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
@@ -36,7 +38,10 @@
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
-    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+    <asset path="assets\LivingLightsAssets.swc" />
+    <asset path="assets\TestGraphics.swc" />
+    <asset path="assets\TestLevels.swc" />
+    <asset path="assets\TestMask.swc" />
   </library>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>

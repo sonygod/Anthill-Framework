@@ -1,13 +1,22 @@
 //import ru.antkarlov.anthill.debug.AntDrawer;
-/**
- * Используется для создания и работы с тайловыми картами. Присуствует два режима работы с тайловыми картами:
- * растеризация графики и разрезание на тайлы из клипа и классические тайловые карты.
- * 
- * @langversion ActionScript 3
- * @playerversion Flash 9.0.0
- * 
- * @author Антон Карлов
- * @since  07.09.2012
+/**
+
+ * Используется для создания и работы с тайловыми картами. Присуствует два режима работы с тайловыми картами:
+
+ * растеризация графики и разрезание на тайлы из клипа и классические тайловые карты.
+
+ * 
+
+ * @langversion ActionScript 3
+
+ * @playerversion Flash 9.0.0
+
+ * 
+
+ * @author Антон Карлов
+
+ * @since  07.09.2012
+
  */
 package ru.antkarlov.anthill;
 
@@ -15,11 +24,13 @@ import flash.display.BitmapData;
 import flash.display.MovieClip;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
-import flash.utils.SetTimeout;
+import haxe.Timer;
+//import flash.utils.SetTimeout;
 import msignal.Signal;
-import msignal.Signal2;
+import msignal.Signal;
 import ru.antkarlov.anthill.utils.AntColor;
 using Lambda;
+using Reflect;
 
 class AntTileMap extends AntEntity {
 	@:isVar public var numCols(get, never) : Int;
@@ -33,166 +44,251 @@ class AntTileMap extends AntEntity {
 	//---------------------------------------
 	// PUBLIC VARIABLES
 	//---------------------------------------
-	/**
-	 * Событие выполняющееся при запуске процесса кэширования.
+	/**
+
+	 * Событие выполняющееся при запуске процесса кэширования.
+
 	 */
 	public var eventStart : Signal1<Dynamic>;
-	/**
-	 * Событие выполняющееся при каждом шаге кэширования.
-	 * <p>Внимание: В качестве атрибута в функцию передается 
-	 * процент выполненной работы: <code>function yourFunc(percent:int):void { trace(percent); }</code></p>
+	/**
+
+	 * Событие выполняющееся при каждом шаге кэширования.
+
+	 * <p>Внимание: В качестве атрибута в функцию передается 
+
+	 * процент выполненной работы: <code>function yourFunc(percent:int):void { trace(percent); }</code></p>
+
 	 */
-	public var eventProcess : Signal2;
-	/**
-	 * Событие выполняющееся при завершении процесса кэширования.
+	public var eventProcess : Signal2<Dynamic,Dynamic>;
+	/**
+
+	 * Событие выполняющееся при завершении процесса кэширования.
+
 	 */
 	public var eventComplete : Signal1<Dynamic>;
-	/**
-	 * Список всех тайлов, используется для доступа к тайлам по индексу.
+	/**
+
+	 * Список всех тайлов, используется для доступа к тайлам по индексу.
+
 	 */
 	public var tiles : Array<Dynamic>;
-	/**
-	 * Смещение центра для всех тайлов. Следует указывать для классической 
-	 * тайловой карты в том случае, если нулевая точка в графическом представлении 
-	 * (тайлсете) не в левом верхнем углу.
-	 * <p>Например, вам необходимо сделать так чтобы у тайлов нулевая точка была в центре тайла,
-	 * предположим, что тайлы имеют размер 64x64, в этом случае необходимо задать <code>tileAxisOffset.set(32, 32);</code></p>
-	 * @default (0,0)
+	/**
+
+	 * Смещение центра для всех тайлов. Следует указывать для классической 
+
+	 * тайловой карты в том случае, если нулевая точка в графическом представлении 
+
+	 * (тайлсете) не в левом верхнем углу.
+
+	 * <p>Например, вам необходимо сделать так чтобы у тайлов нулевая точка была в центре тайла,
+
+	 * предположим, что тайлы имеют размер 64x64, в этом случае необходимо задать <code>tileAxisOffset.set(32, 32);</code></p>
+
+	 * @default (0,0)
+
 	 */
 	public var tileAxisOffset : AntPoint;
-	/**
-	 * Определяет сколько тайлов кэшируется за один шаг. Чем больше шаг тем быстрее выполняется кэширование,
-	 * но чем больше размер тайлов, тем меньшее количество тайлов следует кэшировать за один шаг.
-	 * @default	10
+	/**
+
+	 * Определяет сколько тайлов кэшируется за один шаг. Чем больше шаг тем быстрее выполняется кэширование,
+
+	 * но чем больше размер тайлов, тем меньшее количество тайлов следует кэшировать за один шаг.
+
+	 * @default	10
+
 	 */
 	public var numPerStep : Int;
-	/**
-	 * Определяет следует ли использовать быстрый способ отрисовки тайлов. Быстрый способ отрисовки
-	 * игнорирует сортировку тайлов и рисует только те тайлы, которые видят камеры. Рекомендуется использовать
-	 * для тайловых кэшированных из клипов.
-	 * @default	false
+	/**
+
+	 * Определяет следует ли использовать быстрый способ отрисовки тайлов. Быстрый способ отрисовки
+
+	 * игнорирует сортировку тайлов и рисует только те тайлы, которые видят камеры. Рекомендуется использовать
+
+	 * для тайловых кэшированных из клипов.
+
+	 * @default	false
+
 	 */
 	public var drawQuickly : Bool;
 	//---------------------------------------
 	// PROTECTED METHODS
 	//---------------------------------------
-	/**
-	 * Указатель на анимацию созданную тайловой картой при кэшировании клипа.
-	 * @default	null
+	/**
+
+	 * Указатель на анимацию созданную тайловой картой при кэшировании клипа.
+
+	 * @default	null
+
 	 */
 	var _internalTileSet : AntAnimation;
-	/**
-	 * Указатель на анимацию добавленную в тайловую карту для графического представления тайлов (тайлсет).
-	 * @default	null
+	/**
+
+	 * Указатель на анимацию добавленную в тайловую карту для графического представления тайлов (тайлсет).
+
+	 * @default	null
+
 	 */
 	var _externalTileSet : AntAnimation;
-	/**
-	 * Размер тайлов по ширине.
-	 * @default	32
+	/**
+
+	 * Размер тайлов по ширине.
+
+	 * @default	32
+
 	 */
 	var _tileWidth : Int;
-	/**
-	 * Размер тайлов по высоте.
-	 * @default	32
+	/**
+
+	 * Размер тайлов по высоте.
+
+	 * @default	32
+
 	 */
 	var _tileHeight : Int;
-	/**
-	 * Количество строк.
-	 * @default	8
+	/**
+
+	 * Количество строк.
+
+	 * @default	8
+
 	 */
 	var _numRows : Int;
-	/**
-	 * Количество столбцов.
-	 * @default	8
+	/**
+
+	 * Количество столбцов.
+
+	 * @default	8
+
 	 */
 	var _numCols : Int;
-	/**
-	 * Общее количество тайлов.
-	 * @default	64
+	/**
+
+	 * Общее количество тайлов.
+
+	 * @default	64
+
 	 */
 	var _numTiles : Int;
-	/**
-	 * Очередь клипов для растеризации.
+	/**
+
+	 * Очередь клипов для растеризации.
+
 	 */
 	var _queue : Vector<Dynamic>;
-	/**
-	 * Индекс текущего клипа для растеризации.
+	/**
+
+	 * Индекс текущего клипа для растеризации.
+
 	 */
 	var _queueIndex : Int;
-	/**
-	 * Экземпляр текущего растеризируемого клипа.
+	/**
+
+	 * Экземпляр текущего растеризируемого клипа.
+
 	 */
 	var _clip : MovieClip;
-	/**
-	 * Индекс текущего растеризируемого тайла.
+	/**
+
+	 * Индекс текущего растеризируемого тайла.
+
 	 */
 	var _tileIndex : Int;
-	/**
-	 * Общее количество тайлов текущего клипа для растеризации.
+	/**
+
+	 * Общее количество тайлов текущего клипа для растеризации.
+
 	 */
 	var _tilesTotal : Int;
-	/**
-	 * Количество строк в текущем клипе для растеризации.
+	/**
+
+	 * Количество строк в текущем клипе для растеризации.
+
 	 */
 	var _clipRows : Int;
-	/**
-	 * Количество столбцов в текущем клипе для растеризации.
+	/**
+
+	 * Количество столбцов в текущем клипе для растеризации.
+
 	 */
 	var _clipCols : Int;
-	/**
-	 * Смещение тайлов по X.
+	/**
+
+	 * Смещение тайлов по X.
+
 	 */
 	var _tileOffsetX : Int;
-	/**
-	 * Смещение тайлов по Y.
+	/**
+
+	 * Смещение тайлов по Y.
+
 	 */
 	var _tileOffsetY : Int;
-	/**
-	 * Текущий процесс хода кэширования.
+	/**
+
+	 * Текущий процесс хода кэширования.
+
 	 */
 	var _processCurrent : Int;
-	/**
-	 * Общий процесс для хода кэширования.
+	/**
+
+	 * Общий процесс для хода кэширования.
+
 	 */
 	var _processTotal : Int;
-	/**
-	 * Флаг определяющий началось ли кэширование.
+	/**
+
+	 * Флаг определяющий началось ли кэширование.
+
 	 */
 	var _cacheStarted : Bool;
-	/**
-	 * Флаг определяющий завершилось ли кэширование.
+	/**
+
+	 * Флаг определяющий завершилось ли кэширование.
+
 	 */
 	var _cacheFinished : Bool;
-	/**
-	 * Помошник для растеризации тайлов.
+	/**
+
+	 * Помошник для растеризации тайлов.
+
 	 */
 	var _rect : Rectangle;
-	/**
-	 * Помошник для растеризации тайлов.
+	/**
+
+	 * Помошник для растеризации тайлов.
+
 	 */
 	var _matrix : Matrix;
-	/**
-	 * Помошник для быстрой отрисовки тайлов.
+	/**
+
+	 * Помошник для быстрой отрисовки тайлов.
+
 	 */
 	var _topLeft : AntPoint;
-	/**
-	 * Помошник для быстрой отрисовки тайлов.
+	/**
+
+	 * Помошник для быстрой отрисовки тайлов.
+
 	 */
 	var _bottomRight : AntPoint;
-	/**
-	 * Помошник для быстрой отрисовки тайлов.
+	/**
+
+	 * Помошник для быстрой отрисовки тайлов.
+
 	 */
 	var _curPoint : AntPoint;
 	//---------------------------------------
 	// CONSTRUCTOR
 	//---------------------------------------
-	/**
-	 * @constructor
+	/**
+
+	 * @constructor
+
 	 */
 	public function new() {
 		super();
 		eventStart = new Signal1(AntTileMap);
-		eventProcess = new Signal2(AntTileMap, Number);
+		eventProcess = new Signal2(AntTileMap, Float);
 		eventComplete = new Signal1(AntTileMap);
 		tiles = [];
 		tileAxisOffset = new AntPoint();
@@ -224,8 +320,10 @@ class AntTileMap extends AntEntity {
 		_curPoint = new AntPoint();
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override public function destroy() : Void {
 		eventStart.destroy();
@@ -246,8 +344,10 @@ class AntTileMap extends AntEntity {
 	//---------------------------------------
 	// PUBLIC METHODS
 	//---------------------------------------
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override public function kill() : Void {
 		var i : Int = 0;
@@ -260,48 +360,78 @@ class AntTileMap extends AntEntity {
 		super.kill();
 	}
 
-	/**
-	 * Добавляет клип в очередь для разрезания на плитки и растеризации.
-	 * 
-	 * <p>Если необходимо собрать тайловую карту из нескольких клипов, то необходимо указывать смещение и область тайловой карты в которую
-	 * будет произведена растеризация. Например, есть два клипа размером 640x640 пикселей, которые необходимо разрезать на тайлы размером 64 пикселя
-	 * и объеденить все это в одной тайловой карте.</p>
-	 * 
-	 * <p>Пример использования:</p>
-	 * 
-	 * <listing>
-	 * var tileMap:AntTileMap = new AntTileMap();
-	 * tileMap.setMapSize(20, 10);
-	 * tileMap.setTileSize(64, 64);
-	 * 
-	 * // Содержимое первого клипа будет размещено в: по высоте с 0 по 10 тайлы; и по ширине с 0 по 10 тайлы.
-	 * tileMap.addClip(MyLevelA_mc, 0, 0, 10, 10);
-	 * 
-	 * // Содержимое второго клипа размещено в: по высоте с 0 по 10 тайлы; и по ширине с 10 по 20 тайлы.
-	 * tileMap.addClip(MyLevelB_mc, 10, 0, 20, 10);
-	 * 
-	 * tileMap.cacheClips();
-	 * </listing>
-	 * 
-	 * @param	aClipClass	 Класс клипа содержимое которого будет растеризировано и разрезано на тайлы.
-	 * @param	aLeft	 Задает левую границу с которой начнется запись тайлов.
-	 * @param	aTop	 Задает верхнюю границу с которой начнется запись тайлов.
-	 * @param	aRight	 Задает правую границу по которую будет выполнятся запись тайлов.
-	 * @param	aBottom	 Задает нижнию границу по которую будет выполнятся запись тайлов.
+	/**
+
+	 * Добавляет клип в очередь для разрезания на плитки и растеризации.
+
+	 * 
+
+	 * <p>Если необходимо собрать тайловую карту из нескольких клипов, то необходимо указывать смещение и область тайловой карты в которую
+
+	 * будет произведена растеризация. Например, есть два клипа размером 640x640 пикселей, которые необходимо разрезать на тайлы размером 64 пикселя
+
+	 * и объеденить все это в одной тайловой карте.</p>
+
+	 * 
+
+	 * <p>Пример использования:</p>
+
+	 * 
+
+	 * <listing>
+
+	 * var tileMap:AntTileMap = new AntTileMap();
+
+	 * tileMap.setMapSize(20, 10);
+
+	 * tileMap.setTileSize(64, 64);
+
+	 * 
+
+	 * // Содержимое первого клипа будет размещено в: по высоте с 0 по 10 тайлы; и по ширине с 0 по 10 тайлы.
+
+	 * tileMap.addClip(MyLevelA_mc, 0, 0, 10, 10);
+
+	 * 
+
+	 * // Содержимое второго клипа размещено в: по высоте с 0 по 10 тайлы; и по ширине с 10 по 20 тайлы.
+
+	 * tileMap.addClip(MyLevelB_mc, 10, 0, 20, 10);
+
+	 * 
+
+	 * tileMap.cacheClips();
+
+	 * </listing>
+
+	 * 
+
+	 * @param	aClipClass	 Класс клипа содержимое которого будет растеризировано и разрезано на тайлы.
+
+	 * @param	aLeft	 Задает левую границу с которой начнется запись тайлов.
+
+	 * @param	aTop	 Задает верхнюю границу с которой начнется запись тайлов.
+
+	 * @param	aRight	 Задает правую границу по которую будет выполнятся запись тайлов.
+
+	 * @param	aBottom	 Задает нижнию границу по которую будет выполнятся запись тайлов.
+
 	 */
 	public function addClip(aClipClass : Class<Dynamic>, aLeft : Int = -1, aTop : Int = -1, aRight : Int = -1, aBottom : Int = -1) : Void {
 		var areaLower : AntPoint = ((aLeft < 0 && aTop < 0)) ? new AntPoint(0, 0) : new AntPoint(aLeft, aTop);
 		var areaUpper : AntPoint = ((aRight < 0 && aBottom < 0)) ? new AntPoint(_numCols, _numRows) : new AntPoint(aRight, aBottom);
 		_queue.push({
-			clipClass : aClipClass
+			clipClass : aClipClass,
 			areaLower : areaLower,
 			areaUpper : areaUpper,
 
-		});
+		}); 
 	}
 
-	/**
-	 * Запускает процесс растеризации тайловой карты из добавленных ранее клипов.
+	/**
+
+	 * Запускает процесс растеризации тайловой карты из добавленных ранее клипов.
+
 	 */
 	public function cacheClips() : Void {
 		if(_queue.length == 0)  {
@@ -323,15 +453,24 @@ class AntTileMap extends AntEntity {
 		cacheClip();
 	}
 
-	/**
-	 * Быстрый спосбо создания тайловой карты из указанного клипа. Не позволяет отслеживать
-	 * ход выполнения кэширования и при больших объемах графики может привести к аварийному 
-	 * завершению скрипта из-за большой задержки. Так же не подходит для создания тайловой 
-	 * карты из нескольких клипов. Следует использовать только для маленьких тайловых карт
-	 * и отладки.
-	 * 
-	 * @param	aClipClass	 Класс клипа содержимое которого будет растеризировано и разрезано на тайлы.
-	 * @return		Возвращает указатель на анимацию с растеризированной графикой уровня.
+	/**
+
+	 * Быстрый спосбо создания тайловой карты из указанного клипа. Не позволяет отслеживать
+
+	 * ход выполнения кэширования и при больших объемах графики может привести к аварийному 
+
+	 * завершению скрипта из-за большой задержки. Так же не подходит для создания тайловой 
+
+	 * карты из нескольких клипов. Следует использовать только для маленьких тайловых карт
+
+	 * и отладки.
+
+	 * 
+
+	 * @param	aClipClass	 Класс клипа содержимое которого будет растеризировано и разрезано на тайлы.
+
+	 * @return		Возвращает указатель на анимацию с растеризированной графикой уровня.
+
 	 */
 	public function cacheClipQuickly(aClipClass : Class<Dynamic>) : AntAnimation {
 		if(!(Std.is(aClipClass, MovieClip)))  {
@@ -339,14 +478,14 @@ class AntTileMap extends AntEntity {
 		}
 		kill();
 		resetTileSet();
-		var clip : MovieClip = new (try cast(aClipClass, MovieClip) catch(e:Dynamic) null)();
+		var clip : MovieClip = Type.createInstance(aClipClass,[]); //new (try cast(aClipClass, MovieClip) catch(e:Dynamic) null)();
 		var tileX : Int = 0;
 		var tileY : Int = 0;
 		var tile : AntActor;
 		var bmpData : BitmapData;
 		var i : Int = 0;
 		while(i < _numTiles) {
-			tileY = AntMath.floor(i / _numCols);
+			tileY = Std.int(AntMath.floor(i / _numCols));
 			tileX = i - tileY * _numCols;
 			_rect.x = tileX * _tileWidth;
 			_rect.y = tileY * _tileHeight;
@@ -375,11 +514,16 @@ class AntTileMap extends AntEntity {
 		return _internalTileSet;
 	}
 
-	/**
-	 * Устанавливает новый размер тайловой карты.
-	 * 
-	 * @param	aCols	 Количество столбцов (ячеек по ширине).
-	 * @param	aRows	 Количество строк (ячеек по высоте).
+	/**
+
+	 * Устанавливает новый размер тайловой карты.
+
+	 * 
+
+	 * @param	aCols	 Количество столбцов (ячеек по ширине).
+
+	 * @param	aRows	 Количество строк (ячеек по высоте).
+
 	 */
 	public function setMapSize(aCols : Int, aRows : Int) : Void {
 		_numCols = aCols;
@@ -388,11 +532,16 @@ class AntTileMap extends AntEntity {
 		updateSettings();
 	}
 
-	/**
-	 * Устанавливает новый размер тайла.
-	 * 
-	 * @param	aWidth	 Размер тайла по ширине.
-	 * @param	aHeight	 Размер тайла по высоте.
+	/**
+
+	 * Устанавливает новый размер тайла.
+
+	 * 
+
+	 * @param	aWidth	 Размер тайла по ширине.
+
+	 * @param	aHeight	 Размер тайла по высоте.
+
 	 */
 	public function setTileSize(aWidth : Int, aHeight : Int) : Void {
 		_tileWidth = aWidth;
@@ -400,10 +549,14 @@ class AntTileMap extends AntEntity {
 		updateSettings();
 	}
 
-	/**
-	 * Устанавливает графическое представление тайлов из анимации.
-	 * 
-	 * @param	aAnimation	 Анимация кадры которой представляют собой вариации тайлов. 
+	/**
+
+	 * Устанавливает графическое представление тайлов из анимации.
+
+	 * 
+
+	 * @param	aAnimation	 Анимация кадры которой представляют собой вариации тайлов. 
+
 	 */
 	public function setTileSet(aAnimation : AntAnimation) : Void {
 		_externalTileSet = aAnimation;
@@ -424,20 +577,29 @@ class AntTileMap extends AntEntity {
 		}
 	}
 
-	/**
-	 * Устанавливает графическое представление тайлов из анимации находящейся в кэше анимаций.
-	 * 
-	 * @param	aKey	 Имя анимации в кэше анимаций.
+	/**
+
+	 * Устанавливает графическое представление тайлов из анимации находящейся в кэше анимаций.
+
+	 * 
+
+	 * @param	aKey	 Имя анимации в кэше анимаций.
+
 	 */
 	public function setTileSetFromCache(aKey : String) : Void {
 		setTileSet(AntAnimation.fromCache(aKey));
 	}
 
-	/**
-	 * Устанавливает фактор прокрутки для всех тайлов.
-	 * 
-	 * @param	aX	 Коэфицент прокрутки по X.
-	 * @param	aY	 Коэфицент прокрутки по Y.
+	/**
+
+	 * Устанавливает фактор прокрутки для всех тайлов.
+
+	 * 
+
+	 * @param	aX	 Коэфицент прокрутки по X.
+
+	 * @param	aY	 Коэфицент прокрутки по Y.
+
 	 */
 	public function setScrollFactor(aX : Float = 1, aY : Float = 1) : Void {
 		var actor : AntActor;
@@ -452,11 +614,16 @@ class AntTileMap extends AntEntity {
 		scrollFactor.set(aX, aY);
 	}
 
-	/**
-	 * Переключает кадр тайла по его индексу.
-	 * 
-	 * @param	aIndex	 Индекс тайла для которого необходимо переключить кадр.
-	 * @param	aFrame	 Номер кадра на который необходимо переключится.
+	/**
+
+	 * Переключает кадр тайла по его индексу.
+
+	 * 
+
+	 * @param	aIndex	 Индекс тайла для которого необходимо переключить кадр.
+
+	 * @param	aFrame	 Номер кадра на который необходимо переключится.
+
 	 */
 	public function switchFrame(aIndex : Int, aFrame : Int) : Void {
 		if(aIndex < 0 || aIndex >= tiles.length)  {
@@ -468,53 +635,77 @@ class AntTileMap extends AntEntity {
 		}
 	}
 
-	/**
-	 * Возвращает индекс тайла по координатам ячейки.
-	 * 
-	 * @param	aX	 Координата ячейки по X.
-	 * @param	aY	 Координата ячейки по Y.
-	 * @return		Возвращает индекс тайла от 0 до numTiles - 1.
+	/**
+
+	 * Возвращает индекс тайла по координатам ячейки.
+
+	 * 
+
+	 * @param	aX	 Координата ячейки по X.
+
+	 * @param	aY	 Координата ячейки по Y.
+
+	 * @return		Возвращает индекс тайла от 0 до numTiles - 1.
+
 	 */
 	public function getIndex(aX : Int, aY : Int) : Int {
-		return AntMath.trimToRange(_numCols * aY + aX, 0, _numTiles - 1);
+		return Std.int(AntMath.trimToRange(_numCols * aY + aX, 0, _numTiles - 1));
 	}
 
-	/**
-	 * Возвращает индекс тайла по произвольным координатам в пикселях.
-	 * 
-	 * @param	aX	 Позиция в пикселях по X.
-	 * @param	aY	 Позиция в пикселях по Y.
-	 * @return		Возвращает индекс тайла от 0 до numTiles - 1.
+	/**
+
+	 * Возвращает индекс тайла по произвольным координатам в пикселях.
+
+	 * 
+
+	 * @param	aX	 Позиция в пикселях по X.
+
+	 * @param	aY	 Позиция в пикселях по Y.
+
+	 * @return		Возвращает индекс тайла от 0 до numTiles - 1.
+
 	 */
 	public function getIndexByPosition(aX : Float, aY : Float) : Int {
-		var tileX : Int = AntMath.floor((aX - globalX + tileAxisOffset.x) / _tileWidth);
-		var tileY : Int = AntMath.floor((aY - globalY + tileAxisOffset.y) / _tileHeight);
-		return getIndex(AntMath.trimToRange(tileX, 0, _numCols - 1), AntMath.trimToRange(tileY, 0, _numRows - 1));
+		var tileX : Int = Std.int(AntMath.floor((aX - globalX + tileAxisOffset.x) / _tileWidth));
+		var tileY : Int =Std.int( AntMath.floor((aY - globalY + tileAxisOffset.y) / _tileHeight));
+		return getIndex(Std.int(AntMath.trimToRange(tileX, 0, _numCols - 1)), Std.int(AntMath.trimToRange(tileY, 0, _numRows - 1)));
 	}
 
-	/**
-	 * Возвращает коордианты ячейки по индексу тайла.
-	 * 
-	 * @param	aIndex	 Индекс тайла.
-	 * @param	aResult	 Точка куда может быть записан результат.
-	 * @return		Возвращает координаты ячейки.
+	/**
+
+	 * Возвращает коордианты ячейки по индексу тайла.
+
+	 * 
+
+	 * @param	aIndex	 Индекс тайла.
+
+	 * @param	aResult	 Точка куда может быть записан результат.
+
+	 * @return		Возвращает координаты ячейки.
+
 	 */
 	public function getCoordinates(aIndex : Int, aResult : AntPoint = null) : AntPoint {
 		if(aResult == null)  {
 			aResult = new AntPoint();
 		}
-		aIndex = AntMath.trimToRange(aIndex, 0, _numTiles - 1);
+		aIndex = Std.int(AntMath.trimToRange(aIndex, 0, _numTiles - 1));
 		aResult.y = AntMath.floor(aIndex / _numCols);
 		aResult.x = aIndex - aResult.y * _numCols;
 		return aResult;
 	}
 
-	/**
-	 * Возвращает позицию ячейки в пикселях по индексу тайла.
-	 * 
-	 * @param	aIndex	 Индекс тайла.
-	 * @param	aResult	 Точка куда может быть записан результат.
-	 * @return		Возвращает позицию ячейки в пикселях.
+	/**
+
+	 * Возвращает позицию ячейки в пикселях по индексу тайла.
+
+	 * 
+
+	 * @param	aIndex	 Индекс тайла.
+
+	 * @param	aResult	 Точка куда может быть записан результат.
+
+	 * @return		Возвращает позицию ячейки в пикселях.
+
 	 */
 	public function getPosition(aIndex : Int, aResult : AntPoint = null) : AntPoint {
 		if(aResult == null)  {
@@ -526,8 +717,10 @@ class AntTileMap extends AntEntity {
 		return aResult;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	public function getGlobalPosition(aIndex : Int, aResult : AntPoint = null) : AntPoint {
 		if(aResult == null)  {
@@ -541,8 +734,10 @@ class AntTileMap extends AntEntity {
 		return aResult;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	public function getMyTile(aIndex : Int, aClass : Class<Dynamic> = null) : AntEntity {
 		if(aIndex < 0 || aIndex >= tiles.length)  {
@@ -569,15 +764,24 @@ class AntTileMap extends AntEntity {
 		return tile;
 	}
 
-	/**
-	 * Безопасное извлечение тайла из карты по индексу.
-	 * 
-	 * <p>Примечание: Вернет <code>null</code> если указанный индекс тайла выходит за пределы карты или если тайл не существует.
-	 * С флагом <code>aAutoCreate = true</code>, вернет <code>null</code> только в случае выхода индекса за пределы тайловой карты.</p>
-	 * 
-	 * @param	aIndex	 Индекс тайла который необходимо получить.
-	 * @param	aAutoCreate	 Флаг активирующий автоматическое создание тайла по индексу если тайла не существует.
-	 * @return		Возвращает указатель на тайл по индексу. 
+	/**
+
+	 * Безопасное извлечение тайла из карты по индексу.
+
+	 * 
+
+	 * <p>Примечание: Вернет <code>null</code> если указанный индекс тайла выходит за пределы карты или если тайл не существует.
+
+	 * С флагом <code>aAutoCreate = true</code>, вернет <code>null</code> только в случае выхода индекса за пределы тайловой карты.</p>
+
+	 * 
+
+	 * @param	aIndex	 Индекс тайла который необходимо получить.
+
+	 * @param	aAutoCreate	 Флаг активирующий автоматическое создание тайла по индексу если тайла не существует.
+
+	 * @return		Возвращает указатель на тайл по индексу. 
+
 	 */
 	public function getTile(aIndex : Int, aAutoCreate : Bool = false) : AntActor {
 		if(aIndex < 0 || aIndex >= tiles.length)  {
@@ -610,13 +814,20 @@ class AntTileMap extends AntEntity {
 		return tile;
 	}
 
-	/**
-	 * Извлекает массив индексов попадающие в прямоугольник заданный угловыми индексами.
-	 * 
-	 * @param	aFirstIndex	 Первый индекс определяющий прямоугольник (например, левый верхний угол).
-	 * @param	aLastIndex	 Последний индекс определяющий прямоугольник (например, правый нижний угол).
-	 * @param	aResult	 Массив в который может быть записан результат.
-	 * @return		Массив индексов попадающих в заданный прямоугольник независимо от наличия тайлов.
+	/**
+
+	 * Извлекает массив индексов попадающие в прямоугольник заданный угловыми индексами.
+
+	 * 
+
+	 * @param	aFirstIndex	 Первый индекс определяющий прямоугольник (например, левый верхний угол).
+
+	 * @param	aLastIndex	 Последний индекс определяющий прямоугольник (например, правый нижний угол).
+
+	 * @param	aResult	 Массив в который может быть записан результат.
+
+	 * @return		Массив индексов попадающих в заданный прямоугольник независимо от наличия тайлов.
+
 	 */
 	public function queryRectIndexes(aFirstIndex : Int, aLastIndex : Int, aResult : Array<Dynamic> = null) : Array<Dynamic> {
 		if(aResult == null)  {
@@ -642,17 +853,17 @@ class AntTileMap extends AntEntity {
 		var i : Int;
 		var j : Int;
 		if(lowerPos.y == upperPos.y)  {
-			i = lowerPos.x;
+			i = Std.int(lowerPos.x);
 			while(i <= upperPos.x) {
-				aResult[aResult.length] = getIndex(i, lowerPos.y);
+				aResult[aResult.length] = getIndex(i, Std.int(lowerPos.y));
 				i++;
 			}
 		}
 
 		else  {
-			i = lowerPos.y;
+			i = Std.int(lowerPos.y);
 			while(i <= upperPos.y) {
-				j = lowerPos.x;
+				j = Std.int(lowerPos.x);
 				while(j <= upperPos.x) {
 					aResult[aResult.length] = getIndex(j, i);
 					j++;
@@ -664,8 +875,10 @@ class AntTileMap extends AntEntity {
 		return aResult;
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override public function draw(aCamera : AntCamera) : Void {
 		if(drawQuickly)  {
@@ -678,44 +891,74 @@ class AntTileMap extends AntEntity {
 
 	}
 
-	/**
-	 * @inheritDoc
+	/**
+
+	 * @inheritDoc
+
 	 */
 	override public function debugDraw(aCamera : AntCamera) : Void {
-		/*var p1:AntPoint = new AntPoint();
-		var p2:AntPoint = new AntPoint();
-		var drawer:AntDrawer = AntG.debugDrawer;
-		if (drawer.showGrid)
-		{
-		var i:int = 0;
-		for (i = 0; i < _numRows + 1; i++)
-		{
-		p1.x = globalX + aCamera.scroll.x * scrollFactor.x - tileAxisOffset.x;
-		p2.x = globalX + _tileWidth * _numCols + aCamera.scroll.x * scrollFactor.x - tileAxisOffset.x;
-		p1.y = p2.y = globalY + _tileHeight * i + aCamera.scroll.y * scrollFactor.y - tileAxisOffset.y;
-		drawer.drawLine(p1.x, p1.y, p2.x, p2.y, AntColor.GRAY);
-		}
-		
-		for (i = 0; i < _numCols + 1; i++)
-		{
-		p1.x = p2.x = globalX + _tileWidth * i + aCamera.scroll.x * scrollFactor.x - tileAxisOffset.x;
-		p1.y = globalY + aCamera.scroll.y * scrollFactor.y - tileAxisOffset.y;
-		p2.y = globalY + _tileHeight * _numRows + aCamera.scroll.y * scrollFactor.y - tileAxisOffset.y;
-		drawer.drawLine(p1.x, p1.y, p2.x, p2.y, AntColor.GRAY);
-		}
-		}
-		
+		/*var p1:AntPoint = new AntPoint();
+
+		var p2:AntPoint = new AntPoint();
+
+		var drawer:AntDrawer = AntG.debugDrawer;
+
+		if (drawer.showGrid)
+
+		{
+
+		var i:int = 0;
+
+		for (i = 0; i < _numRows + 1; i++)
+
+		{
+
+		p1.x = globalX + aCamera.scroll.x * scrollFactor.x - tileAxisOffset.x;
+
+		p2.x = globalX + _tileWidth * _numCols + aCamera.scroll.x * scrollFactor.x - tileAxisOffset.x;
+
+		p1.y = p2.y = globalY + _tileHeight * i + aCamera.scroll.y * scrollFactor.y - tileAxisOffset.y;
+
+		drawer.drawLine(p1.x, p1.y, p2.x, p2.y, AntColor.GRAY);
+
+		}
+
+		
+
+		for (i = 0; i < _numCols + 1; i++)
+
+		{
+
+		p1.x = p2.x = globalX + _tileWidth * i + aCamera.scroll.x * scrollFactor.x - tileAxisOffset.x;
+
+		p1.y = globalY + aCamera.scroll.y * scrollFactor.y - tileAxisOffset.y;
+
+		p2.y = globalY + _tileHeight * _numRows + aCamera.scroll.y * scrollFactor.y - tileAxisOffset.y;
+
+		drawer.drawLine(p1.x, p1.y, p2.x, p2.y, AntColor.GRAY);
+
+		}
+
+		}
+
+		
+
 		super.debugDraw(aCamera);*/
 	}
 
 	//---------------------------------------
 	// PROTECTED METHODS
 	//---------------------------------------
-	/**
-	 * Быстрая отрисовка только тех тайлов которые попадают в поле видимости камер.
-	 * Другие тайлы полностью игнорируются.
-	 * 
-	 * @param	aCamera	 Камера для которой выполняется отрисовка.
+	/**
+
+	 * Быстрая отрисовка только тех тайлов которые попадают в поле видимости камер.
+
+	 * Другие тайлы полностью игнорируются.
+
+	 * 
+
+	 * @param	aCamera	 Камера для которой выполняется отрисовка.
+
 	 */
 	function drawQuick(aCamera : AntCamera) : Void {
 		var dx : Float = aCamera.scroll.x * -1 * scrollFactor.x;
@@ -723,14 +966,14 @@ class AntTileMap extends AntEntity {
 		getCoordinates(getIndexByPosition(dx, dy), _topLeft);
 		getCoordinates(getIndexByPosition(dx + aCamera.width, dy + aCamera.height), _bottomRight);
 		_bottomRight.increment(1);
-		var numX : Int = _bottomRight.x - _topLeft.x;
-		var numY : Int = _bottomRight.y - _topLeft.y;
-		var total : Int = numX * numY;
+		var numX : Int = Std.int(_bottomRight.x - _topLeft.x);
+		var numY : Int = Std.int(_bottomRight.y - _topLeft.y);
+		var total : Int = Std.int(numX * numY);
 		_curPoint.copyFrom(_topLeft);
 		var i : Int = 0;
 		var tile : AntActor;
 		while(i < total) {
-			tile = try cast(tiles[getIndex(_curPoint.x, _curPoint.y)], AntActor) catch(e:Dynamic) null;
+			tile = try cast(tiles[getIndex(Std.int(_curPoint.x), Std.int(_curPoint.y))], AntActor) catch(e:Dynamic) null;
 			if(tile != null && tile.exists && tile.visible)  {
 				tile.updateBounds();
 				tile.drawActor(aCamera);
@@ -745,24 +988,31 @@ class AntTileMap extends AntEntity {
 
 	}
 
-	/**
-	 * Сбрасывает текущий тайлсет.
+	/**
+
+	 * Сбрасывает текущий тайлсет.
+
 	 */
 	function resetTileSet() : Void {
 		if(_internalTileSet != null)  {
 			_internalTileSet.destroy();
 		}
 		_internalTileSet = new AntAnimation("TileMap");
-		_internalTileSet.width = _rect.width = _tileWidth;
-		_internalTileSet.height = _rect.height = _tileHeight;
+		_internalTileSet.width =  _tileWidth;
+		_internalTileSet.height =  _tileHeight;
+		
+		_rect.width = _tileWidth;
+		_rect.height = _tileHeight;
 		_internalTileSet.frames = new Vector<BitmapData>(_numTiles);
 		_internalTileSet.offsetX = new Vector<Float>(_numTiles);
 		_internalTileSet.offsetY = new Vector<Float>(_numTiles);
 		_internalTileSet.totalFrames = _processTotal = numTilesForCaching();
 	}
 
-	/**
-	 * Обновляет настройки карты.
+	/**
+
+	 * Обновляет настройки карты.
+
 	 */
 	function updateSettings() : Void {
 		width = _numCols * _tileWidth;
@@ -771,7 +1021,8 @@ class AntTileMap extends AntEntity {
 		var n : Int = tiles.length;
 		var tile : AntActor;
 		if(tiles.length < _numTiles)  {
-			tiles.length = _numTiles;
+			//tiles.length = _numTiles;
+			tiles.setField("length", _numTiles);
 		}
 
 		else if(tiles.length > _numTiles)  {
@@ -785,7 +1036,7 @@ class AntTileMap extends AntEntity {
 				i++;
 			}
 
-			tiles.length = _numTiles;
+			tiles.setField("length", _numTiles);
 		}
 		var pos : AntPoint = new AntPoint();
 		i = 0;
@@ -801,24 +1052,28 @@ class AntTileMap extends AntEntity {
 
 	}
 
-	/**
-	 * Кэширует очередной клип из очереди клипов.
+	/**
+
+	 * Кэширует очередной клип из очереди клипов.
+
 	 */
 	function cacheClip() : Void {
 		_queueIndex++;
 		var o : Dynamic = _queue[_queueIndex];
-		_clipCols = o.areaUpper.x - o.areaLower.x;
-		_clipRows = o.areaUpper.y - o.areaLower.y;
+		_clipCols = Std.int(o.areaUpper.x - o.areaLower.x);
+		_clipRows = Std.int(o.areaUpper.y - o.areaLower.y);
 		_tileOffsetX = o.areaLower.x;
 		_tileOffsetY = o.areaLower.y;
 		_tileIndex = 0;
-		_tilesTotal = (o.areaUpper.x - o.areaLower.x) * (o.areaUpper.y - o.areaLower.y);
-		_clip = new (Type.getClass(o.clipClass))();
+		_tilesTotal = Std.int((o.areaUpper.x - o.areaLower.x) * (o.areaUpper.y - o.areaLower.y));
+		_clip = Type.createInstance(o.clipClass,[]);// new (Type.getClass(o.clipClass))();
 		step();
 	}
 
-	/**
-	 * Шаг кэширования.
+	/**
+
+	 * Шаг кэширования.
+
 	 */
 	function step() : Void {
 		var tileX : Int = 0;
@@ -829,8 +1084,8 @@ class AntTileMap extends AntEntity {
 		var tile : AntActor;
 		var i : Int = _tileIndex;
 		while(i < n) {
-			tileY = AntMath.floor(i / _clipCols);
-			tileX = i - tileY * _clipCols;
+			tileY = Std.int(AntMath.floor(i / _clipCols));
+			tileX = Std.int(i - tileY * _clipCols);
 			_rect.x = tileX * _tileWidth;
 			_rect.y = tileY * _tileHeight;
 			bmpData = new BitmapData(_tileWidth, _tileHeight, true, 0);
@@ -871,13 +1126,15 @@ class AntTileMap extends AntEntity {
 		}
 
 		else  {
-			setTimeout(step, 1);
+			Timer.delay(step, 1);
 		}
 
 	}
 
-	/**
-	 * Считает общее количество тайлов для кэширования.
+	/**
+
+	 * Считает общее количество тайлов для кэширования.
+
 	 */
 	function numTilesForCaching() : Int {
 		var sum : Int = 0;
@@ -887,7 +1144,7 @@ class AntTileMap extends AntEntity {
 		while(i < n) {
 			o = _queue[i++];
 			if(o != null)  {
-				sum += (o.areaUpper.x - o.areaLower.x) * (o.areaUpper.y - o.areaLower.y);
+				sum += Std.int((o.areaUpper.x - o.areaLower.x) * (o.areaUpper.y - o.areaLower.y));
 			}
 		}
 
@@ -897,50 +1154,64 @@ class AntTileMap extends AntEntity {
 	//---------------------------------------
 	// GETTER / SETTERS
 	//---------------------------------------
-	/**
-	 * Количество столбцов.
+	/**
+
+	 * Количество столбцов.
+
 	 */
 	function get_numCols() : Int {
 		return _numCols;
 	}
 
-	/**
-	 * Количество строк.
+	/**
+
+	 * Количество строк.
+
 	 */
 	function get_numRows() : Int {
 		return _numRows;
 	}
 
-	/**
-	 * Количество тайлов.
+	/**
+
+	 * Количество тайлов.
+
 	 */
 	function get_numTiles() : Int {
 		return _numTiles;
 	}
 
-	/**
-	 * Ширина тайлов.
+	/**
+
+	 * Ширина тайлов.
+
 	 */
 	function get_tileWidth() : Int {
 		return _tileWidth;
 	}
 
-	/**
-	 * Высота тайлов.
+	/**
+
+	 * Высота тайлов.
+
 	 */
 	function get_tileHeight() : Int {
 		return _tileHeight;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	function get_mapWidth() : Int {
 		return _numCols * _tileWidth;
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	function get_mapHeight() : Int {
 		return _numRows * _tileHeight;
