@@ -9,8 +9,9 @@ import flash.utils.setTimeout;
 import msignal.Signal1;
 import msignal.Signal2;
 
-import ru.antkarlov.anthill.debug.AntDrawer;
+//import ru.antkarlov.anthill.debug.AntDrawer;
 import ru.antkarlov.anthill.utils.AntColor;
+import Lambda;
 /**
 	 * Используется для создания и работы с тайловыми картами. Присуствует два режима работы с тайловыми картами:
 	 * растеризация графики и разрезание на тайлы из клипа и классические тайловые карты.
@@ -803,7 +804,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 		 */
 		override public function debugDraw(aCamera:AntCamera):void
 		{
-			var p1:AntPoint = new AntPoint();
+			/*var p1:AntPoint = new AntPoint();
 			var p2:AntPoint = new AntPoint();
 			var drawer:AntDrawer = AntG.debugDrawer;
 			if (drawer.showGrid)
@@ -826,7 +827,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 				}
 			}
 			
-			super.debugDraw(aCamera);
+			super.debugDraw(aCamera);*/
 		}
 		
 		//---------------------------------------

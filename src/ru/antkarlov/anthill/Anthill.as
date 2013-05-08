@@ -9,7 +9,7 @@ import flash.events.MouseEvent;
 import flash.ui.Mouse;
 import flash.utils.getTimer;
 
-import ru.antkarlov.anthill.debug.AntPerfomance;
+//import ru.antkarlov.anthill.debug.AntPerfomance;
 public class Anthill extends Sprite
 	{
 		//Flex v4.x SDK
@@ -84,7 +84,7 @@ public class Anthill extends Sprite
 		/**
 		 * Указатель на сборщик информации о производительности.
 		 */
-		protected var _perfomance:AntPerfomance;
+	//	protected var _perfomance:AntPerfomance;
 		
 		/**
 		 * Определяет используется в игре системный курсор или нет.
@@ -102,7 +102,7 @@ public class Anthill extends Sprite
 		public function Anthill(aInitialState:Class = null, aFrameRate:uint = 35, 
 			aUseSystemCursor:Boolean = true)
 		{
-			//super()
+			super()
 			
 			_useSystemCursor = aUseSystemCursor;
 			if (!_useSystemCursor)
@@ -131,13 +131,13 @@ public class Anthill extends Sprite
 			}
 			
 			AntG.init(this);
-			_perfomance = AntG.debugger.perfomance;
+			//_perfomance = AntG.debugger.perfomance;
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.frameRate = _frameRate;
 			
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, AntG.debugger.console.keyDownHandler);
+			//stage.addEventListener(KeyboardEvent.KEY_DOWN, AntG.debugger.console.keyDownHandler);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, AntG.keys.keyDownHandler);
 			stage.addEventListener(KeyboardEvent.KEY_UP, AntG.keys.keyUpHandler);
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, AntG.mouse.mouseDownHandler);
@@ -146,12 +146,12 @@ public class Anthill extends Sprite
 			stage.addEventListener(MouseEvent.MOUSE_OVER, AntG.mouse.mouseOverHandler);
 			stage.addEventListener(MouseEvent.MOUSE_WHEEL, AntG.mouse.mouseWheelHandler);
 			
-			_perfomance.start();
+			//_perfomance.start();
 			
 			_isCreated = true;
 			if (InitialState != null)
 			{
-				switchState(new InitialState());
+				switchState(Type.createInstance(InitialState,[]) as AntState);
 				start();
 			}
 		}
@@ -238,7 +238,7 @@ public class Anthill extends Sprite
 			// Рассчет времени между кадрами.
 			var curTime:uint = getTimer();
 			var elapsedMs:uint = curTime - _total;
-			_perfomance.ratingTotal.add(elapsedMs);
+			//_perfomance.ratingTotal.add(elapsedMs);
 			_elapsed = elapsedMs / 1000;
 			_total = curTime;
 			AntG.elapsed = (_elapsed > AntG.maxElapsed) ? AntG.maxElapsed : _elapsed;
@@ -249,20 +249,20 @@ public class Anthill extends Sprite
 			
 			// Расчет времени ушедшего на процессинг.
 			var updTime:uint = getTimer();
-			_perfomance.ratingUpdate.add(updTime - curTime);
+			//_perfomance.ratingUpdate.add(updTime - curTime);
 			
 			// Рендер графического контента.
 			render();
 			
 			// Рассчет времени ушедшего на рендер.
 			var rndTime:uint = getTimer();
-			_perfomance.ratingRender.add(rndTime - updTime);
+			//_perfomance.ratingRender.add(rndTime - updTime);
 			
 			AntG.updatePlugins();
 			
 			// Рассчет времени ушедшего на плагины.
-			_perfomance.ratingPlugins.add(getTimer() - rndTime);
-			AntG.debugger.update();
+		//	_perfomance.ratingPlugins.add(getTimer() - rndTime);
+			//AntG.debugger.update();
 		}
 		
 		/**
@@ -296,7 +296,7 @@ public class Anthill extends Sprite
 				cameras = AntG.cameras;
 			}
 			
-			var debugDraw:Boolean = (AntG.debugDrawer != null);
+			var debugDraw:Boolean = false;//(AntG.debugDrawer != null);
 			var i:int = 0;
 			var n:int = cameras.length;
 			var camera:AntCamera;
@@ -309,7 +309,7 @@ public class Anthill extends Sprite
 					
 					if (debugDraw)
 					{
-						AntG.debugDrawer.buffer = camera.buffer;
+						//AntG.debugDrawer.buffer = camera.buffer;
 					}
 					
 					camera.beginDraw();
@@ -330,7 +330,7 @@ public class Anthill extends Sprite
 					
 					if (debugDraw)
 					{
-						AntG.debugDrawer.buffer = null;
+						//AntG.debugDrawer.buffer = null;
 					}
 				}
 			}

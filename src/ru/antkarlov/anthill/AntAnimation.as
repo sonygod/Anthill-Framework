@@ -142,7 +142,7 @@ import flash.geom.Rectangle;
 			mtx.tx = -flooredX;
 			mtx.ty = -flooredY;
 			
-			scratchBitmapData = new BitmapData(rect.width, rect.height, true, 0);
+			scratchBitmapData = new BitmapData(int(rect.width), int(rect.height), true, 0);
 			scratchBitmapData.draw(aSprite, mtx);
 			
 			var trimBounds:Rectangle = scratchBitmapData.getColorBoundsRect(0xFF000000, 0x00000000, false);
@@ -151,18 +151,18 @@ import flash.geom.Rectangle;
 			trimBounds.width += 2;
 			trimBounds.height += 2;
 			
-			var bmpData:BitmapData = new BitmapData(trimBounds.width, trimBounds.height, true, 0);
+			var bmpData:BitmapData = new BitmapData(int(trimBounds.width), int(trimBounds.height), true, 0);
 			bmpData.copyPixels(scratchBitmapData, trimBounds, DEST_POINT);
 			
-			flooredX += trimBounds.x;
-			flooredY += trimBounds.y;
+			flooredX += int(trimBounds.x);
+			flooredY += int(trimBounds.y);
 			
 			frames.push(bmpData);
 			offsetX.push(flooredX);
 			offsetY.push(flooredY);
 			
-			width = (width < trimBounds.width) ? trimBounds.width : width;
-			height = (height < trimBounds.height) ? trimBounds.height : height;
+			width = (width < int(trimBounds.width)) ? int(trimBounds.width) : width;
+			height = (height < int(trimBounds.height)) ? int(trimBounds.height) : height;
 			
 			scratchBitmapData.dispose();
 		}
@@ -194,7 +194,7 @@ import flash.geom.Rectangle;
 				mtx.tx = -flooredX;
 				mtx.ty = -flooredY;
 				
-				scratchBitmapData = new BitmapData(rect.width, rect.height, true, 0);
+				scratchBitmapData = new BitmapData(int(rect.width), int(rect.height), true, 0);
 				scratchBitmapData.draw(aClip, mtx);
 				
 				var trimBounds:Rectangle = scratchBitmapData.getColorBoundsRect(0xFF000000, 0x00000000, false);
@@ -203,18 +203,18 @@ import flash.geom.Rectangle;
 				trimBounds.width += 2;
 				trimBounds.height += 2;
 				
-				var bmpData:BitmapData = new BitmapData(trimBounds.width, trimBounds.height, true, 0);
+				var bmpData:BitmapData = new BitmapData(int(trimBounds.width), int(trimBounds.height), true, 0);
 				bmpData.copyPixels(scratchBitmapData, trimBounds, DEST_POINT);
 				
-				flooredX += trimBounds.x;
-				flooredY += trimBounds.y;
+				flooredX += int(trimBounds.x);
+				flooredY += int(trimBounds.y);
 				
 				frames.push(bmpData);
 				offsetX.push(flooredX);
 				offsetY.push(flooredY);
 				
-				width = (width < trimBounds.width) ? trimBounds.width : width;
-				height = (height < trimBounds.height) ? trimBounds.height : height;
+				width = (width < int(trimBounds.width)) ? int(trimBounds.width) : width;
+				height = (height < int(trimBounds.height)) ? int(trimBounds.height) : height;
 				
 				scratchBitmapData.dispose();
 				aClip.gotoAndStop(++i);
@@ -235,7 +235,7 @@ import flash.geom.Rectangle;
 		public function makeFromGraphic(aGraphic:Class, aFrameWidth:int = 0, aFrameHeight:int = 0,
 		 	aOriginX:int = 0, aOriginY:int = 0, aFlip:Boolean = false):void
 		{
-			var pixels:BitmapData = (new aGraphic).bitmapData;
+			var pixels:BitmapData = Type.createInstance(aGraphic,[]).bitmapData;
 			if (aFlip)
 			{
 				var newPixels:BitmapData = new BitmapData(pixels.width, pixels.height, true, 0x00000000);
@@ -321,7 +321,7 @@ import flash.geom.Rectangle;
 					rect.x = rect.y = 0;
 					rect.width = origBmp.width;
 					rect.height = origBmp.height;
-					newBmp = new BitmapData(rect.width, rect.height, true, 0);
+					newBmp = new BitmapData(int(rect.width), int(rect.height), true, 0);
 					newBmp.copyPixels(origBmp, rect, DEST_POINT);
 					newAnim.frames.push(newBmp);
 				}
@@ -420,9 +420,9 @@ import flash.geom.Rectangle;
 		public function clearCache():void
 		{
 			var anim:AntAnimation;
-			for (var value:* in _animationCache)
+			for (var value:String in _animationCache)
 			{
-				if (_animationCache[value] != null)
+				if (Reflect.field(_animationCache,value)!= null)
 				{
 					anim = _animationCache.remove(value) as AntAnimation;
 					if (anim != null)

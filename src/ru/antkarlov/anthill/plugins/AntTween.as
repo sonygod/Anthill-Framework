@@ -3,6 +3,7 @@ package ru.antkarlov.anthill.plugins
 import msignal.Signal1;
 
 import ru.antkarlov.anthill.*;
+import Lambda;
 /**
 	 * Класс реализации плавных трансформации каких-либо значений объектов. Класс использует различные
 	 * методы для реализации разнообразных анимационных стилей.

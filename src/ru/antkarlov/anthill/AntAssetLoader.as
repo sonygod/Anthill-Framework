@@ -255,7 +255,7 @@ import msignal.Signal2;
 		 */
 		public function addAtlasA(aAtlasGraphicClass:Class, aXmlDataClass:Class, aKey:String):void
 		{
-			var data:ByteArray = new aXmlDataClass();
+			var data:ByteArray = Type.createInstance(aAtlasGraphicClass,[]) as ByteArray;
 			var strXML:String = data.readUTFBytes(data.length);
 			addAtlas(aAtlasGraphicClass, new XML(strXML), aKey);
 		}

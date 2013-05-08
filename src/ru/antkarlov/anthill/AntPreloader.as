@@ -5,6 +5,7 @@ import flash.display.MovieClip;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
+import Lambda;
 
 /**
 	 * Базовый прелодаер для вашего приложения. 

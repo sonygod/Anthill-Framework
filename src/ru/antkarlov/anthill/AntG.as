@@ -5,8 +5,9 @@ import flash.net.URLRequest;
 import flash.net.navigateToURL;
 import flash.ui.Mouse;
 
-import ru.antkarlov.anthill.debug.*;
+//import ru.antkarlov.anthill.debug.*;
 import ru.antkarlov.anthill.plugins.IPlugin;
+import Lambda;
 /**
 	 * Глобальное хранилище с указателями на часто используемые утилитные классы и их методы.
 	 * 
@@ -135,18 +136,18 @@ import ru.antkarlov.anthill.plugins.IPlugin;
 		/**
 		 * Указатель на отладчик.
 		 */
-		public static var debugger:AntDebugger;
+		public static var debugger//:AntDebugger;
 		
 		/**
 		 * Указатель на дебаг отрисовщик.
 		 * @default    null
 		 */
-		public static var debugDrawer:AntDrawer;
+		//public static var debugDrawer:AntDrawer;
 		
 		/**
 		 * Указатель на класс следящий за удалением объектов из памяти.
 		 */
-		public static var memory:AntMemory;
+		//public static var memory:AntMemory;
 		
 		/**
 		 * Указатель на метод <code>track()</code> класса <code>AntMemory</code>, для добавления объектов в список слежения.
@@ -293,7 +294,7 @@ import ru.antkarlov.anthill.plugins.IPlugin;
 			keys = new AntKeyboard();
 			sounds = new AntSoundManager();
 			
-			debugger = new AntDebugger();
+			/*debugger = new AntDebugger();
 			debugDrawer = null;
 
 			track = AntMemory.track;
@@ -306,7 +307,7 @@ import ru.antkarlov.anthill.plugins.IPlugin;
 			watchValue = debugger.monitor.watchValue;
 			unwatchValue = debugger.monitor.unwatchValue;
 			beginWatch = debugger.monitor.beginWatch;
-			endWatch = debugger.monitor.endWatch;
+			endWatch = debugger.monitor.endWatch;*/
 			
 			lockExternalLinks = false;
 		}
@@ -579,11 +580,11 @@ import ru.antkarlov.anthill.plugins.IPlugin;
 		public static function get debugMode():Boolean { return _debugMode; }
 		public static function set debugMode(value:Boolean):void
 		{
-			_debugMode = value;
+			/*_debugMode = value;
 			if (!_debugMode && debugger.visible)
 			{
 				debugger.hide();
-			}
+			}*/
 		}
 		
 		/**
@@ -597,10 +598,10 @@ import ru.antkarlov.anthill.plugins.IPlugin;
 				if (_anthill._useSystemCursor != value)
 				{
 					_anthill._useSystemCursor = value;
-					if (!debugger.visible)
+					/*if (!debugger.visible)
 					{
 						(value) ? Mouse.show() : Mouse.hide();
-					}
+					}*/
 				}
 			}
 		}

@@ -112,7 +112,7 @@ import msignal.Signal0;
 		 */
 		public function AntMouse()
 		{
-			//super()
+			super()
 			
 			_cursorOffset = new AntPoint();
 			_globalScreenPos = new AntPoint();
@@ -374,13 +374,13 @@ import msignal.Signal0;
 			if (cursor != null && cursor.exists && cursor.active)
 			{
 				cursor.update();
-				cursor.globalX = _globalScreenPos.x + _cursorOffset.x;
-				cursor.globalY = _globalScreenPos.y + _cursorOffset.y;
+				cursor.globalX = int(_globalScreenPos.x + _cursorOffset.x);
+				cursor.globalY = int(_globalScreenPos.y + _cursorOffset.y);
 			}
 			
 			var camera:AntCamera = AntG.camera;
-			screenX = (_globalScreenPos.x - camera.x) / camera.zoom;
-			screenY = (_globalScreenPos.y - camera.y) / camera.zoom;
+			screenX = ((_globalScreenPos.x - camera.x) / camera.zoom) as int;
+			screenY = ((_globalScreenPos.y - camera.y) / camera.zoom) as int;
 			x = screenX + camera.scroll.x;
 			y = screenY + camera.scroll.y;
 		}
@@ -388,7 +388,7 @@ import msignal.Signal0;
 		/**
 		 * Обработчик события нажатия кнопки мыши.
 		 */
-		internal function mouseDownHandler(event:MouseEvent):void
+		public function mouseDownHandler(event:MouseEvent):void
 		{
 			target = event.target;
 			_current = (_current > 0) ? 1 : 2;
@@ -398,7 +398,7 @@ import msignal.Signal0;
 		/**
 		 * Обработчик соыбтия отпускания кнопки мыши.
 		 */
-		internal function mouseUpHandler(event:MouseEvent):void
+		public function mouseUpHandler(event:MouseEvent):void
 		{
 			_current = (_current > 0) ? -1 : 0;
 			eventUp.dispatch();
@@ -407,7 +407,7 @@ import msignal.Signal0;
 		/**
 		 * Обработчик события выхода мышки за пределы сцены.
 		 */
-		internal function mouseOutHandler(event:MouseEvent):void
+		public function mouseOutHandler(event:MouseEvent):void
 		{
 			/*
 				TODO 
@@ -417,7 +417,7 @@ import msignal.Signal0;
 		/**
 		 * Обработчик события возвращаения мышки в пределы сцены.
 		 */
-		internal function mouseOverHandler(event:MouseEvent):void
+		public function mouseOverHandler(event:MouseEvent):void
 		{
 			/*
 				TODO 
@@ -427,7 +427,7 @@ import msignal.Signal0;
 		/**
 		 * Обработчик события вращения колеса мышки.
 		 */
-		internal function mouseWheelHandler(event:MouseEvent):void
+		public function mouseWheelHandler(event:MouseEvent):void
 		{
 			wheelDelta = event.delta;
 			if (wheelDelta > 0)

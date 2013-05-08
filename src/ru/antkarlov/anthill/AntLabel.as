@@ -12,6 +12,7 @@ import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
+import Lambda;
 /**
 	 * Обычная текстовая метка используется для отображения текстовой информации.
 	 * 
@@ -379,14 +380,14 @@ import flash.text.TextFormatAlign;
 		 */
 		protected function drawText(aCamera:AntCamera):void
 		{
-			NUM_OF_VISIBLE++;
+            AntBasic.NUM_OF_VISIBLE++;
 			
 			if (_buffer == null || !onScreen(aCamera))
 			{
 				return;
 			}
-			
-			NUM_ON_SCREEN++;
+
+            AntBasic.NUM_ON_SCREEN++;
 			var p:AntPoint = getScreenPosition(aCamera);
 			if (aCamera._isMasked)
 			{

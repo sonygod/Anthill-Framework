@@ -5,6 +5,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import ru.antkarlov.anthill.*;
+import Lambda;
 /**
 	 * Данный класс служит окружением для источников света. В качестве окружения выступают
 	 * какие-либо графические объекты для которых рассчитываются падающие тени.
@@ -309,7 +310,7 @@ import ru.antkarlov.anthill.*;
 		 */
 		override public function debugDraw(aCamera:AntCamera):void
 		{
-			super.debugDraw(aCamera);
+			/*super.debugDraw(aCamera);
 			
 			// Отрисовка света.
 			if (lights != null)
@@ -325,7 +326,7 @@ import ru.antkarlov.anthill.*;
 						light.debugDraw(aCamera);
 					}
 				}
-			}
+			}*/
 		}
 		
 		//---------------------------------------

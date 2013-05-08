@@ -315,7 +315,7 @@ import ru.antkarlov.anthill.*;
 				_scratchBitmapData.height < _flashRect.height)))
 			{
 				if (_scratchBitmapData != null) _scratchBitmapData.dispose();
-				_scratchBitmapData = new BitmapData(_flashRect.width, _flashRect.height, true, 0);
+				_scratchBitmapData = new BitmapData(int(_flashRect.width), int(_flashRect.height), true, 0);
 			}
 			else
 			{
@@ -336,7 +336,7 @@ import ru.antkarlov.anthill.*;
 				(_pixels != null && (_pixels.width < trimBounds.width || _pixels.height < trimBounds.height)))
 			{
 				if (_pixels != null) _pixels.dispose();
-				_pixels = new BitmapData(trimBounds.width, trimBounds.height, true, 0);
+				_pixels = new BitmapData(int(trimBounds.width), int(trimBounds.height), true, 0);
 			}
 			else
 			{

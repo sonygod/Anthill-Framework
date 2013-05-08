@@ -1,7 +1,8 @@
 package ru.antkarlov.anthill.utils
 {
 import ru.antkarlov.anthill.*;
-import ru.antkarlov.anthill.debug.AntDrawer;
+//import ru.antkarlov.anthill.debug.AntDrawer;
+import Lambda;
 /**
 	 * Древовидный список сущностей для быстрой обработки большого количества объектов.
 	 * 
@@ -251,7 +252,7 @@ import ru.antkarlov.anthill.debug.AntDrawer;
 		 */
 		public function debugDraw(aCamera:AntCamera = null):void
 		{
-			if (AntG.debugDrawer == null)
+			/*if (AntG.debugDrawer == null)
 			{
 				return;
 			}
@@ -282,7 +283,7 @@ import ru.antkarlov.anthill.debug.AntDrawer;
 			if (southEast != null)
 			{
 				southEast.debugDraw(aCamera);
-			}
+			}*/
 		}
 		
 		//---------------------------------------

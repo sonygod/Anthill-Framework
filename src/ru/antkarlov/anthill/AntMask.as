@@ -423,8 +423,10 @@ import msignal.Signal1;
 		{
 			origin.set(_curAnim.offsetX[aFrame], _curAnim.offsetY[aFrame]);
 			_pixels = _curAnim.frames[aFrame];
-			width = _flashRect.width = _pixels.width;
-			height = _flashRect.height = _pixels.height;
+			width =  _pixels.width;
+			height = _pixels.height;
+            _flashRect.width  = _pixels.width as Number;
+            _flashRect.height = _pixels.height as Number;
 		}
 		
 		/**
@@ -464,7 +466,7 @@ import msignal.Signal1;
 		 */
 		protected function goto(aFrame:Number):void
 		{
-			var i:int = AntMath.floor(aFrame - 1);
+			var i:int = AntMath.floor(aFrame - 1) as int;
 			i = (i <= 0) ? 0 : (i >= totalFrames - 1) ? totalFrames - 1 : i;
 			if (_prevFrame != i)
 			{

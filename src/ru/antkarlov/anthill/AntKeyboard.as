@@ -440,8 +440,10 @@ import flash.utils.*;
 		 */
 		protected function addKey(aKeyName:String, aKeyCode:uint):void
 		{
-			_keys[aKeyName] = aKeyCode;
-			_map[aKeyCode] = { name:aKeyName, current:0, last:0 };
+			Object(_keys)[aKeyName] = aKeyCode;
+
+            var obj:Object= { name:aKeyName, current:0, last:0 };
+            Object(_map)[aKeyCode] =  obj;
 		}
 
 	}

@@ -1,8 +1,10 @@
 package ru.antkarlov.anthill
 {
+
 import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import Lambda;
 /**
 	 * Данный класс позволяет работать с коллекцией маленьких изображений укомплектованных на одной
 	 * большой картинке. Данный способ работы ориентирован в большей степени для быстрой работы
@@ -70,7 +72,7 @@ import flash.geom.Rectangle;
 			//super()
 			scale = 1;
 			
-			_atlasBitmapData = (new aGraphic).bitmapData;
+			_atlasBitmapData = Type.createInstance(aGraphic,[]).bitmapData;
 			_atlasRegions = new AntStorage();
 			
 			if (aAtlasXML != null)
@@ -144,7 +146,7 @@ import flash.geom.Rectangle;
 				return null;
 			}
 			
-			var bmpData:BitmapData = new BitmapData(region.width, region.height, true, 0);
+			var bmpData:BitmapData = new BitmapData(int(region.width), int(region.height), true, 0);
 			bmpData.copyPixels(_atlasBitmapData, region, DEST_POINT);
 			return bmpData;
 		}

@@ -1,5 +1,6 @@
 package ru.antkarlov.anthill.utils
 {
+import Lambda;
 	/**
 	 * Description
 	 * 

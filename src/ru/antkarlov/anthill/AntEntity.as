@@ -1,8 +1,9 @@
 package ru.antkarlov.anthill
 {
-import ru.antkarlov.anthill.debug.AntDrawer;
+//import ru.antkarlov.anthill.debug.AntDrawer;
 import ru.antkarlov.anthill.events.*;
 import ru.antkarlov.anthill.utils.AntColor;
+import Lambda;
 /**
 	 * Базовый класс для визуальных объектов которые можно вкладывать друг в друга.
 	 * 
@@ -281,7 +282,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 		/**
 		 * Используется для автоматического рассчета номеров в очереди обработки объектов.
 		 */
-		static internal var DEPTH_ID:int = 0;
+		public static var DEPTH_ID:int = 0;
 		
 		//---------------------------------------
 		// CONSTRUCTOR
@@ -486,7 +487,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 		 */
 		override public function debugDraw(aCamera:AntCamera):void
 		{
-			if (AntG.debugDrawer == null)
+			/*if (AntG.debugDrawer == null)
 			{
 				return;
 			}
@@ -497,29 +498,29 @@ import ru.antkarlov.anthill.utils.AntColor;
 			if (drawer.showBorders)
 			{
 				toScreenPosition(vertices[0].x, vertices[0].y, aCamera, p);
-				drawer.moveTo(p.x, p.y);
+				drawer.moveTo(int(p.x), int(p.y));
 				while (i < 4)
 				{
 					toScreenPosition(vertices[i].x, vertices[i].y, aCamera, p);
-					drawer.lineTo(p.x, p.y, AntColor.LIME);
+					drawer.lineTo(int(p.x), int(p.y), AntColor.LIME);
 					i++;
 				}
 				toScreenPosition(vertices[0].x, vertices[0].y, aCamera, p);
-				drawer.lineTo(p.x, p.y, AntColor.LIME);
+				drawer.lineTo(int(p.x), int(p.y), AntColor.LIME);
 			}
-			
+
 			if (drawer.showBounds)
 			{
 				toScreenPosition(bounds.x, bounds.y, aCamera, p);
-				drawer.drawRect(p.x, p.y, bounds.width, bounds.height, AntColor.FUCHSIA);
+				drawer.drawRect(int(p.x), int(p.y), bounds.width, bounds.height, AntColor.FUCHSIA);
 			}
-			
+
 			if (drawer.showAxis)
 			{
 				toScreenPosition(globalX, globalY, aCamera, p);
-				drawer.drawAxis(p.x, p.y, AntColor.AQUA);
+				drawer.drawAxis(int(p.x), int(p.y), AntColor.AQUA);
 			}
-			
+
 			// Отрисовка детей.
 			if (children != null)
 			{
@@ -528,18 +529,18 @@ import ru.antkarlov.anthill.utils.AntColor;
 				while (i < numChildren)
 				{
 					entity = children[i++] as AntEntity;
-					if (entity != null && entity.exists && 
+					if (entity != null && entity.exists &&
 						entity.visible && entity.allowDebugDraw)
 					{
 						entity.debugDraw(aCamera);
 					}
 				}
-			}
+			}*/
 		}
-		
+
 		/**
 		 * Устанавливает (сбрасывает) позицию и угол.
-		 * 
+		 *
 		 * @param	aX	 Новая позиция по X.
 		 * @param	aY	 Новая позиция по Y.
 		 * @param	aAngle	 Новый угол в градусах.
@@ -549,7 +550,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			x = aX;
 			y = aY;
 			angle = aAngle;
-			
+
 			if (parent != null)
 			{
 				globalX = parent.globalX + x ;
@@ -562,14 +563,14 @@ import ru.antkarlov.anthill.utils.AntColor;
 				globalY = y ;
 				globalAngle = angle;
 			}
-			
+
 			updateChildren();
 			updateBounds();
 		}
-		
+
 		/**
 		 * Сортировка дочерних сущностей по указанному атрибуту.
-		 * 
+		 *
 		 * @param	aIndex	 Имя атрибута по которму следует выполнить сортировку.
 		 * @param	aOrder	 Порядок сортировки.
 		 */
@@ -582,10 +583,10 @@ import ru.antkarlov.anthill.utils.AntColor;
 				children.sort(sortHandler);
 			}
 		}
-		
+
 		/**
 		 * Добавляет дочернюю сущность.
-		 * 
+		 *
 		 * @param	aEntity	 Сущность которую необходимо добавить.
 		 * @return		Возвращает указатель на добавленную сущность.
 		 */
@@ -596,24 +597,24 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				children = [];
 			}
-			
+
 			// Если сущность уже добавлена.
 			if (children.indexOf(aEntity) > -1)
 			{
 				return aEntity;
 			}
-			
+
 			// Если сущность является дочерним объектом другой сущности.
 			if (aEntity.parent != null)
 			{
 				aEntity.parent.remove(aEntity);
 			}
-			
+
 			// Обновляем положение добавляемой сущности и добавляем указатель на родителя (себя).
 			aEntity.parent = this;
 			aEntity.locate(globalX, globalY, globalAngle);
 			aEntity.scrollFactor.copyFrom(scrollFactor);
-			
+
 			// Ищем пустую ячейку.
 			var i:int = 0;
 			var n:int = children.length;
@@ -626,16 +627,16 @@ import ru.antkarlov.anthill.utils.AntColor;
 				}
 				i++;
 			}
-			
+
 			// Добавляем в конец массива детей.
 			children[n] = aEntity;
 			numChildren++;
 			return aEntity;
 		}
-		
+
 		/**
 		 * Удаляет дочернюю сущность.
-		 * 
+		 *
 		 * @param	aEntity	 Сущность которую необходимо удалить.
 		 * @param	aSplice	 Если true то элемент массива так же будет удален.
 		 * @return		Возвращает указатель на удаленную сущность.
@@ -646,29 +647,29 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return aEntity;
 			}
-			
+
 			var i:int = children.indexOf(aEntity);
 			if (i < 0 || i >= children.length)
 			{
 				return aEntity;
 			}
-			
+
 			children[i] = null;
 			aEntity.parent = null;
 			aEntity._depth = -1;
-			
+
 			if (aSplice)
 			{
 				children.splice(i, 1);
 				numChildren--;
 			}
-			
+
 			return aEntity;
 		}
-		
+
 		/**
 		 * Проверяет является ли указанная сущность ребенком текущей.
-		 * 
+		 *
 		 * @param	aEntity	 Сущность наличие которой необходимо проверить.
 		 * @return		Возвращает true если указанная сущность была ранее добавлена.
 		 */
@@ -678,23 +679,23 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return false;
 			}
-			
+
 			return (children.indexOf(aEntity) >= 0) ? true : false;
 		}
-		
+
 		/**
 		 * Переиспользование дочерних сущностей.
-		 * 
+		 *
 		 * <p>Возвращает свободную (<code>!exists</code>) дочернюю сущность соотвествующую указанному классу.
-		 * Если свободных сущностей нет, то автоматически будет создан и добавлен новый экземпляр 
+		 * Если свободных сущностей нет, то автоматически будет создан и добавлен новый экземпляр
 		 * указанного класса. Иначе, если класс не указан, то вернет <code>null</code>.</p>
-		 * 
+		 *
 		 * <p>Примечание: Если метод возвращает ранее использованную сущность, то перед её повторным использованием
-		 * следует убедится что она существует (<code>exists</code>) и при необходимости воскресить методом 
+		 * следует убедится что она существует (<code>exists</code>) и при необходимости воскресить методом
 		 * <code>revive()</code>.</p>
-		 * 
+		 *
 		 * <p>Пример использования:</p>
-		 * 
+		 *
 		 * <listing>
 		 * var newObj:MyGameObject = defGroup.recycle(MyGameObject) as MyGameObject;
 		 * if (!newObj.exists) {
@@ -704,7 +705,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 		 *   --Иначе новый объект.
 		 * }
 		 * </listing>
-		 * 
+		 *
 		 * @param	aClass	 Класс объекта который необходимо переработать.
 		 * @return		Возвращает свободный экземпляр указанного класса или новый если свободных нет.
 		 */
@@ -715,19 +716,19 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return entity;
 			}
-			
+
 			if (aClass == null)
 			{
 				return null;
 			}
-			
-			entity = new aClass();
+
+			entity =Type.createInstance(aClass,[]) as AntEntity;
 			return (entity is AntEntity) ? add(entity) : null;
 		}
-		
+
 		/**
 		 * Заменяет указанную сущность на новую.
-		 * 
+		 *
 		 * @param	aOldEntity	 Сущность которую необходимо заменить.
 		 * @param	aNewEntity	 Сущность на которую необходимо заменить.
 		 * @return		Возвращает указатель на новую сущность.
@@ -738,7 +739,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return aNewEntity;
 			}
-			
+
 			var i:int = children.indexOf(aOldEntity);
 			if (i >= 0 && i < children.length)
 			{
@@ -747,18 +748,18 @@ import ru.antkarlov.anthill.utils.AntColor;
 					aNewEntity.parent.remove(aNewEntity);
 					aNewEntity.parent = this;
 				}
-				
+
 				children[i] = aNewEntity;
 				aNewEntity.locate(globalX, globalY, globalAngle);
 				aOldEntity.parent = null;
 			}
-			
+
 			return aNewEntity;
 		}
-		
+
 		/**
 		 * Меняет указанные сущности местами.
-		 * 
+		 *
 		 * @param	aEntityA	 Первая сущность.
 		 * @param	aEntityB	 Вторая сущность.
 		 */
@@ -768,7 +769,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return;
 			}
-			
+
 			var iA:int = children.indexOf(aEntityA);
 			var iB:int = children.indexOf(aEntityB);
 			if (iA >= 0 && iA < children.length && iB >= 0 && iB < children.length)
@@ -777,10 +778,10 @@ import ru.antkarlov.anthill.utils.AntColor;
 				children[iB] = aEntityA;
 			}
 		}
-		
+
 		/**
 		 * Удаляет все вложенные сущности.
-		 * 
+		 *
 		 * @param	aDestroy	 Флаг определяющий следует ли вызвать метод destroy() перед удалением.
 		 */
 		public function removeAll(aDestroy:Boolean = true):void
@@ -789,7 +790,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return;
 			}
-			
+
 			var entity:AntEntity;
 			var i:int = 0;
 			while (i < numChildren)
@@ -801,20 +802,20 @@ import ru.antkarlov.anthill.utils.AntColor;
 					{
 						entity.destroy();
 					}
-					
+
 					entity.parent = null;
 					entity._depth = -1;
 				}
 				children[i] = null;
 			}
-			
+
 			children.length = 0;
 			numChildren = 0;
 		}
-		
+
 		/**
 		 * Извлекает первую попавшующся свободную сущность соответствующую указанному классу.
-		 * 
+		 *
 		 * @param	aClass	 Класс сущности которую необходимо получить.
 		 * @return		Вернет null если свободных сущностей нет.
 		 */
@@ -838,10 +839,10 @@ import ru.antkarlov.anthill.utils.AntColor;
 
 			return null;
 		}
-		
+
 		/**
 		 * Извлекает первую попавшуюся существующую сущность
-		 * 
+		 *
 		 * @param	aClass	 Класс сущности которую необходимо получить.
 		 * @return		Вернет null если нет существующих сущностей указанного класса (если указан).
 		 */
@@ -851,7 +852,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return null;
 			}
-			
+
 			var entity:AntEntity;
 			var i:int = 0;
 			while (i < numChildren)
@@ -862,13 +863,13 @@ import ru.antkarlov.anthill.utils.AntColor;
 					return entity;
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		/**
 		 * Извлекает первую попавшуюся существующую и "живую" сущность.
-		 * 
+		 *
 		 * @param	aClass	 Класс сущности которую необходимо получить.
 		 * @return		Вернет null если нет "живых" сущностей указанного класса (если указан).
 		 */
@@ -878,25 +879,25 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return null;
 			}
-			
+
 			var entity:AntEntity;
 			var i:int = 0;
 			while (i < numChildren)
 			{
 				entity = children[i++] as AntEntity;
-				if (entity != null && entity.exists && entity.alive && 
+				if (entity != null && entity.exists && entity.alive &&
 					((aClass == null) || (entity is aClass)))
 				{
 					return entity;
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		/**
 		 * Извлекает первую попавшуюся "мертвую" сущность.
-		 * 
+		 *
 		 * @param	aClass	 Класс сущности которую необходимо получить.
 		 * @return		Вернет null если нет "мертвых" сущностей указанного класса (если указан).
 		 */
@@ -906,7 +907,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return null;
 			}
-			
+
 			var entity:AntEntity;
 			var i:int = 0;
 			while (i < numChildren)
@@ -917,13 +918,13 @@ import ru.antkarlov.anthill.utils.AntColor;
 					return entity;
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		/**
 		 * Определяет количество "живых" дочерних сущностей.
-		 * 
+		 *
 		 * @return		Количество "живых" сущностей.
 		 */
 		public function numLiving():int
@@ -932,7 +933,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return -1;
 			}
-			
+
 			var entity:AntEntity;
 			var num:int = 0;
 			var i:int = 0;
@@ -944,13 +945,13 @@ import ru.antkarlov.anthill.utils.AntColor;
 					num++;
 				}
 			}
-			
+
 			return num;
 		}
-		
+
 		/**
 		 * Определяет количество "мертвых" дочерних сущностей.
-		 * 
+		 *
 		 * @return		Количество "мертвых" сущностей.
 		 */
 		public function numDead():int
@@ -959,7 +960,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return -1;
 			}
-			
+
 			var entity:AntEntity;
 			var num:int = 0;
 			var i:int = 0;
@@ -971,13 +972,13 @@ import ru.antkarlov.anthill.utils.AntColor;
 					num++;
 				}
 			}
-			
+
 			return num;
 		}
-		
+
 		/**
 		 * Извлекает случайную дочернюю сущность.
-		 * 
+		 *
 		 * @param	aClass	 Класс сущности которую необходимо получить.
 		 * @param	aExistsOnly	 Флаг определяющий следует ли учитывать при выборе свободные сущности.
 		 * @return		Возвращает случайную сущность указанного класса (если указан).
@@ -988,7 +989,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return null;
 			}
-			
+
 			var entity:AntEntity;
 			var exists:Array = [];
 			var i:int = 0;
@@ -1007,7 +1008,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 					}
 				}
 			}
-			
+
 			entity = exists[AntMath.randomRangeInt(0, exists.length)] as AntEntity;
 			i = 0;
 			var n:int = exists.length;
@@ -1015,14 +1016,14 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				exists[i++] = null;
 			}
-			
+
 			exists.length = 0;
 			return entity;
 		}
-		
+
 		/**
 		 * Извлекает дочернюю сущность по её тэгу.
-		 * 
+		 *
 		 * @param	aTag	 Уникальный идентификатор сущности.
 		 * @return		Возвращает null если сущности с указанным тэгом нет во вложении.
 		 */
@@ -1032,7 +1033,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return null;
 			}
-			
+
 			var entity:AntEntity;
 			var i:int = 0;
 			while (i < numChildren)
@@ -1043,13 +1044,13 @@ import ru.antkarlov.anthill.utils.AntColor;
 					return entity;
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		/**
 		 * Извлекает массив дочерних сущностей по их тэгу.
-		 * 
+		 *
 		 * @param	aTag	 Уникальный индентификатор сущности.
 		 * @param	aResult	 Массив в который будет помещен результат.
 		 * @return		Массив сущностей соотвествующих уникальному тэгу.
@@ -1060,12 +1061,12 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				return null;
 			}
-			
+
 			if (aResult == null)
 			{
 				aResult = [];
 			}
-			
+
 			var entity:AntEntity;
 			var i:int = 0;
 			while (i < numChildren)
@@ -1076,17 +1077,17 @@ import ru.antkarlov.anthill.utils.AntColor;
 					aResult[aResult.length] = entity;
 				}
 			}
-			
+
 			return aResult;
 		}
-		
+
 		/**
 		 * Устанавливает значение переменной по её имени для всех вложенных объектов.
-		 * 
+		 *
 		 * @param	aVariableName	 Имя переменной для которой необходимо установить значение.
 		 * @param	aValue	 Значение которое будет установлено.
 		 * @param	aRecurse	 Флаг определяющий необходимость установки значения для вложенных объектов,
-		 * по умолчанию равен <code>true</code> - это означает, что для всех объектов внутри этой сущности, 
+		 * по умолчанию равен <code>true</code> - это означает, что для всех объектов внутри этой сущности,
 		 * которые имеют вложения, будет так же вызыван метод <code>setCall()</code>.
 		 */
 		public function setAll(aVariableName:String, aValue:Object, aRecurse:Boolean = true):void
@@ -1102,19 +1103,19 @@ import ru.antkarlov.anthill.utils.AntColor;
 					{
 						entity.setAll(aVariableName, aValue, aRecurse);
 					}
-					
+
 					entity[aVariableName] = aValue;
 				}
 			}
 		}
-		
+
 		/**
 		 * Вызывает метод по его имени для всех вложенных объектов.
-		 * 
+		 *
 		 * @param	aFunctionName	 Имя метода который необходимо вызывать.
 		 * @param	aArgs	 Массив аргументов которые могут быть переданы в вызываемый метод.
 		 * @param	aRecurse	 Флаг определяющий необходмиость вызова метода для вложенных объектов,
-		 * по умолчанию равен <code>true</code> - это означает, что для всех объектов внутри этой сущности, 
+		 * по умолчанию равен <code>true</code> - это означает, что для всех объектов внутри этой сущности,
 		 * которые имеют вложения, будет так же вызван метод <code>callAll()</code>.
 		 */
 		public function callAll(aFunctionName:String, aArgs:Array = null, aRecurse:Boolean = true):void
@@ -1130,7 +1131,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 					{
 						entity.callAll(aFunctionName, aArgs, aRecurse);
 					}
-					
+
 					if (entity[aFunctionName] is Function)
 					{
 						(entity[aFunctionName] as Function).apply(this, aArgs);
@@ -1138,12 +1139,12 @@ import ru.antkarlov.anthill.utils.AntColor;
 				}
 			}
 		}
-		
+
 		/**
 		 * Проверяет попадает ли указанные координаты в прямоугольник сущности.
-		 * <p>Примечание: Для невизуальной сущности прямоугольник не рассчитывается. 
+		 * <p>Примечание: Для невизуальной сущности прямоугольник не рассчитывается.
 		 * Данный метод корректно работает для визуальных объектов.</p>
-		 * 
+		 *
 		 * @param	aX	 Положение точки по X.
 		 * @param	aY	 Положение точки по Y.
 		 * @return		Вернет true если точка находится внутри прямоугольника сущности.
@@ -1152,35 +1153,35 @@ import ru.antkarlov.anthill.utils.AntColor;
 		{
 			var n:int = vertices.length;
 			var res:Boolean = false;
-			
+
 			for (var i:int = 0, j:int = n - 1; i < n; j = i++)
 			{
-				if (((vertices[i].y > aY) != (vertices[j].y > aY)) && 
+				if (((vertices[i].y > aY) != (vertices[j].y > aY)) &&
 					(aX < (vertices[j].x - vertices[i].x) * (aY - vertices[i].y) / (vertices[j].y - vertices[i].y) + vertices[i].x))
 				{
 					res = !res;
 				}
 			}
-			
+
 			return res;
 		}
-		
+
 		/**
 		 * Проверяет попадает ли указанная точка в прямоугольник сущности.
-		 * 
+		 *
 		 * @return		Возвращает true если точка попадает в прямоугольник кнопки.
 		 */
 		public function hitTestPoint(aPoint:AntPoint):Boolean
 		{
 			return hitTest(aPoint.x, aPoint.y);
 		}
-		
+
 		/**
-		 * Проверяет попадает ли сущность на экран указанной камеры. 
+		 * Проверяет попадает ли сущность на экран указанной камеры.
 		 * Если камера не указана то используется камера по умолчанию.
 		 * <p>Примечание: Для невизуальной сущности проверка будет некорректной
 		 * поскольку bounds не рассчитывается.</p>
-		 * 
+		 *
 		 * @param	aCamera	 Камера для которой нужно проверить видимость.
 		 * @return		Возвращает true если попадает в экран указанной камеры.
 		 */
@@ -1190,20 +1191,20 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				aCamera = AntG.getCamera();
 			}
-			
+
 			var offX:Number = (scaleX < 0) ? width : 0;
 			var offY:Number = (scaleY < 0) ? height : 0;
-			
-			return bounds.intersects((aCamera.scroll.x - offX) * -1 * scrollFactor.x, 
+
+			return bounds.intersects((aCamera.scroll.x - offX) * -1 * scrollFactor.x,
 				(aCamera.scroll.y - offY) * -1 * scrollFactor.y,
 				aCamera.width / aCamera.zoom,
 				aCamera.height / aCamera.zoom);
 		}
-		
+
 		/**
 		 * Вычисляет экранные координаты сущности для указанной камеры.
 		 * Если камера не указана то используется камера по умолчанию.
-		 * 
+		 *
 		 * @param	aCamera	 Камера для которой необходимо рассчитать экранные координаты.
 		 * @param	aResult	 Указатель на точку куда может быть записан результат.
 		 * @return		Экранные координаты сущности.
@@ -1212,11 +1213,11 @@ import ru.antkarlov.anthill.utils.AntColor;
 		{
 			return toScreenPosition(globalX, globalY, aCamera, aResult);
 		}
-		
+
 		/**
 		 * Переводит указанные координаты в экранные.
 		 * Если камера не указана то используется камера по умолчанию.
-		 * 
+		 *
 		 * @param	aX	 Координата точки по X.
 		 * @param	aY	 Координата точки по Y.
 		 * @param	aCamera	 Камера для которой необходимо рассчитать экранные координаты.
@@ -1229,20 +1230,20 @@ import ru.antkarlov.anthill.utils.AntColor;
 			{
 				aResult = new AntPoint();
 			}
-			
+
 			if (aCamera == null)
 			{
 				aCamera = AntG.getCamera();
 			}
-			
+
 			aResult.x = aX + aCamera.scroll.x * scrollFactor.x;
 			aResult.y = aY + aCamera.scroll.y * scrollFactor.y;
 			return aResult;
 		}
-		
+
 		/**
 		 * Наносит урон.
-		 * 
+		 *
 		 * @param	damage	 Размер наносимого урона.
 		 * @return		Возвращает true если сущность была убита.
 		 */
@@ -1254,23 +1255,23 @@ import ru.antkarlov.anthill.utils.AntColor;
 				kill();
 				return true;
 			}
-			
+
 			return false;
 		}
-		
+
 		/**
 		 * Обновляет положение и размеры прямоугольника определяющего занимаемую область в игровом мире.
 		 */
 		public function updateBounds():void
 		{
 			// Если объект не повернут, но изменилось положение или размер, то выполняем упрощенный прерасчет без учета поворота.
-			if (globalAngle == 0 && (!_oldPosition.equal(globalX, globalY) || 
+			if (globalAngle == 0 && (!_oldPosition.equal(globalX, globalY) ||
 				!_oldSize.equal(width, height) || !_oldScale.equal(scaleX, scaleY)))
 			{
 				calcBounds();
 			}
 			// Если объект повернут и если изменилось только его положение, то быстро обновляем положение границ.
-			else if (_oldAngle == globalAngle && !_oldPosition.equal(globalX, globalY) && 
+			else if (_oldAngle == globalAngle && !_oldPosition.equal(globalX, globalY) &&
 				_oldSize.equal(width, height) && _oldScale.equal(scaleX, scaleY))
 			{
 				moveBounds();
@@ -1282,13 +1283,13 @@ import ru.antkarlov.anthill.utils.AntColor;
 				rotateBounds();
 			}
 		}
-		
+
 		//---------------------------------------
 		// IBubbleEventHandler Implementation
 		//---------------------------------------
 
 		//import ru.antkarlov.anthill.events.IBubbleEventHandler;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -1297,14 +1298,14 @@ import ru.antkarlov.anthill.utils.AntColor;
 			/*
 				Перекройте этот метод чтобы перехватить и обработать всплывающее сообщение.
 			*/
-			
+
 			return true;
 		}
-		
+
 		//---------------------------------------
 		// PROTECTED METHODS
 		//---------------------------------------
-		
+
 		/**
 		 * Обработка дочерних сущностей.
 		 */
@@ -1338,7 +1339,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 				}
 			}
 		}
-		
+
 		/**
 		 * Отрисовка дочерних сущностей.
 		 */
@@ -1358,7 +1359,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 				}
 			}
 		}
-		
+
 		/**
 		 * Простой рассчет занимаемого сущностью прямоугольника без учета угла поворота.
 		 */
@@ -1367,13 +1368,13 @@ import ru.antkarlov.anthill.utils.AntColor;
 			vertices[0].set(globalX + origin.x * scaleX, globalY + origin.y * scaleY); // top left
 			vertices[1].set(globalX + width * scaleX + origin.x * scaleX, globalY + origin.y * scaleY); // top right
 			vertices[2].set(globalX + width * scaleX + origin.x * scaleX, globalY + height * scaleY + origin.y * scaleY); // bottom right
-			vertices[3].set(globalX + origin.x * scaleX, globalY + height * scaleY + origin.y * scaleY); // bottom left			
+			vertices[3].set(globalX + origin.x * scaleX, globalY + height * scaleY + origin.y * scaleY); // bottom left
 			var tl:AntPoint = vertices[0];
 			var br:AntPoint = vertices[2];
 			bounds.set(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
 			saveOldPosition();
 		}
-		
+
 		/**
 		 * Простой перерассчет занимаемого сущностью прямоугольника при условии что угол и размеры сущности не изменились.
 		 * Обновляется только положение.
@@ -1384,7 +1385,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			var my:Number = globalY - _oldPosition.y;
 			bounds.x += mx;
 			bounds.y += my;
-			
+
 			var p:AntPoint;
 			var i:int = 0;
 			while (i < 4)
@@ -1394,10 +1395,10 @@ import ru.antkarlov.anthill.utils.AntColor;
 				p.y += my;
 				i++;
 			}
-			
+
 			saveOldPosition();
 		}
-		
+
 		/**
 		 * Полный перерассчет занимаемого сущностью прямоугольника с учетом угла, размеров и положения.
 		 */
@@ -1407,7 +1408,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			vertices[1].set(globalX + width * scaleX + origin.x * scaleX, globalY + origin.y * scaleY); // top right
 			vertices[2].set(globalX + width * scaleX + origin.x * scaleX, globalY + height * scaleY + origin.y * scaleY); // bottom right
 			vertices[3].set(globalX + origin.x * scaleX, globalY + height * scaleY + origin.y * scaleY); // bottom left
-			
+
 			var dx:Number;
 			var dy:Number;
 			var p:AntPoint = vertices[0];
@@ -1417,7 +1418,7 @@ import ru.antkarlov.anthill.utils.AntColor;
 			var minX:Number = p.x;
 			var minY:Number = p.y;
 			var rad:Number = -globalAngle * Math.PI / 180; // Radians
-			
+
 			var i:int = 0;
 			while (i < 4)
 			{

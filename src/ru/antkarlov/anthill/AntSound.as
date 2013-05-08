@@ -144,7 +144,7 @@ import ru.antkarlov.anthill.utils.AntRating;
 		 */
 		public function AntSound(aName:String, aSound:Sound)
 		{
-			//super()
+			super()
 			
 			name = aName;
 			parent = null;
@@ -346,7 +346,7 @@ import ru.antkarlov.anthill.utils.AntRating;
 				listeners = parent.listeners;
 			}
 			
-			(listeners.length > 0) ? soundForListeners() : soundForCenter();
+			listeners.length > 0 ? soundForListeners() : soundForCenter();
 		}
 		
 		/**

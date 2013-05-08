@@ -7,6 +7,8 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import msignal.Signal1;
+
+import ru.antkarlov.anthill.AntBasic;
 /**
 	 * Данный класс занимается воспроизведением и отображением растеризированных анимаций.
 	 * От этого класса следует наследовать все визуальные игровые объекты.
@@ -398,7 +400,7 @@ import msignal.Signal1;
 		 */
 		internal function drawActor(aCamera:AntCamera):void
 		{
-			NUM_OF_VISIBLE++;
+			AntBasic.NUM_OF_VISIBLE++;
 			
 			// Если нет текущего кадра или объект не попадает в камеру.
 			if (_pixels == null || !onScreen(aCamera))
@@ -406,7 +408,7 @@ import msignal.Signal1;
 				return;
 			}
 
-			NUM_ON_SCREEN++;
+            AntBasic.NUM_ON_SCREEN++;
 			var p:AntPoint = getScreenPosition(aCamera);
 			if (aCamera._isMasked)
 			{
@@ -418,11 +420,11 @@ import msignal.Signal1;
 			_flashPoint.y = p.y + origin.y;
 			_flashRect.width = _pixels.width;
 			_flashRect.height = _pixels.height;
-
+                    var targetB:BitmapData=  (_buffer != null) ? _buffer : _pixels;
 			// Если не применено никаких трансформаций то выполняем простой рендер через copyPixels().
 			if (globalAngle == 0 && scaleX == 1 && scaleY == 1 && blend == null)
 			{
-				aCamera.buffer.copyPixels((_buffer != null) ? _buffer : _pixels, _flashRect, _flashPoint, null, null, true);
+				aCamera.buffer.copyPixels(targetB, _flashRect, _flashPoint, null, null, true);
 			}
 			else
 			// Если объект имеет какие-либо трансформации, используем более сложный рендер через draw().
@@ -437,7 +439,7 @@ import msignal.Signal1;
 				}
 
 				_matrix.translate(_flashPoint.x - origin.x, _flashPoint.y - origin.y);
-				aCamera.buffer.draw((_buffer != null) ? _buffer : _pixels, _matrix, null, blend, null, smoothing);
+				aCamera.buffer.draw(targetB, _matrix, null, blend, null, smoothing);
 			}
 		}
 		
@@ -528,11 +530,11 @@ import msignal.Signal1;
 		 */
 		protected function goto(aFrame:Number):void
 		{
-			var i:int = AntMath.floor(aFrame - 1);
+			var i:int = AntMath.floor(aFrame - 1) as int;
 			i = (i <= 0) ? 0 : (i >= totalFrames - 1) ? totalFrames - 1 : i;
 			if (_prevFrame != i)
 			{
-				calcFrame(i);
+				calcFrame(int(i));
 				_prevFrame = i;
 			}
 		}
@@ -593,7 +595,7 @@ import msignal.Signal1;
 					}
 				}
 				
-				calcFrame(currentFrame-1);
+				calcFrame(int(currentFrame-1));
 			}
 		}
 		
@@ -628,10 +630,12 @@ import msignal.Signal1;
 					}
 				}
 
-				calcFrame(currentFrame-1);
+				calcFrame(int(currentFrame-1));
 			}
 		}
 		
 	}
 
 }
+//hi
+//him,history,high

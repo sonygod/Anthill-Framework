@@ -603,15 +603,15 @@ import msignal.Signal1;
 		 */
 		protected function drawButton(aCamera:AntCamera):void
 		{
-			NUM_OF_VISIBLE++;
+            AntBasic.NUM_OF_VISIBLE++;
 			
 			// Если нет текущего кадра или объект не попадает в камеру.
 			if (_pixels == null || !onScreen(aCamera))
 			{
 				return;
 			}
-			
-			NUM_ON_SCREEN++;
+
+            AntBasic.NUM_ON_SCREEN++;
 			var p:AntPoint = getScreenPosition(aCamera);
 			if (aCamera._isMasked)
 			{

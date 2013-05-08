@@ -2,6 +2,7 @@ package ru.antkarlov.anthill
 {
 import flash.media.Sound;
 import flash.net.URLRequest;
+import Lambda;
 
 /**
 	 * Звуковой менеджер используется для взаимодействия со звуковыми сущностями.
@@ -357,7 +358,7 @@ import flash.net.URLRequest;
 				listeners[i] = null;
 				i++;
 			}
-			listeners.length = 0;
+			listeners=[];
 			
 			var sound:AntSound;
 			i = 0;
@@ -373,7 +374,7 @@ import flash.net.URLRequest;
 				i++;
 			}
 			
-			sounds.length = 0;
+			sounds=[];
 			numSounds = 0;
 		}
 		
@@ -563,7 +564,8 @@ import flash.net.URLRequest;
 		{
 			if (_classes.containsKey(aName))
 			{
-				return new (_classes.get(aName) as Class);
+                var C:Class= _classes.get(aName);
+				return Type.createInstance(C,[]) as Sound;
 			}
 			else if (_streams.containsKey(aName))
 			{

@@ -253,7 +253,7 @@ import ru.antkarlov.anthill.AntCamera;
 		 * @param	aTarget	 Цель за которой будет выполнятся слежение.
 		 * @param	aStyle	 Стиль слежения.
 		 */
-		public function follow(aTarget:AntEntity, aStyle:uint = AntCamera.STYLE_FREELY):void
+		public function follow(aTarget:AntEntity, aStyle:uint = 0):void
 		{
 			target = aTarget;
 			followStyle = aStyle;
