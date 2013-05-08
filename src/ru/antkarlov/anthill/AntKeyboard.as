@@ -2,6 +2,7 @@ package ru.antkarlov.anthill
 {
 import flash.events.KeyboardEvent;
 import flash.utils.*;
+import Reflect;
 /**
 	 * Класс обработчик событий клавиатуры.
 	 * 
@@ -160,7 +161,7 @@ import flash.utils.*;
 			//super()
 			
 			_keys = {};
-			_map = new Array(256);
+			_map = new Array();
 			_functions = new AntStorage();
 			
 			// Буквы.
@@ -441,6 +442,8 @@ import flash.utils.*;
 		protected function addKey(aKeyName:String, aKeyCode:uint):void
 		{
 			Object(_keys)[aKeyName] = aKeyCode;
+
+
 
             var obj:Object= { name:aKeyName, current:0, last:0 };
             Object(_map)[aKeyCode] =  obj;
