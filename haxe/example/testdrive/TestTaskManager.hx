@@ -138,7 +138,7 @@ class TestTaskManager extends StateLights {
 		// Добавляем задачу которая выполняется один раз за цикл.
 		_tmSpawner.addInstantTask(onPeasantSpawn);
 		// Добавляем паузу прежде чем перейдем к новому циклу.
-		_tmSpawner.addPause(3);
+		_tmSpawner.addPause(0.5);
 		/* Далее демонстрация того как менджер задач можно использовать в других целях,
 		например напечатаем текст как печатной машинкой. */
 		_printText = "Demonstration of AntTaskManager.
@@ -158,6 +158,8 @@ Previous / next demo: LEFT / RIGHT.";
 		/* Примечание: Задача будет выполняться каждый кадр пока метод не вернет true. */
 		// Ставим флаг что можно приступать к игровой обработке.
 		_isStarted = true;
+		
+		
 	}
 
 	/**
@@ -337,6 +339,8 @@ Previous / next demo: LEFT / RIGHT.";
 			_hero.moves = false;
 			// Включаем анимацию атаки.
 			_hero.switchAnimation("attack");
+		
+		
 		}
 		if(_hero.currentFrame == _hero.totalFrames)  {
 			/*
@@ -352,9 +356,11 @@ Previous / next demo: LEFT / RIGHT.";
 				_currentEnemy = null;
 				onSelectNextPoint();
 				// Задача атаки считается завершенным.
+			//	AntG.camera.zoom = 1;
 				return true;
 			}
 		}
+		//AntG.camera.zoom = 1;
 		return false;
 	}
 
@@ -434,6 +440,8 @@ Previous / next demo: LEFT / RIGHT.";
 			// Останавливаемся и включаем анимацию атаки.
 			aPeasant.moves = false;
 			aPeasant.switchAnimation("attack");
+			
+		
 		}
 		if(aPeasant.currentFrame == aPeasant.totalFrames)  {
 			/*
@@ -450,6 +458,8 @@ Previous / next demo: LEFT / RIGHT.";
 				// Включаем движение и переключаемся на анимацию хотьбы.
 				aPeasant.moves = true;
 				aPeasant.switchAnimation("walk");
+				
+				
 				return true;
 			}
 
@@ -457,6 +467,8 @@ Previous / next demo: LEFT / RIGHT.";
 				// Иначе герой в пределах удара, и мы можем нанести ему урон.
 				// Но в данном примере герой бессмертный! :)
 				//_hero.hurt(0.02);
+				
+			
 			}
 
 		}
