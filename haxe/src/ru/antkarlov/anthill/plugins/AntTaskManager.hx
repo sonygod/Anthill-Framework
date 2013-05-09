@@ -371,7 +371,7 @@ class AntTaskManager implements IPlugin {
 	 */
 	public function update() : Void {
 		if(_task != null && _isStarted)  {
-			_result = Reflect.isFunction(_task.data.func);//(try cast(_task.data.func, Function) catch(e:Dynamic) null).apply(this, _task.data.args);
+			_result = Reflect.callMethod(this, _task.data.func, _task.data.args);//cast _task.data.func.apply(this, _task.data.args);
 			if(_isStarted && (_task.data.instant || _result))  {
 				nextTask(_task.data.ignoreCycle);
 			}

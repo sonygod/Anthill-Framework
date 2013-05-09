@@ -16,6 +16,7 @@ package ;
 import flash.display.MovieClip;
 import flash.events.Event;
 import flash.display.Sprite;
+import flash.Lib;
 import ru.antkarlov.anthill.*;
 import testdrive.*;
 
@@ -45,7 +46,7 @@ class AnthillExamples extends MovieClip {
 
 	public function startNow() : Void {
 		trace("AnthillExamples::initialize()");
-		_examples = [  TestAntActor];
+		_examples = [    TestTween, TestAntActor, TestTaskManager, TestUI,TestTileMap];
 		_curTest = 0;
 		var engine : Anthill = new Anthill(_examples[_curTest], 60);
 		addChild(engine);
@@ -61,15 +62,18 @@ class AnthillExamples extends MovieClip {
 			if(_curTest < 0)  {
 				_curTest = _examples.length - 1;
 			}
-			AntG.switchState(cast _examples[_curTest]);
+			trace( Std.is(_examples[_curTest], AntState));
+			AntG.switchState(Type.createInstance(_examples[_curTest],[]));
 		}
 
-		else if(AntG.keys.isPressed("RIGHT"))  {
+		else if (AntG.keys.isPressed("RIGHT"))  {
+			
 			_curTest++;
 			if(_curTest >= _examples.length)  {
 				_curTest = 0;
 			}
-			AntG.switchState(cast _examples[_curTest]);
+			
+			AntG.switchState(Type.createInstance(_examples[_curTest],[]));
 		}
 	}
 

@@ -1,40 +1,19 @@
 package ;
 
-import flash.display.BitmapData;
-import flash.display.BlendMode;
+
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.Lib;
-import ru.antkarlov.anthill.AntEntity;
-import flash.display.MovieClip;
-import ru.antkarlov.anthill.AntG;
+
 
 /**
  * ...
  * @author sonygod
  */
 
-class Main 
-{
-	var xxx:AntEntity;
-	var xx:AntG;
+class Main {
 
-	//@internal var yyy:String;
-	// @:internal static var yyy2:String;
-	function new () {
-		draw("overlay");
-	}
-	
-	
-	public function draw(blend:String) {
-		
-		
-		var b:BitmapData = new BitmapData(100, 100, false, 0x689756);
-		
-		
-		b.draw(b, null, null, cast blend, null, false);
-		
-	}
+
 	static function main() 
 	{
 		var stage = Lib.current.stage;
@@ -43,10 +22,10 @@ class Main
 		
 		
 		
-		 //new Main();
 		
-		stage.addChild(new LivingLights());
 		
+		stage.addChild(new AnthillExamples());
+		//stage.addChild(new LivingLights());
 	}
 	
 	

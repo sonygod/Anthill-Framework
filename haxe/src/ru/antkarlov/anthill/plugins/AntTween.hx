@@ -508,7 +508,11 @@ class AntTween implements IPlugin {
 			_currentCycle++;
 			try {
 				//eventStart.dispatch.apply(null, startArgs);
+				if(startArgs!=null)
 				eventStart.dispatch(startArgs[0]);
+				else {
+					eventStart.dispatch(null);
+				}
 			}
 			catch(e : Dynamic){ };
 		}
@@ -533,7 +537,10 @@ class AntTween implements IPlugin {
 			++i;
 		}
 		try {
+			if(updateArgs!=null)
 			eventUpdate.dispatch(updateArgs[0]);//.apply(this, updateArgs);
+			else
+			eventUpdate.dispatch(null);
 		}
 		catch(e : Dynamic){ };
 		if(previousTime < _totalTime && _currentTime >= _totalTime)  {

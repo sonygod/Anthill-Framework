@@ -211,7 +211,14 @@ Previous / next demo: LEFT / RIGHT.";
 		if(dist.length > 0)  {
 			// То сортируем список по дистанции, с наименьшей дистанцией вперед.
 			//dist.sortOn("dist", Array.DESCENDING);
-			dist.callMethod(dist.field("sorton"), [untyped __global__['Array'].DESCENDING]);
+			//dist.callMethod(dist.field("sorton"), [untyped __global__['Array'].DESCENDING]);
+			
+			dist.sort(function (a, b) {
+				if (a > b) return -1;
+				if (a < b) return 1;
+				return 0;
+			}
+			);
 			// Берем врага с самой маленькой дистанцией до героя как текущую цель.
 			_currentEnemy = dist[0].unit;
 			// Рассчитываем угол на врага.
@@ -268,7 +275,15 @@ Previous / next demo: LEFT / RIGHT.";
 		if(dist.length > 0 && _currentEnemy != null)  {
 			// То сортируем список по дистанции, с наименьшей дистанцией вперед.
 			//dist.sortOn("dist", Array.DESCENDING);
-			dist.callMethod(dist.field("sorton"), [untyped __global__['Array'].DESCENDING]);
+			//dist.callMethod(dist.field("sorton"), [untyped __global__['Array'].DESCENDING]);
+			
+			
+			dist.sort(function (a, b) {
+				if (a > b) return -1;
+				if (a < b) return 1;
+				return 0;
+			}
+			);
 			// Если враг с самой маленькой дистанцией до героя имеет меньшую дистанцию чем текущий враг...
 			if(AntMath.distance(_hero.x, _hero.y, dist[0].unit.x, dist[0].unit.y) < AntMath.distance(_hero.x, _hero.y, _currentEnemy.x, _currentEnemy.y))  {
 				// То ставим текущей целью нового врага с наименьшей дистанцией до героя.
