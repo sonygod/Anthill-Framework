@@ -26,7 +26,7 @@
     <option flashStrict="False" />
     <option mainClass="Main" />
     <option enabledebug="True" />
-    <option additional="-D no-pattern-matching&#xA;-swf-lib LivingLightsAssets.swc&#xA;-swf-lib TestGraphics.swc&#xA;-swf-lib TestLevels.swc&#xA;-swf-lib TestMask.swc" />
+    <option additional="-D no-pattern-matching&#xA;-swf-lib LivingLightsAssets.swc&#xA;-swf-lib TestGraphics.swc&#xA;-swf-lib TestLevels.swc&#xA;-swf-lib TestMask.swc&#xA;-swf-lib fontSource.swc" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
