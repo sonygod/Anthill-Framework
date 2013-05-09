@@ -158,6 +158,7 @@ class StateLights extends AntState {
 	 * Обновление пользовательского света.
 	 */
 	function updateUserLight() : Void {
+		
 		var p : AntPoint=new AntPoint();
 		if(_userLight != null)  {
 			 p  = AntG.mouse.getWorldPosition(null, p);

@@ -515,6 +515,12 @@ Previous / next demo: LEFT / RIGHT.";
 		_tmPrint = null;
 		super.destroy();
 	}
+	
+	override private function updateUserLight():Void 
+	{
+		if(_userLight!=null)
+		_userLight.reset(_hero.x,_hero.y);
+	}
 
 }
 
