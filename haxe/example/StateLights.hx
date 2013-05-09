@@ -9,7 +9,7 @@ import ru.antkarlov.anthill.*;
 import ru.antkarlov.anthill.utils.AntColor;
 import ru.antkarlov.anthill.extensions.livinglights.*;
 import ru.antkarlov.anthill.plugins.*;
-
+using Reflect;
 class StateLights extends AntState {
 
 	//---------------------------------------
@@ -48,7 +48,23 @@ class StateLights extends AntState {
 		// Добавляем классы клипов которые необходимо растеризировать.
 		var loader : AntAssetLoader = new AntAssetLoader();
 		var arr : Vector<Class<Dynamic>> = new Vector<Class<Dynamic>>();
-		arr.push(ButtonBasic_mc, BackgroundGrass_mc, Night_mc, Tree_mc, TreeTrunk_mc, Herb_mc, Stone_mc, Box_mc, MagicFly_mc, ParticlePurple_mc, ParticleYellow_mc, TinyFire_mc, Torch_mc);
+		
+		
+		arr = Vector.ofArray([
+		Type.resolveClass('ButtonBasic_mc'),
+		Type.resolveClass('BackgroundGrass_mc'),
+		Type.resolveClass('Night_mc'), 
+		//
+		Type.resolveClass('Tree_mc'),
+		Type.resolveClass('TreeTrunk_mc'),
+		Type.resolveClass('Herb_mc'),
+		Type.resolveClass('Stone_mc'),
+		Type.resolveClass('Box_mc'), 
+		Type.resolveClass('MagicFly_mc'),
+		Type.resolveClass('ParticlePurple_mc'),
+		Type.resolveClass('ParticleYellow_mc'),
+		Type.resolveClass('TinyFire_mc'),
+		Type.resolveClass('Torch_mc')]);
 		loader.addClips(arr);
 		// Добавляем обработчик для завершения процесса растеризации.
 		loader.eventComplete.add(onCacheComplete);
@@ -141,8 +157,9 @@ class StateLights extends AntState {
 	 * Обновление пользовательского света.
 	 */
 	function updateUserLight() : Void {
+		var p : AntPoint=new AntPoint();
 		if(_userLight != null)  {
-			var p : AntPoint = AntG.mouse.getWorldPosition(null, p);
+			 p  = AntG.mouse.getWorldPosition(null, p);
 			_userLight.reset(p.x, p.y);
 		}
 	}
@@ -172,7 +189,7 @@ class StateLights extends AntState {
 		// 1. Ассоциация методов создания объектов с именами клипов в клипе уровня.
 		//-----------------------------------------------------------------
 		var funcs : Dynamic = {
-			tree : makeTree
+			tree : makeTree,
 			stone : makeStone,
 			herb : makeHerb,
 			box : makeBox,
@@ -191,10 +208,10 @@ class StateLights extends AntState {
 		while(i < n) {
 			mc = try cast(aLevelClip.getChildAt(i++), MovieClip) catch(e:Dynamic) null;
 			// Если с именем клипа есть ассоциациия в массиве методов.
-			if(mc != null && funcs[mc.name] != null)  {
+			if(mc != null && funcs.field(mc.name) != null)  {
 				// Добавляем информацию об объекте в список.
 				objects.push({
-					func : try cast(funcs[mc.name], Function) catch(e:Dynamic) null
+					func : cast funcs.field(mc.name),
 					posX : mc.x,
 					posY : mc.y,
 
@@ -204,7 +221,18 @@ class StateLights extends AntState {
 
 		// 3. Сортируем порядок расположения объектов по высоте.
 		//-----------------------------------------------------------------
-		objects.sortOn("posY", Array.NUMERIC);
+		//objects.sortOn("posY", Array.NUMERIC);
+		objects.sort(function (a:Dynamic, b:Dynamic):Int {
+			
+			if (a.field("poseY") > b.field("poseY") ){
+				return 1;
+			}
+			if (a.field("poseY") < b.field("poseY")) {
+				return -1;
+			}
+			return 0;
+			
+		});
 		// 4. Создаем объекты по списку.
 		//-----------------------------------------------------------------
 		i = 0;
@@ -233,9 +261,9 @@ class StateLights extends AntState {
 			bgTile.x = dx;
 			bgTile.y = dy;
 			bgEntity.add(bgTile);
-			dx += bgTile.width - 4;
+			dx += Std.int(bgTile.width) - 4;
 			if(i == 2)  {
-				dy += bgTile.height - 4;
+				dy += Std.int(bgTile.height) - 4;
 				dx = 0;
 			}
 			i++;
@@ -448,7 +476,7 @@ class StateLights extends AntState {
 	/**
 	 * @private
 	 */
-	function onNightEnd() : Void {
+	function onNightEnd(?dfdf) : Void {
 		if(!_nightMode) _night.visible = false;
 		_nightTween.eventComplete.clear();
 	}

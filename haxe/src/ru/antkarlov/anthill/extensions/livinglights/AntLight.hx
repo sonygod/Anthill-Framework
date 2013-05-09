@@ -115,8 +115,8 @@ class AntLight extends AntEntity {
 	var _flashMatrix : Matrix;
 	var _pixels : BitmapData;
 	var _scratchBitmapData : BitmapData;
-	var _colors : Array<Dynamic>;
-	var _alphas : Array<Dynamic>;
+	var _colors : Array<UInt>;
+	var _alphas : Array<Float>;
 	var _isBacked : Bool;
 	var _delay : Float;
 	//---------------------------------------
@@ -196,15 +196,15 @@ class AntLight extends AntEntity {
 			_flashSprite.graphics.moveTo(0, 0);
 			var px : Float;
 			var py : Float;
-			var j : Int = _lowerAngle + angle;
+			var j : Int = cast _lowerAngle + angle;
 			var q : Int = 0;
-			var n : Int = _upperAngle + angle;
+			var n : Int = cast _upperAngle + angle;
 			while(j <= n) {
 				while(q < _radius) {
 					px = x + q * Math.cos(j * Math.PI / 180);
 					py = y + q * Math.sin(j * Math.PI / 180);
 					toScreenPosition(px, py, null, _p);
-					if(environment.isOpaque(_p.x, _p.y))  {
+					if(environment.isOpaque(cast _p.x, cast _p.y))  {
 						_flashSprite.graphics.lineTo(px - x, py - y);
 						break;
 					}
@@ -212,11 +212,11 @@ class AntLight extends AntEntity {
 						_flashSprite.graphics.lineTo(px - x, py - y);
 						break;
 					}
-					q += rayStep;
+					q += cast rayStep;
 				}
 
 				q = 0;
-				j += angleStep;
+				j += cast angleStep;
 			}
 
 			_isBacked = true;
@@ -251,7 +251,7 @@ class AntLight extends AntEntity {
 			_flashMatrix.identity();
 			_flashMatrix.translate(origin.x, origin.y);
 			_flashMatrix.translate(_flashPoint.x - origin.x, _flashPoint.y - origin.y);
-			aCamera.buffer.draw(_pixels, _flashMatrix, null, blend, null, false);
+			aCamera.buffer.draw(_pixels, _flashMatrix, null, cast blend, null, false);
 		}
 
 	}
@@ -299,8 +299,8 @@ class AntLight extends AntEntity {
 		}
 
 		_pixels.copyPixels(_scratchBitmapData, trimBounds, DEST_POINT);
-		flooredX += trimBounds.x;
-		flooredY += trimBounds.y;
+		flooredX += cast trimBounds.x;
+		flooredY += cast trimBounds.y;
 		origin.x = flooredX;
 		origin.y = flooredY;
 		width = ((width < trimBounds.width)) ? trimBounds.width : width;
@@ -416,7 +416,7 @@ class AntLight extends AntEntity {
 		}
 
 		else if(_flashSprite.filters != null)  {
-			var bf : BlurFilter = try cast(_flashSprite.filters[0], BlurFilter) catch(e:Dynamic) null;
+			var bf : BlurFilter = cast _flashSprite.filters[0];//try cast(_flashSprite.filters[0], BlurFilter) catch(e:Dynamic) null;
 			if(bf != null)  {
 				bf.blurX = _blur.x;
 				bf.blurY = _blur.y;

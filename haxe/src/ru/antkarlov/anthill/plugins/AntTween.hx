@@ -321,7 +321,7 @@ class AntTween implements IPlugin {
                 this.eventRepeat.clear();
             };
             if (this.eventComplete == null){
-                this.eventComplete = new Signal1();
+                this.eventComplete = new Signal1<Dynamic>();
             } else {
                 this.eventComplete.clear();
             };

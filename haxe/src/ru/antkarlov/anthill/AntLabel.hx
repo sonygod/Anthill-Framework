@@ -497,7 +497,7 @@ class AntLabel extends AntEntity {
 				_matrix.rotate(Math.PI * 2 * (globalAngle / 360));
 			}
 			_matrix.translate(_flashPoint.x + origin.x, _flashPoint.y + origin.y);
-			aCamera.buffer.draw(_buffer, _matrix, null, BlendMode.NORMAL, null, smoothing);
+			aCamera.buffer.draw(_buffer, _matrix, null, cast blend, null, smoothing);
 		}
 
 	}

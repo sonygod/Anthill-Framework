@@ -1,5 +1,7 @@
 package ;
 
+import flash.display.BitmapData;
+import flash.display.BlendMode;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.Lib;
@@ -20,6 +22,17 @@ class Main
 	//@internal var yyy:String;
 	// @:internal static var yyy2:String;
 	function new () {
+		draw("overlay");
+	}
+	
+	
+	public function draw(blend:String) {
+		
+		
+		var b:BitmapData = new BitmapData(100, 100, false, 0x689756);
+		
+		
+		b.draw(b, null, null, cast blend, null, false);
 		
 	}
 	static function main() 
@@ -30,9 +43,9 @@ class Main
 		
 		
 		
-		 
+		 //new Main();
 		
-		stage.addChild(new AnthillExamples());
+		stage.addChild(new LivingLights());
 		
 	}
 	

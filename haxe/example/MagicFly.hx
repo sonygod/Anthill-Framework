@@ -39,8 +39,8 @@ class MagicFly extends AntActor {
 		_offsetAngle = 0;
 		_curAngle = 0;
 		_blink = false;
-		_blinkInterval = AntMath.randomRangeInt(0.5, 1.5);
-		_particleInterval = AntMath.randomRangeNumber(0.1, 0.3);
+		_blinkInterval = AntMath.randomRangeInt(0, 2);
+		_particleInterval = AntMath.randomRangeNumber(0, 1);
 		_targetInterval = AntMath.randomRangeNumber(1, 2);
 	}
 
@@ -129,7 +129,7 @@ class MagicFly extends AntActor {
 			if(alpha <= 0)  {
 				alpha = 0;
 				_blink = false;
-				_blinkInterval = AntMath.randomRangeInt(0.5, 1.5);
+				_blinkInterval = AntMath.randomRangeInt(0, 1);
 			}
 		}
 	}

@@ -53,9 +53,9 @@ class AntLightEnvironment extends AntEntity {
 	var _flashRect : Rectangle;
 	var _flashPointZero : Point;
 	var _flashPointTarget : Point;
-	static var NUM_ON_SCREEN : Int = 0;
-	static var NUM_VISIBLE : Int = 0;
-	static var NUM_LIVE : Int = 0;
+	static public var NUM_ON_SCREEN : Int = 0;
+	static public var NUM_VISIBLE : Int = 0;
+	static public var NUM_LIVE : Int = 0;
 	//---------------------------------------
 	// CONSTRUCTOR
 	//---------------------------------------

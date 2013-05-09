@@ -15,11 +15,10 @@
 import flash.events.Event;
 import flash.display.Sprite;
 import flash.display.StageQuality;
-import mx.core.SpriteAsset;
+
 import ru.antkarlov.anthill.Anthill;
 
-@:meta(SWF(width="640",height="480",backgroundColor="#FFFFFF"))
-@:meta(Frame(factoryClass="Preloader"))
+
 class LivingLights extends Sprite {
 
 	/**
