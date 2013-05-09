@@ -544,17 +544,23 @@ class AntTween implements IPlugin {
 					repeatCount--;
 				}
 				try {
+					if(repeatArgs!=null)
 					eventRepeat.dispatch(repeatArgs[0]);//.apply(this, repeatArgs);
+					else
+					eventRepeat.dispatch(null);
 				}
-				catch(e : Dynamic){ };
+				catch(e : Dynamic){  trace("Tween repeatArgs error");};
 			}
 
 			else  {
 				stop();
 				try {
+					if(completeArgs!=null)
 					eventComplete.dispatch(completeArgs[0]);//.apply(this, completeArgs);
+					else
+					eventComplete.dispatch(null);
 				}
-				catch(e : Dynamic){ };
+				catch (e : Dynamic) { trace("Tween complete error"); };
 				if(autoStartOfNextTween && nextTween != null)  {
 					nextTween.start();
 				}
