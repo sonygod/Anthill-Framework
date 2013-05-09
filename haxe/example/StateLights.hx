@@ -89,7 +89,7 @@ class StateLights extends AntState {
 		_lightEnvironment = new AntLightEnvironment();
 		// 2. Загрузка уровня.
 		//-----------------------------------------------------------------
-		makeBackground();
+		//makeBackground();
 		loadLevel(new TestLevel_mc());
 		// 3. Добавление светового окружения в структуру.
 		//-----------------------------------------------------------------

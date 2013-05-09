@@ -24,8 +24,8 @@ class Main {
 		
 		
 		
-		//stage.addChild(new AnthillExamples());
-		stage.addChild(new LivingLights());
+		stage.addChild(new AnthillExamples());
+		//stage.addChild(new LivingLights());
 	}
 	
 	

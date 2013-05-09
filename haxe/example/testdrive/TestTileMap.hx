@@ -211,6 +211,7 @@ Previous / next demo: LEFT / RIGHT.
 		// Прибиваем метку с процессом.
 		_percentLabel.kill();
 		_tileHighlight.gotoAndStop(1);
+		if (_camera != null)
 		_camera.setBounds(0, 0, _tileMapFG.mapWidth, _tileMapFG.mapHeight);
 		_isStarted = true;
 	}

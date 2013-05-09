@@ -22,7 +22,7 @@ import ru.antkarlov.anthill.*;
 import ru.antkarlov.anthill.utils.AntColor;
 import ru.antkarlov.anthill.plugins.AntTaskManager;
 using Reflect;
-class TestTaskManager extends AntState {
+class TestTaskManager extends StateLights {
 
 	var _isStarted : Bool;
 	var _hero : AntActor;
@@ -62,7 +62,7 @@ class TestTaskManager extends AntState {
 		arr=Vector.ofArray([Type.resolveClass('BackgroundGrass_mc'), Type.resolveClass('InfantryAttack_mc'), Type.resolveClass('InfantryWalk_mc'), Type.resolveClass('PeasantAttack_mc'), Type.resolveClass('PeasantWalk_mc')]);
 		loader.addClips(arr);
 		// Добавляем обработчик для завершения процесса растеризации.
-		loader.eventComplete.add(onCacheComplete);
+		loader.eventComplete.add(onCacheComplete2);
 		// Запускаем процесс растеризации клипов.
 		loader.start();
 		// Очищаем монитор.
@@ -84,9 +84,11 @@ class TestTaskManager extends AntState {
 	/**
 	 * Обработчик события завершения растеризации.
 	 */
-	function onCacheComplete(aLoader : AntAssetLoader) : Void {
+	function onCacheComplete2(aLoader : AntAssetLoader) : Void {
+		
 		aLoader.destroy();
 		_backgroundLayer = new AntEntity();
+	
 		add(_backgroundLayer);
 		//AntG.track(_backgroundLayer, "backgound entity");
 		var dx : Int = 0;
