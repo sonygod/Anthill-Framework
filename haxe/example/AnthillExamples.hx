@@ -45,7 +45,7 @@ class AnthillExamples extends MovieClip {
 
 	public function startNow() : Void {
 		trace("AnthillExamples::initialize()");
-		_examples = [  TestTileMap];
+		_examples = [  TestAntActor];
 		_curTest = 0;
 		var engine : Anthill = new Anthill(_examples[_curTest], 60);
 		addChild(engine);

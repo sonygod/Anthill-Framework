@@ -16,21 +16,14 @@
 
  */
 package ru.antkarlov.anthill;
+import flash.Lib;
 
 class AntMath {
 
-	/**
-
-	 * @private
-
-	 */
-	static var MAX_RATIO : Float = 1 / untyped __global__["uint"].MAX_VALUE;
-	/**
-
-	 * @private
-
-	 */
-	static var r : Int = Std.int(Math.random() * untyped __global__["uint"].MAX_VALUE);
+	
+	
+	
+	
 	//---------------------------------------
 	// PUBLIC METHODS
 	//---------------------------------------
@@ -133,7 +126,13 @@ class AntMath {
 
 	 */
 	static public function randomRangeInt(aLower : Int, aUpper : Int) : Int {
-		return Std.int(random() * (aUpper - aLower + 1)) + aLower;
+		
+			//return int(random() * (aUpper - aLower + 1)) + aLower;
+	
+		
+		
+			
+		return  Std.int(random() * (aUpper - aLower + 1)) + aLower;
 	}
 
 	/**
@@ -163,11 +162,12 @@ class AntMath {
 
 	 */
 	static public function random() : Float {
-		r ^= (r << 21);
-		r ^= (r >>> 35);
-		r ^= (r << 4);
-		return r * MAX_RATIO;
+		
+		
+	  return Math.random();
 	}
+	
+	
 
 	/**
 
@@ -646,6 +646,19 @@ class AntMath {
 		}
 		return aVelocity;
 	}
-
+    
+	//Array.sort(Array.NUMERIC);
+	public static function numericComparison(int1:Float, int2:Float):Int
+	{
+		if (int2 > int1)
+		{
+			return -1;
+		}
+		else if (int1 > int2)
+		{
+			return 1;
+		}
+		return 0;
+	}
 }
 
