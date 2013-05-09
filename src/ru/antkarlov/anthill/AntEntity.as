@@ -366,7 +366,7 @@ import Lambda;
 					}
 				}
 				
-				children=[];
+				children.length = 0;
 				numChildren = 0;
 				_sortIndex = null;
 			}
@@ -809,7 +809,7 @@ import Lambda;
 				children[i] = null;
 			}
 
-			children=[];
+			children.length = 0;
 			numChildren = 0;
 		}
 
@@ -1017,7 +1017,7 @@ import Lambda;
 				exists[i++] = null;
 			}
 
-			exists=[];
+			exists.length = 0;
 			return entity;
 		}
 

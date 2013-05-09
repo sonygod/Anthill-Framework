@@ -19,7 +19,7 @@ package ru.antkarlov.anthill
 		/**
 		 * @private
 		 */
-		private static var r:uint = Math.random() * uint.MAX_VALUE;
+		private static var r:int = Math.random() * uint.MAX_VALUE;
 		
 		//---------------------------------------
 		// PUBLIC METHODS
@@ -120,6 +120,7 @@ package ru.antkarlov.anthill
 			r ^= (r << 21);
 			r ^= (r >>> 35);
 			r ^= (r << 4);
+            var value=  r * MAX_RATIO;
 			return r * MAX_RATIO;
 		}
 		
