@@ -274,8 +274,7 @@ Previous / next demo: LEFT / RIGHT.";
 		// Если в списке врагов есть записи...
 		if(dist.length > 0 && _currentEnemy != null)  {
 			// То сортируем список по дистанции, с наименьшей дистанцией вперед.
-			//dist.sortOn("dist", Array.DESCENDING);
-			//dist.callMethod(dist.field("sorton"), [untyped __global__['Array'].DESCENDING]);
+		
 			
 			
 			dist.sort(function (a, b) {

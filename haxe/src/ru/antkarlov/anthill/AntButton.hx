@@ -79,7 +79,7 @@ class AntButton extends AntEntity {
 	 * @default	null
 
 	 */
-	public var blend : String;
+	public var blend : BlendMode;
 	/**
 
 	 * Сглаживание.

@@ -428,6 +428,7 @@ class AntAssetLoader {
 				anim = new AntAnimation(aKey);
 				anim.makeFromSprite(sprite);
 				AntAnimation.toCache(anim);
+				
 			case DATA_CLIP:
 				var clip : MovieClip = Type.createInstance(data.graphicClass,[]);
 				anim = new AntAnimation(aKey);

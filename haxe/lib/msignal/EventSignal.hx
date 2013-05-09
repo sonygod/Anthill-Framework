@@ -43,7 +43,7 @@ class EventSignal<TTarget, TType>
 	*/
 	public function new(target:TTarget)
 	{
-		super([Event]);
+		super([Event]); 
 		this.target = target;
 	}
 

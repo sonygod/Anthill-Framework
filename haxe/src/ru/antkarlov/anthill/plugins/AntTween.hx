@@ -328,17 +328,17 @@ class AntTween implements IPlugin {
             if (this._properties == null){
                 this._properties = new Vector<String>();
             } else {
-                this._properties.length = 0;
+                this._properties = new Vector<String>();
             };
             if (this._startValues == null){
                 this._startValues = new Vector<Float>();
             } else {
-                this._startValues.length = 0;
+                this._startValues = new Vector<Float>();
             };
             if (this._endValues == null){
                 this._endValues = new Vector<Float>();
             } else {
-                this._endValues.length = 0;
+                this._endValues = new Vector<Float>();
             };
             return (this);
 	}

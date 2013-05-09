@@ -15,6 +15,7 @@
 package ru.antkarlov.anthill.extensions.livinglights;
 
 import flash.display.BitmapData;
+import flash.display.BlendMode;
 import flash.display.GradientType;
 import flash.display.Sprite;
 import flash.filters.BlurFilter;
@@ -49,7 +50,7 @@ class AntLight extends AntEntity {
 	 * 
 	 * @default	"overlay"
 	 */
-	public var blend : String;
+	public var blend : BlendMode;
 	/**
 	 * Определяет является ли источник света динамическим (рассчитывается постоянно).
 	 * 
@@ -127,7 +128,7 @@ class AntLight extends AntEntity {
 	 */
 	public function new() {
 		super();
-		blend = "overlay";
+		blend = BlendMode.OVERLAY;
 		live = true;
 		angleStep = 10;
 		rayStep = 5;

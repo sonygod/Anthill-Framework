@@ -4,6 +4,7 @@
  * @author Anton Karlov (ant.karlov@gmail.com)
  * @since  21.04.2013
  */
+import flash.display.BlendMode;
 import flash.display.MovieClip;
 import ru.antkarlov.anthill.*;
 import ru.antkarlov.anthill.utils.AntColor;
@@ -118,7 +119,7 @@ class StateLights extends AntState {
 		_night = new AntActor();
 		_night.addAnimationFromCache("Night_mc");
 		_night.alpha = 0.8;
-		_night.blend = "overlay";
+		_night.blend = BlendMode.OVERLAY;
 		add(_night);
 		_night.isScrolled = false;
 		_nightTween = new AntTween(_night, 1);
@@ -509,7 +510,7 @@ class StateLights extends AntState {
 		while(i < _lightEnvironment.numLights) {
 			light = try cast(_lightEnvironment.lights[i++], AntLight) catch(e:Dynamic) null;
 			if(light != null && light.exists)  {
-				light.blend = ((_blendMode)) ? "overlay" : null;
+				light.blend = ((_blendMode)) ? BlendMode.OVERLAY : null;
 			}
 		}
 
