@@ -461,7 +461,7 @@ import Lambda;
 				{
 					stop();
                     try{
-					eventComplete.dispatch.apply(this, completeArgs);
+					eventComplete.dispatch(this);
                     }catch(e:*){
 
                     }

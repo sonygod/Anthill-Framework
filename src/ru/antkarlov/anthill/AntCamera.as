@@ -92,7 +92,7 @@ import ru.antkarlov.anthill.AntCamera;
 		 * Фактор увеличения изображения.
 		 * @default    1
 		 */
-		public var zoom:int;
+        private var _zoom:int;
 		
 		/**
 		 * Прямоугольник задающий границы для перемещения камеры.
@@ -188,16 +188,16 @@ import ru.antkarlov.anthill.AntCamera;
 			fillBackground = false;
 			backgroundColor = 0xFF000000;
 			scroll = new AntPoint();
-			zoom = aZoom;
+			_zoom = aZoom;
 			bounds = null;
 			
 			buffer = new BitmapData(width, height, true, backgroundColor); 
 			_flashBitmap = new Bitmap(buffer);
-			_flashBitmap.scaleX = _flashBitmap.scaleY = zoom;
+			_flashBitmap.scaleX = _flashBitmap.scaleY = _zoom;
 			_flashBitmap.x = -width * 0.5;
 			_flashBitmap.y = -height * 0.5;
 			
-			screenCenter = new AntPoint(width * 0.5 * zoom, height * 0.5 * zoom);
+			screenCenter = new AntPoint(width * 0.5 * _zoom, height * 0.5 * _zoom);
 			
 			_flashSprite = new Sprite();
 			_flashSprite.x = x + screenCenter.x;
@@ -456,7 +456,17 @@ import ru.antkarlov.anthill.AntCamera;
 			
 			return aValue;
 		}
-
-	}
+    public function set zoom(value:int):void
+    {
+        _zoom = value;
+        _flashSprite.scaleX=_flashSprite.scaleY=value;
+        screenCenter = new AntPoint(width * 0.5 * _zoom, height * 0.5 * _zoom);
+        update();
+    }
+    public function get zoom():int
+    {
+        return _zoom;
+    }
+}
 
 }

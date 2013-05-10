@@ -95,7 +95,7 @@ package ru.antkarlov.anthill
 		 */
 		public static function randomRangeInt(aLower:int, aUpper:int):int
 		{
-			return int(random() * (aUpper - aLower + 1)) + aLower;
+			return random() * (aUpper - aLower + 1) + aLower;
 		}
 		
 		/**
