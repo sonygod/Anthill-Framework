@@ -68,6 +68,7 @@ class TestTween extends AntState {
 		AntG.debugger.monitor.hide();
 		AntG.debugger.perfomance.hide();*/
 		var labelInfo : AntLabel = new AntLabel("system");
+		labelInfo.z = 999;
 		labelInfo.reset(15, 15);
 		labelInfo.beginChange();
 		labelInfo.text = "Demonstration of AntTween.
@@ -82,6 +83,22 @@ Previous / next demo: LEFT / RIGHT.";
 		_labelCurTrans.text = "just click anywhere...";
 		_labelCurTrans.reset(AntG.widthHalf - _labelCurTrans.width / 2, AntG.height - 60);
 		add(_labelCurTrans);
+		
+		
+		
+		
+		for (i in 0...10) {
+			
+			
+	    var _labelCurTrans2 = new AntLabel("system");
+		_labelCurTrans2.color = cast Math.random() * 0xFFFFFF;
+		_labelCurTrans2.text = "label....dfdf"+i;
+		_labelCurTrans2.reset(i*100,i*50);
+		add(_labelCurTrans2);
+		}
+		
+		
+		
 		super.create();
 	}
 
@@ -98,7 +115,24 @@ Previous / next demo: LEFT / RIGHT.";
 		_actor.reset(AntG.widthHalf, AntG.heightHalf);
 		add(_actor);
 		_tween = new AntTween(_actor, 1);
+		
 		_started = true;
+	}
+	
+	
+	function onTweenComplete(e) {
+		
+		
+		AntG.camera.setBounds(0, 0, 1000, 600);
+		//AntG.camera.zoom = 1;
+		AntG.camera.target = null;
+	}
+	
+	function onTweenStart(e) {
+		
+		AntG.camera.setBounds(0, 0, 1000, 600);
+	//	AntG.camera.zoom = 2;
+		AntG.camera.target = _actor;
 	}
 
 	/**
@@ -109,7 +143,10 @@ Previous / next demo: LEFT / RIGHT.";
 		if(_started)  {
 			if(AntG.mouse.isPressed())  {
 				_actor.scaleX = _actor.scaleY = 1;
-				_actor.angle = AntMath.angleDeg(_actor.x, _actor.y, AntG.mouse.x, AntG.mouse.y);
+				var p : AntPoint=new AntPoint();
+				 
+							p= AntG.mouse.getWorldPosition(null, p);
+				_actor.angle = AntMath.angleDeg(_actor.x, _actor.y, p.x, p.y);
 				// Выбираем случайный переход (анимацию).
 				var transName : String = _transList[AntMath.randomRangeInt(0, _transList.length - 1)];
 				_labelCurTrans.beginChange();
@@ -119,7 +156,9 @@ Previous / next demo: LEFT / RIGHT.";
 				_labelCurTrans.reset(AntG.widthHalf - _labelCurTrans.width / 2, AntG.height - 60);
 				// Сбрасываем параметры твинера.
 				_tween.reset(_actor, 1, transName);
-				_tween.moveTo(AntG.mouse.x, AntG.mouse.y);
+				_tween.moveTo(p.x, p.y);
+				_tween.eventComplete.add(onTweenComplete);
+				_tween.eventStart.add(onTweenStart);
 				_tween.start();
 			}
 		}

@@ -1,14 +1,25 @@
-/**
- * Реализует рендеринг всех визуальных сущностей.
- * 
- * <p>Чтобы реализовать перемещение камеры (скролл уровней), используйте атрибут <code>scroll</code>
- * для перемещения камеры в игровом мире.</p>
- * 
- * @langversion ActionScript 3
- * @playerversion Flash 9.0.0
- * 
- * @author Anton Karlov
- * @since  29.08.2012
+/**
+
+ * Реализует рендеринг всех визуальных сущностей.
+
+ * 
+
+ * <p>Чтобы реализовать перемещение камеры (скролл уровней), используйте атрибут <code>scroll</code>
+
+ * для перемещения камеры в игровом мире.</p>
+
+ * 
+
+ * @langversion ActionScript 3
+
+ * @playerversion Flash 9.0.0
+
+ * 
+
+ * @author Anton Karlov
+
+ * @since  29.08.2012
+
  */
 package ru.antkarlov.anthill;
 
@@ -18,126 +29,188 @@ import flash.display.Sprite;
 import flash.geom.Rectangle;
 import ru.antkarlov.anthill.AntCamera;
 import ru.antkarlov.anthill.AntCamera;
+using Reflect;
 
 class AntCamera extends AntBasic {
 
 	//---------------------------------------
 	// CLASS CONSTANTS
 	//---------------------------------------
-	/**
-	 * Стиль слежения камеры: свободный стиль, по X и Y.
+	/**
+
+	 * Стиль слежения камеры: свободный стиль, по X и Y.
+
 	 */
 	static public var STYLE_FREELY : UInt = 0;
-	/**
-	 * Стиль слежения камеры: горизонтальный, только по X.
+	/**
+
+	 * Стиль слежения камеры: горизонтальный, только по X.
+
 	 */
 	static public var STYLE_HORIZONTAL : UInt = 1;
-	/**
-	 * Стиль слежения камеры: вертикальный, только по Y.
+	/**
+
+	 * Стиль слежения камеры: вертикальный, только по Y.
+
 	 */
 	static public var STYLE_VERTICAL : UInt = 2;
 	//---------------------------------------
 	// PUBLIC VARIABLES
 	//---------------------------------------
-	/**
-	 * Положение камеры на экране Flash окна по X.
+	/**
+
+	 * Положение камеры на экране Flash окна по X.
+
 	 */
 	public var x : Float;
-	/**
-	 * Положение камеры на экране Flash окна по Y.
+	/**
+
+	 * Положение камеры на экране Flash окна по Y.
+
 	 */
 	public var y : Float;
-	/**
-	 * Размер окна камеры по ширине.
+	/**
+
+	 * Размер окна камеры по ширине.
+
 	 */
 	public var width : Int;
-	/**
-	 * Размер окна камеры по высоте.
+	/**
+
+	 * Размер окна камеры по высоте.
+
 	 */
 	public var height : Int;
-	/**
-	 * Флаг определяющий следует ли выполнять заливку цветом в буфер камеры перед рендером объектов.
-	 * @default	false
+	/**
+
+	 * Флаг определяющий следует ли выполнять заливку цветом в буфер камеры перед рендером объектов.
+
+	 * @default	false
+
 	 */
 	public var fillBackground : Bool;
-	/**
-	 * Цвет заливки.
-	 * @default	0xFF000000
+	/**
+
+	 * Цвет заливки.
+
+	 * @default	0xFF000000
+
 	 */
 	public var backgroundColor : UInt;
-	/**
-	 * Содержит смещение камеры относительно игрового мира.
-	 * Чтобы прокручивать игровые миры, достаточно менять значения <code>scroll.x</code> и <code>scroll.y</code>.
-	 * @default	(0,0)
+	/**
+
+	 * Содержит смещение камеры относительно игрового мира.
+
+	 * Чтобы прокручивать игровые миры, достаточно менять значения <code>scroll.x</code> и <code>scroll.y</code>.
+
+	 * @default	(0,0)
+
 	 */
 	public var scroll : AntPoint;
-	/**
-	 * Основной буфер камеры куда производится отрисовка всех визуальных объектов.
+	/**
+
+	 * Основной буфер камеры куда производится отрисовка всех визуальных объектов.
+
 	 */
 	public var buffer : BitmapData;
-	/**
-	 * Фактор увеличения изображения.
-	 * @default	1
+	/**
+
+	 * Фактор увеличения изображения.
+
+	 * @default	1
+
 	 */
 	public var zoom : Int;
-	/**
-	 * Прямоугольник задающий границы для перемещения камеры.
-	 * @default	null
+	/**
+
+	 * Прямоугольник задающий границы для перемещения камеры.
+
+	 * @default	null
+
 	 */
 	public var bounds : AntRect;
-	/**
-	 * Цель которую приследует камера.
-	 * @default	null
+	/**
+
+	 * Цель которую приследует камера.
+
+	 * @default	null
+
 	 */
 	public var target : AntEntity;
-	/**
-	 * Стиль слежения за объектом.
-	 * @default	STYLE_FREELY
+	/**
+
+	 * Стиль слежения за объектом.
+
+	 * @default	STYLE_FREELY
+
 	 */
 	public var followStyle : UInt;
-	/**
-	 * Фактор опережения камеры при движении за целью.
-	 * @default	8
+	/**
+
+	 * Фактор опережения камеры при движении за целью.
+
+	 * @default	8
+
 	 */
 	public var leadingFactor : Float;
-	/**
-	 * Фактор отставания камеры при движении за целью.
-	 * @default	0.25
+	/**
+
+	 * Фактор отставания камеры при движении за целью.
+
+	 * @default	0.25
+
 	 */
 	public var smoothFactor : Float;
-	/**
-	 * Свойство цели для преследования которое используется для определения его позиции по X.
-	 * @default	"globalX"
+	/**
+
+	 * Свойство цели для преследования которое используется для определения его позиции по X.
+
+	 * @default	"globalX"
+
 	 */
 	public var positionPropertyX : String;
-	/**
-	 * Свойство цели для преследования которое используется для определения его позиции по X.
-	 * @default	"globalY"
+	/**
+
+	 * Свойство цели для преследования которое используется для определения его позиции по X.
+
+	 * @default	"globalY"
+
 	 */
 	public var positionPropertyY : String;
-	/**
-	 * Определяет следует ли при преследовании цели округлять координаты камеры.
-	 * @default	false
+	/**
+
+	 * Определяет следует ли при преследовании цели округлять координаты камеры.
+
+	 * @default	false
+
 	 */
 	public var roundToIntPosition : Bool;
-	/**
-	 * Центр экрана.
+	/**
+
+	 * Центр экрана.
+
 	 */
 	public var screenCenter : AntPoint;
 	//---------------------------------------
 	// PROTECTED VARIABLES
 	//---------------------------------------
-	/**
-	 * Помшник для заливки буфера камеры цветом.
+	/**
+
+	 * Помшник для заливки буфера камеры цветом.
+
 	 */
 	var _flashRect : Rectangle;
-	/**
-	 * Битмап для вывода буффера камеры на экран стандартными средствами Flash.
+	/**
+
+	 * Битмап для вывода буффера камеры на экран стандартными средствами Flash.
+
 	 */
 	var _flashBitmap : Bitmap;
 	public var _flashSprite : Sprite;
-	/**
-	 * Помошник для рассчета новой позиции камеры.
+	/**
+
+	 * Помошник для рассчета новой позиции камеры.
+
 	 */
 	var _newPos : AntPoint;
 	public var _isMasked : Bool;
@@ -145,8 +218,10 @@ class AntCamera extends AntBasic {
 	//---------------------------------------
 	// CONSTRUCTOR
 	//---------------------------------------
-	/**
-	 * @constructor
+	/**
+
+	 * @constructor
+
 	 */
 	public function new(aX : Float, aY : Float, aWidth : Int, aHeight : Int, aZoom : Int = 1) {
 		super();
@@ -182,8 +257,10 @@ class AntCamera extends AntBasic {
 		_maskOffset = new AntPoint();
 	}
 
-	/**
-	 * Уничтожает экземпляр камеры и осовобождает память.
+	/**
+
+	 * Уничтожает экземпляр камеры и осовобождает память.
+
 	 */
 	override public function destroy() : Void {
 		target = null;
@@ -203,21 +280,30 @@ class AntCamera extends AntBasic {
 	//---------------------------------------
 	// PUBLIC METHODS
 	//---------------------------------------
-	/**
-	 * Устанавливает цель за которой будет выполнятся слежение.
-	 * 
-	 * @param	aTarget	 Цель за которой будет выполнятся слежение.
-	 * @param	aStyle	 Стиль слежения.
+	/**
+
+	 * Устанавливает цель за которой будет выполнятся слежение.
+
+	 * 
+
+	 * @param	aTarget	 Цель за которой будет выполнятся слежение.
+
+	 * @param	aStyle	 Стиль слежения.
+
 	 */
 	public function follow(aTarget : AntEntity, aStyle : UInt = 0) : Void {
 		target = aTarget;
 		followStyle = aStyle;
 	}
 
-	/**
-	 * Моментальное перемещение камеры к указанной позиции.
-	 * 
-	 * @param	aPoint	 Точка к которой будет перемещена камера.
+	/**
+
+	 * Моментальное перемещение камеры к указанной позиции.
+
+	 * 
+
+	 * @param	aPoint	 Точка к которой будет перемещена камера.
+
 	 */
 	public function focusOn(aPoint : AntPoint) : Void {
 		aPoint.x += ((aPoint.x > 0)) ? 0.0000001 : -0.0000001;
@@ -231,13 +317,20 @@ class AntCamera extends AntBasic {
 		scroll.y = _newPos.y;
 	}
 
-	/**
-	 * Устанавливает ограничение для перемещения камеры.
-	 * 
-	 * @param	aLowerX	 Минимально допустимая позиция камеры по X (обычно это 0).
-	 * @param	aLowerY	 Минимально допустимая позиция камеры по Y (обычно это 0).
-	 * @param	aUpperX	 Максимально допустимая позиция камеры по X (обычно это ширина уровня).
-	 * @param	aUpperY	 Максимально допустимая позиция камеры по Y (обычно это высота уровня).
+	/**
+
+	 * Устанавливает ограничение для перемещения камеры.
+
+	 * 
+
+	 * @param	aLowerX	 Минимально допустимая позиция камеры по X (обычно это 0).
+
+	 * @param	aLowerY	 Минимально допустимая позиция камеры по Y (обычно это 0).
+
+	 * @param	aUpperX	 Максимально допустимая позиция камеры по X (обычно это ширина уровня).
+
+	 * @param	aUpperY	 Максимально допустимая позиция камеры по Y (обычно это высота уровня).
+
 	 */
 	public function setBounds(aLowerX : Int, aLowerY : Int, aUpperX : Int, aUpperY : Int) : Void {
 		if(bounds == null)  {
@@ -247,19 +340,21 @@ class AntCamera extends AntBasic {
 		update();
 	}
 
-	/**
-	 * Обработка действий камеры.
+	/**
+
+	 * Обработка действий камеры.
+
 	 */
 	override public function update() : Void {
 		if(target != null)  {
 			switch(followStyle) {
 			case AntCamera.STYLE_FREELY:
-				_newPos.x = (scroll.x - (-target.globalX + screenCenter.x - (target.velocity.x * AntG.elapsed) * leadingFactor)) * smoothFactor;
-				_newPos.y = (scroll.y - (-target.globalY + screenCenter.y - (target.velocity.y * AntG.elapsed) * leadingFactor)) * smoothFactor;
+				_newPos.x = (scroll.x - (-target.field(positionPropertyX) + screenCenter.x - (target.velocity.x * AntG.elapsed) * leadingFactor)) * smoothFactor;
+				_newPos.y = (scroll.y - (-target.field(positionPropertyY) + screenCenter.y - (target.velocity.y * AntG.elapsed) * leadingFactor)) * smoothFactor;
 			case AntCamera.STYLE_HORIZONTAL:
-				_newPos.x = (scroll.x - (-target.globalX + screenCenter.x - (target.velocity.x * AntG.elapsed) * leadingFactor)) * smoothFactor;
+				_newPos.x = (scroll.x - (-target.field(positionPropertyX) + screenCenter.x - (target.velocity.x * AntG.elapsed) * leadingFactor)) * smoothFactor;
 			case AntCamera.STYLE_VERTICAL:
-				_newPos.y = (scroll.y - (-target.globalY + screenCenter.y - (target.velocity.y * AntG.elapsed) * leadingFactor)) * smoothFactor;
+				_newPos.y = (scroll.y - (-target.field(positionPropertyY)+ screenCenter.y - (target.velocity.y * AntG.elapsed) * leadingFactor)) * smoothFactor;
 			}
 			if(roundToIntPosition)  {
 				_newPos.x += ((_newPos.x > 0)) ? 0.0000001 : -0.0000001;
@@ -285,21 +380,34 @@ class AntCamera extends AntBasic {
 		}
 	}
 
-	/**
-	 * Отрисовка буфера камеры на экран.
+	/**
+
+	 * Отрисовка буфера камеры на экран.
+
 	 */
-	/*public function draw():void
-	{
-	buffer.unlock();
-	buffer.lock();
-	
-	if (fillBackground)
-	{
-	buffer.fillRect(_flashRect, backgroundColor);
-	}
+	/*public function draw():void
+
+	{
+
+	buffer.unlock();
+
+	buffer.lock();
+
+	
+
+	if (fillBackground)
+
+	{
+
+	buffer.fillRect(_flashRect, backgroundColor);
+
+	}
+
 	}*/
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	public function beginDraw() : Void {
 		buffer.lock();
@@ -308,17 +416,23 @@ class AntCamera extends AntBasic {
 		}
 	}
 
-	/**
-	 * @private
+	/**
+
+	 * @private
+
 	 */
 	public function endDraw() : Void {
 		buffer.unlock();
 	}
 
-	/**
-	 * Определяет начало отрисовки сущности использующей маску.
-	 * 
-	 * @param	aMask	 Указатель на маску которая будет временно применена к камере.
+	/**
+
+	 * Определяет начало отрисовки сущности использующей маску.
+
+	 * 
+
+	 * @param	aMask	 Указатель на маску которая будет временно применена к камере.
+
 	 */
 	public function beginDrawMask(aMask : AntMask) : Void {
 		if(!_isMasked)  {
@@ -328,10 +442,14 @@ class AntCamera extends AntBasic {
 		}
 	}
 
-	/**
-	 * Определяет окончание отрисовки сущности использующей маску.
-	 * 
-	 * @param	aMask	 Указатель на маску которая ранее была применена к камере.
+	/**
+
+	 * Определяет окончание отрисовки сущности использующей маску.
+
+	 * 
+
+	 * @param	aMask	 Указатель на маску которая ранее была применена к камере.
+
 	 */
 	public function endDrawMask(aMask : AntMask) : Void {
 		if(_isMasked)  {
@@ -344,11 +462,16 @@ class AntCamera extends AntBasic {
 	//---------------------------------------
 	// PROTECTED METHODS
 	//---------------------------------------
-	/**
-	 * Ограничивает значение по горизонтали согласно заданным границам.
-	 * 
-	 * @param	aValue	 Новая позиция по горизонтали.
-	 * @return		Если новая позиция вышла за пределы границы, то вернет крайнюю доступную позицию.
+	/**
+
+	 * Ограничивает значение по горизонтали согласно заданным границам.
+
+	 * 
+
+	 * @param	aValue	 Новая позиция по горизонтали.
+
+	 * @return		Если новая позиция вышла за пределы границы, то вернет крайнюю доступную позицию.
+
 	 */
 	function limitByX(aValue : Float) : Float {
 		if(aValue > bounds.left)  {
@@ -361,11 +484,16 @@ class AntCamera extends AntBasic {
 		return aValue;
 	}
 
-	/**
-	 * Ограничивает значение по вертикали согласно заданным границам.
-	 * 
-	 * @param	aValue	 Новая позиция по вертикали.
-	 * @return		Если новая позиция вышла за пределы границы, то вернет крайнюю доступную позицию.
+	/**
+
+	 * Ограничивает значение по вертикали согласно заданным границам.
+
+	 * 
+
+	 * @param	aValue	 Новая позиция по вертикали.
+
+	 * @return		Если новая позиция вышла за пределы границы, то вернет крайнюю доступную позицию.
+
 	 */
 	function limitByY(aValue : Float) : Float {
 		if(aValue > bounds.top)  {

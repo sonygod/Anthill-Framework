@@ -4,7 +4,7 @@ package ;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.Lib;
-
+import msignal.Signal;
 
 /**
  * ...
@@ -26,6 +26,16 @@ class Main {
 		
 		stage.addChild(new AnthillExamples());
 		//stage.addChild(new LivingLights());
+		
+		signalWithOneArg();
+		
+	}
+	
+	static function signalWithOneArg()
+	{
+		var completed = new Signal1(String);
+		completed.add(function (e):Void { trace("okkk"); } );
+		completed.dispatch("hello");
 	}
 	
 	
