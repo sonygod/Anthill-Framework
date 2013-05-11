@@ -16,6 +16,7 @@ class TestTween extends AntState {
 	var _started : Bool;
 	//private var _move:Boolean = false;
 	var _tween : AntTween;
+	var _tween2 : AntTween;
 	var _transList : Vector<String>;
 	var _labelCurTrans : AntLabel;
 	/**
@@ -28,15 +29,8 @@ class TestTween extends AntState {
 		Данный список нужен чтобы из него каждый раз выбирать случайную анимацию.*/
 		var arr : Vector<String> = new Vector<String>();
 		
-		arr = Vector.ofArray([AntTransition.LINEAR,
-		AntTransition.EASE_IN,
-		AntTransition.EASE_OUT,
-		AntTransition.EASE_IN_OUT,
-		AntTransition.EASE_OUT_IN,
-		AntTransition.EASE_IN_BACK,
-		AntTransition.EASE_OUT_BACK, 
-		AntTransition.EASE_IN_OUT_BACK,
- AntTransition.EASE_OUT_IN_BACK, AntTransition.EASE_IN_ELASTIC, AntTransition.EASE_OUT_ELASTIC, AntTransition.EASE_IN_OUT_ELASTIC, AntTransition.EASE_OUT_IN_ELASTIC, AntTransition.EASE_IN_BOUNCE, AntTransition.EASE_OUT_BOUNCE, AntTransition.EASE_IN_OUT_BOUNCE, AntTransition.EASE_OUT_IN_BOUNCE]);
+		arr = Vector.ofArray([AntTransition.LINEAR
+		]);
 		_transList = arr;
 	}
 
@@ -87,7 +81,7 @@ Previous / next demo: LEFT / RIGHT.";
 		
 		
 		
-		for (i in 0...10) {
+		for (i in 0...20) {
 			
 			
 	    var _labelCurTrans2 = new AntLabel("system");
@@ -123,16 +117,27 @@ Previous / next demo: LEFT / RIGHT.";
 	function onTweenComplete(e) {
 		
 		
-		AntG.camera.setBounds(0, 0, 1000, 600);
-		//AntG.camera.zoom = 1;
+		AntG.camera.setBounds(0, 0, 2000, 1200);
+	//	AntG.camera.zoom = 1;
+		//AntG.camera.leadingFactor = 8;
 		AntG.camera.target = null;
+		AntG.camera.reset();
+		
+		trace("complete", "v" + AntBasic.NUM_OF_VISIBLE, "s" + AntBasic.NUM_ON_SCREEN);
+		 AntG.camera.update();
 	}
 	
 	function onTweenStart(e) {
 		
-		AntG.camera.setBounds(0, 0, 1000, 600);
+		AntG.camera.setBounds(0, 0, 2000, 1200);
 	//	AntG.camera.zoom = 2;
+		//AntG.camera.leadingFactor = 1;
 		AntG.camera.target = _actor;
+	
+	
+	    /* AntG.camera.screenCenter = new AntPoint(_actor.x, _actor.y);
+		  AntG.camera.update();
+		trace("start","v"+AntBasic.NUM_OF_VISIBLE,"s"+AntBasic.NUM_ON_SCREEN);*/
 	}
 
 	/**

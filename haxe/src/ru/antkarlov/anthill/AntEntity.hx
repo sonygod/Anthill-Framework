@@ -1362,7 +1362,12 @@ class AntEntity extends AntBasic  implements IBubbleEventHandler {
 		}
 		var offX : Float = ((scaleX < 0)) ? width : 0;
 		var offY : Float = ((scaleY < 0)) ? height : 0;
-		return bounds.intersects((aCamera.scroll.x - offX) * -1 * scrollFactor.x, (aCamera.scroll.y - offY) * -1 * scrollFactor.y, aCamera.width / aCamera.zoom, aCamera.height / aCamera.zoom);
+		var value:Bool=bounds.intersects((aCamera.scroll.x - offX) * -1 * scrollFactor.x, (aCamera.scroll.y - offY) * -1 * scrollFactor.y, aCamera.width / aCamera.zoom, aCamera.height / aCamera.zoom);
+		if (!value) {
+			
+				var value2:Bool=bounds.intersects((aCamera.scroll.x - offX) * -1 * scrollFactor.x, (aCamera.scroll.y - offY) * -1 * scrollFactor.y, aCamera.width / aCamera.zoom, aCamera.height / aCamera.zoom);
+		}
+		return value;
 	}
 
 	/**

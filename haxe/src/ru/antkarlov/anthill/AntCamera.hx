@@ -26,6 +26,7 @@ package ru.antkarlov.anthill;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
+import flash.geom.Point;
 import flash.geom.Rectangle;
 import ru.antkarlov.anthill.AntCamera;
 import ru.antkarlov.anthill.AntCamera;
@@ -120,7 +121,9 @@ class AntCamera extends AntBasic {
 	 * @default	1
 
 	 */
-	public var zoom : Int;
+	//public var zoom : Int;
+	private var _zoom:Int;
+	@:isVar public var zoom(get, set) : Int;
 	/**
 
 	 * Прямоугольник задающий границы для перемещения камеры.
@@ -459,6 +462,35 @@ class AntCamera extends AntBasic {
 		}
 	}
 
+	/**
+	 * ready for rewrite use stage3d 
+	 * @param	baseBitmapdata
+	 * @param	sourceBitmapData
+	 * @param	sourceRect
+	 * @param	destPoint
+	 * @param	alphaBitmapData
+	 * @param	alphaPoint
+	 * @param	mergeAlpha
+	 */
+ 	inline public function copyPixels2(baseBitmapdata:BitmapData,sourceBitmapData:BitmapData, sourceRect:flash.geom.Rectangle, destPoint:Point, alphaBitmapData:BitmapData = null, alphaPoint:Point = null, mergeAlpha:Bool = false):Void {
+		
+		return baseBitmapdata.copyPixels(sourceBitmapData, sourceRect, destPoint, alphaBitmapData, alphaPoint, mergeAlpha);
+	}
+	
+	/**ready for rewrite use stage3d 
+	 * 
+	 * @param	baseBitmapdata
+	 * @param	source
+	 * @param	matrix
+	 * @param	colorTransform
+	 * @param	blendMode
+	 * @param	clipRect
+	 * @param	smoothing
+	 */
+	inline public function draw(baseBitmapdata:BitmapData, source:flash.display.IBitmapDrawable, matrix:flash.geom.Matrix = null, colorTransform:flash.geom.ColorTransform = null, blendMode:String = null, clipRect:flash.geom.Rectangle = null, smoothing:Bool = false):Void {
+		
+		 return baseBitmapdata.draw(source, matrix, colorTransform, blendMode, clipRect, smoothing);
+	}
 	//---------------------------------------
 	// PROTECTED METHODS
 	//---------------------------------------
@@ -504,6 +536,31 @@ class AntCamera extends AntBasic {
 			aValue = -(bounds.bottom - height);
 		}
 		return aValue;
+	}
+	
+	 function setScale(X:Float,Y:Float):Void
+		{
+			if (_flashSprite == null) return ;
+			_flashSprite.scaleX = X;
+			_flashSprite.scaleY = Y;
+		}
+	function set_zoom(value:Int):Int {
+		_zoom = value;
+		
+		
+		setScale(cast value, cast value);
+		
+		return _zoom;
+	}
+	
+	
+	public function reset():Void {
+		screenCenter = new AntPoint(width * 0.5 , height * 0.5) ;
+		zoom = 1;
+		
+	}
+	function get_zoom():Int {
+		return _zoom;
 	}
 
 }

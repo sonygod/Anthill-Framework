@@ -363,12 +363,12 @@ class AntTween implements IPlugin {
 			var i : Int = _properties.indexOf(aProperty);
 			if(i == -1)  {
 				_properties.push(aProperty);
-				_startValues.push(untyped __global__["Number"].NaN);//untyped __global__["uint"].MAX_VALUE;
+				_startValues.push(Math.NaN);//untyped __global__["uint"].MAX_VALUE;
 				_endValues.push(aEndValue);
 			}
 
 			else  {
-				_startValues[i] = untyped __global__["Number"].NaN;
+				_startValues[i] = Math.NaN;
 				_endValues[i] = aEndValue;
 			}
 

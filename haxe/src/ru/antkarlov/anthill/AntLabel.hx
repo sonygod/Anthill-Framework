@@ -476,6 +476,7 @@ class AntLabel extends AntEntity {
 			return;
 		}
 		AntBasic.NUM_ON_SCREEN++;
+		
 		var p : AntPoint = getScreenPosition(aCamera);
 		if(aCamera._isMasked)  {
 			p.x -= aCamera._maskOffset.x;
