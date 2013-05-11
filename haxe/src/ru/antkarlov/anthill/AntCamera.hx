@@ -25,7 +25,11 @@ package ru.antkarlov.anthill;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.BlendMode;
+import flash.display.IBitmapDrawable;
 import flash.display.Sprite;
+import flash.geom.ColorTransform;
+import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import ru.antkarlov.anthill.AntCamera;
@@ -474,7 +478,7 @@ class AntCamera extends AntBasic {
 	 */
  	inline public function copyPixels2(baseBitmapdata:BitmapData,sourceBitmapData:BitmapData, sourceRect:flash.geom.Rectangle, destPoint:Point, alphaBitmapData:BitmapData = null, alphaPoint:Point = null, mergeAlpha:Bool = false):Void {
 		
-		return baseBitmapdata.copyPixels(sourceBitmapData, sourceRect, destPoint, alphaBitmapData, alphaPoint, mergeAlpha);
+		 baseBitmapdata.copyPixels(sourceBitmapData, sourceRect, destPoint, alphaBitmapData, alphaPoint, mergeAlpha);
 	}
 	
 	/**ready for rewrite use stage3d 
@@ -487,9 +491,9 @@ class AntCamera extends AntBasic {
 	 * @param	clipRect
 	 * @param	smoothing
 	 */
-	inline public function draw(baseBitmapdata:BitmapData, source:flash.display.IBitmapDrawable, matrix:flash.geom.Matrix = null, colorTransform:flash.geom.ColorTransform = null, blendMode:String = null, clipRect:flash.geom.Rectangle = null, smoothing:Bool = false):Void {
+	inline public function draw2(baseBitmapdata:BitmapData, source:IBitmapDrawable, matrix:Matrix = null, colorTransform:ColorTransform = null, blendMode:BlendMode = null, clipRect:Rectangle = null, smoothing:Bool = false):Void {
 		
-		 return baseBitmapdata.draw(source, matrix, colorTransform, blendMode, clipRect, smoothing);
+		 baseBitmapdata.draw(source, matrix, colorTransform, blendMode, clipRect, smoothing);
 	}
 	//---------------------------------------
 	// PROTECTED METHODS
