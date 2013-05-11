@@ -29,7 +29,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import msignal.Signal;
 import ru.antkarlov.anthill.AntBasic;
-
+using Render;
 class AntActor extends AntEntity {
 	@:isVar public var isPlaying(get, never) : Bool;
 	@:isVar public var currentAnimation(get, never) : String;
@@ -495,7 +495,7 @@ class AntActor extends AntEntity {
 		var targetB : BitmapData = ((_buffer != null)) ? _buffer : _pixels;
 		// Если не применено никаких трансформаций то выполняем простой рендер через copyPixels().
 		if(globalAngle == 0 && scaleX == 1 && scaleY == 1 && blend == null)  {
-			aCamera.buffer.copyPixels(targetB, _flashRect, _flashPoint, null, null, true);
+			aCamera.buffer.copyPixels2(targetB, _flashRect, _flashPoint, null, null, true);
 		}
 
 		else // Если объект имеет какие-либо трансформации, используем более сложный рендер через draw().
@@ -507,7 +507,7 @@ class AntActor extends AntEntity {
 				_matrix.rotate(Math.PI * 2 * (globalAngle / 360));
 			}
 			_matrix.translate(_flashPoint.x - origin.x, _flashPoint.y - origin.y);
-			aCamera.buffer.draw(targetB, _matrix, null, cast blend, null, smoothing);
+			aCamera.buffer.draw2(targetB, _matrix, null, cast blend, null, smoothing);
 		}
 
 	}
